@@ -14,7 +14,9 @@ cur = conn.cursor()
 cur.execute("""DROP TABLE IF EXISTS students CASCADE;
                DROP TABLE IF EXISTS professor CASCADE;
                DROP TABLE IF EXISTS game CASCADE;
-               DROP TABLE IF EXISTS character CASCADE;""")
+               DROP TABLE IF EXISTS character CASCADE;
+               DROP TABLE IF EXISTS professor_game CASCADE;
+               DROP TABLE IF EXISTS game_character CASCADE;""")
 print("TABLES DELETED")
 
 # Create new tables here
@@ -22,5 +24,7 @@ cur.execute("""CREATE TABLE students (uid serial unique, email varchar(200), nam
 cur.execute("""CREATE TABLE professor (pid serial unique, email varchar(200), hashpswd varchar(200));""")
 cur.execute("""CREATE TABLE game (gid serial unique, title varchar(200));""")
 cur.execute("""CREATE TABLE character (cid serial unique, name varchar(200), imageurl varchar(200), description text, objectives text, strategy text, topsecret text);""")
+cur.execute("""CREATE TABLE professor_game (pid int, gid int, FOREIGN KEY (pid) references professor(pid), FOREIGN KEY (gid) references game(gid));""")
+cur.execute("""CREATE TABLE game_character (gid int, cid int, FOREIGN KEY (gid) references game(gid), FOREIGN KEY (cid) references character(cid));""")
 conn.commit()
 print("TABLES CREATED")
