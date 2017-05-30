@@ -17,7 +17,7 @@ cur.execute("""DROP TABLE IF EXISTS students CASCADE;
                DROP TABLE IF EXISTS character CASCADE;""")
 print("TABLES DELETED")
 
-# Create new tables
+# Create new tables here
 cur.execute("""CREATE TABLE students (uid serial unique, email varchar(200), name varchar(200), hashpswd varchar(200), gid varchar(100));""")
 cur.execute("""CREATE TABLE professor (pid serial unique, email varchar(200), hashpswd varchar(200));""")
 cur.execute("""CREATE TABLE game (gid serial unique, title varchar(200));""")
