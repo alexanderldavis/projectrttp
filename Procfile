@@ -1,1 +1,1 @@
-web:gunicorn router:app
+add web:gunicorn router:app
