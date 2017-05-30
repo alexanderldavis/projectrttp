@@ -31,3 +31,4 @@ print("TABLES CREATED")
 
 
 # cur.execite("""INSERT INTO character (name, imageurl, description, objectives, strategy, topsecret) VALUES ('Test', 'TestUrl', 'testdescription', 'teststrategy', 'testtest', 'testtopsecret');""")
+# cur.execute("""INSERT INTO character """)
