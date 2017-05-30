@@ -28,3 +28,6 @@ cur.execute("""CREATE TABLE professor_game (pid int, gid int, FOREIGN KEY (pid) 
 cur.execute("""CREATE TABLE game_character (gid int, cid int, FOREIGN KEY (gid) references game(gid), FOREIGN KEY (cid) references character(cid));""")
 conn.commit()
 print("TABLES CREATED")
+
+
+# cur.execite("""INSERT INTO character (name, imageurl, description, objectives, strategy, topsecret) VALUES ('Test', 'TestUrl', 'testdescription', 'teststrategy', 'testtest', 'testtopsecret');""")
