@@ -35,7 +35,6 @@ print("TABLES CREATED")
 
 
 original = open("charactersheet.txt", "r")
-output = open("finalcharactersheets.txt", "w")
 
 intro = 0
 objectives = 0
