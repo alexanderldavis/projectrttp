@@ -4,7 +4,7 @@ import os
 import urllib.parse
 import json
 import requests as req
-import bcrypt
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 urllib.parse.uses_netloc.append("postgres")
@@ -42,19 +42,13 @@ def createUser():
     print("SIGNED IN, NOW LOADING PAGE")
     return render_template('main.html', uid = lst)
 
-# PASSWORD AUTHENTICATION
-def get_hashed_password(plain_text_password):
-    # Hash a password for the first time
-    #   (Using bcrypt, the salt is saved into the hash itself)
-    return bcrypt.hashpw(plain_text_password, bcrypt.gensalt())
-
-def check_password(plain_text_password, hashed_password):
-    # Check hased password. Using bcrypt, the salt is saved into the hash itself
-    return bcrypt.checkpw(plain_text_password, hashed_password)
+def hashed_password(password):
+        # return bcrypt.generate_password_hash(password)
+        return generate_password_hash(password)
 
 @app.route("/plogin/<email>/<password>")
 def loginProfessor(email, password):
-    hashpassword = get_hashed_password(password)
+    hashpassword = hashed_password(password)
     cur.execute("""SELECT hashpswd from professor where email = %s;""", (email,))
     lst = cur.fetchall()
     if lst[0][0] == hashpassword:
