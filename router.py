@@ -39,4 +39,4 @@ def createUser():
     lst = cur.fetchall()
     print(lst)
     print("SIGNED IN, NOW LOADING PAGE")
-    return render_template('index.html', characterid = characterid, )
+    return render_template('index.html')
