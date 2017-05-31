@@ -48,14 +48,11 @@ def get_hashed_password(plain_text_password):
     return bcrypt.hashpw(plain_text_password, bcrypt.gensalt())
 
 def check_password(plain_text_password, hashed_password):
-    plain_text_password = plain_text_password.encode('utf-8')
     # Check hased password. Using bcrypt, the salt is saved into the hash itself
-    return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_password)
+    return bcrypt.checkpw(plain_text_password, hashed_password)
 
-@app.route("/plogin")
-def loginProfessor():
-    email = request.args['email']
-    password = request.args['hash']
+@app.route("/plogin/<email>/<password>")
+def loginProfessor(email, password):
     hashpassword = get_hashed_password(password)
     cur.execute("""SELECT hashpswd from professor where email = %s;""", (email,))
     lst = cur.fetchall()
