@@ -1,16 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Page Title</title>
-  <link rel="stylesheet" href="../static/css/layout.css">
-</head>
+{% extends "base.html" %}
 
-<body>
+{% block title %}OrchDB{% endblock %}
+
+{% block content %}
+
   {% for (uid, name) in uid %}
 
   <p>{{ uid }}</p>
 
   {% endfor %}
-</body>
 
-</html>
+{% endblock %}
