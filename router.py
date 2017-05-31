@@ -35,7 +35,7 @@ def createUser():
         print("INSERTED NEW USER")
     print("USER EMAIL ACQUIRED")
     print("SIGNING INTO USER LOGIN")
-    cur.execute("""SELECT characterid from students where email = %s;""", (email,))
+    cur.execute("""SELECT characterid, name from students where email = %s;""", (email,))
     lst = cur.fetchall()
     print(lst)
     print("SIGNED IN, NOW LOADING PAGE")
