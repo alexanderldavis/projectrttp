@@ -26,10 +26,10 @@ def createUser():
     characterid = charid.split("-")[1]
 
     cur.execute("""SELECT * from students where email = %s;""",(email,))
-	lst = cur.fetchall()
-	if len(lst) == 0:
+    lst = cur.fetchall()
+    if len(lst) == 0:
         print("LINKING NEW STUDENT EMAIL TO CHARACTER")
-		# the email address is not already taken
+        # the email address is not already taken
         cur.execute("""INSERT INTO students (email, name, charid, gid, characterid) VALUES ('test.test@gmail.com', 'nametest', 'charid', 'gid', 'characterid');""")
         conn.commit()
         print("INSERTED NEW USER")
