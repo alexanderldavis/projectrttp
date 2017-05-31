@@ -40,3 +40,46 @@ def createUser():
     print(lst)
     print("SIGNED IN, NOW LOADING PAGE")
     return render_template('main.html', uid = lst)
+
+# PASSWORD AUTHENTICATION
+def get_hashed_password(plain_text_password):
+    # Hash a password for the first time
+    #   (Using bcrypt, the salt is saved into the hash itself)
+    return bcrypt.hashpw(plain_text_password, bcrypt.gensalt())
+
+def check_password(plain_text_password, hashed_password):
+    # Check hased password. Using bcrypt, the salt is saved into the hash itself
+    return bcrypt.checkpw(plain_text_password, hashed_password)
+
+@app.route("/plogin")
+def loginProfessor():
+    email = request.args['email']
+    password = request.args['hash']
+    hashpassword = get_hashed_password(password)
+    cur.execute("""SELECT hashpswd from professor where email = %s;""", (email,))
+    lst = cur.fetchall()
+    if lst[0][0] == hashpassword:
+        cur.execute("""SELECT * from professor where email = %s;""", (email,))
+        lst = cur.fetchall()
+        return str(lst)
+    return "Professor account not created. Please create an account first."
+
+
+@app.route("/pcreate")
+def createProfessor():
+    email = request.args['email']
+    password = request.args['hash']
+    gameName = request.args['gameName']
+    hashpassword = get_hashed_password(password)
+
+    cur.execute("""SELECT * from professor where email = %s;""", (email,))
+    if len(lst) == 0:
+        return "Professor Account already exists! Please login to your account."
+
+    cur.execute("""INSERT INTO professor (email, hashpswd) VALUES (%s, %s);""",(email,hashpassword))
+    conn.commit()
+    cur.execute("""INSERT INTO game (title) VALUES (%s);""", (gameName,))
+    conn.commit()
+    cur.execute("""INSERT INTO professor_game (pid, gid) VALUES (SELECT pid from professor where email = %s, SELECT gid from game where title = %s);""", (email, gameName))
+    conn.commit()
+    return "Professor Account Created!"
