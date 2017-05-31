@@ -32,3 +32,60 @@ print("TABLES CREATED")
 
 # cur.execite("""INSERT INTO character (name, imageurl, description, objectives, strategy, topsecret) VALUES ('Test', 'TestUrl', 'testdescription', 'teststrategy', 'testtest', 'testtopsecret');""")
 # cur.execute("""INSERT INTO character """)
+
+
+original = open("charactersheet.txt", "r")
+output = open("finalcharactersheets.txt", "w")
+
+intro = 0
+objectives = 0
+responsibilities = 0
+strategy = 0
+topsecret = 0
+
+namestr = ""
+introstr = ""
+objectivesstr = ""
+responsibilitiesstr = ""
+strategystr = ""
+topsecretstr = ""
+
+for line in original:
+	if line == "Introduction\n":
+		intro = 1
+	if line == "Objectives\n":
+		intro = 0
+		objectives = 1
+	if line == "Responsibilities\n":
+		objectives = 0
+		responsibilities = 1
+	if line == "Strategy/Relationships\n":
+		responsibilities = 0
+		strategy = 1
+	if line == "--TOP SECRET--\n":
+		strategy = 0
+		topsecret = 1
+
+	if intro == 0:
+		if line != "\n":
+			namestr += line
+	if intro == 1:
+		if line != "\n":
+			introstr += line
+	if objectives == 1:
+		if line != "\n":
+			objectivesstr += line
+	if responsibilities == 1:
+		if line != "\n":
+			responsibilitiesstr += line
+	if strategy == 1:
+		if line != "\n":
+			strategystr += line
+	if topsecret == 1:
+		if line != "\n":
+			topsecretstr += line
+
+cur.execute("""INSERT INTO character (name, imageurl, description, objectives, strategy, topsecret) VALUES (%s, %s, %s, %s, %s, %s)""", (namestr, introstr, objectivesstr, responsibilitiesstr, strategystr, topsecretstr))
+conn.commit()
+print("POPULATED TABLE CHARACTER")
+# str = ([introstr],[objectivesstr],[responsibilitiesstr],[strategystr],[topsecretstr])
