@@ -5,7 +5,7 @@ import urllib.parse
 import json
 import requests as req
 import bcrypt
-from bcrypt import hashpw
+
 
 urllib.parse.uses_netloc.append("postgres")
 url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
