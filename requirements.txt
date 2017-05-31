@@ -1,7 +1,5 @@
 appdirs==1.4.3
-bcrypt==3.1.3
 certifi==2017.4.17
-cffi==1.10.0
 chardet==3.0.3
 click==6.7
 Flask==0.12.2
@@ -12,7 +10,7 @@ Jinja2==2.9.6
 MarkupSafe==1.0
 packaging==16.8
 psycopg2==2.7.1
-pycparser==2.17
+py-bcrypt==0.4
 pyparsing==2.2.0
 requests==2.17.3
 six==1.10.0
