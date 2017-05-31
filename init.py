@@ -20,7 +20,7 @@ cur.execute("""DROP TABLE IF EXISTS students CASCADE;
 print("TABLES DELETED")
 
 # Create new tables here
-cur.execute("""CREATE TABLE students (uid serial unique, email varchar(200), name varchar(200), hashpswd varchar(200), gid varchar(100));""")
+cur.execute("""CREATE TABLE students (uid serial unique, email varchar(200), name varchar(200), charid varchar(200), gid varchar(100), characterid varchar(100));""")
 cur.execute("""CREATE TABLE professor (pid serial unique, email varchar(200), hashpswd varchar(200));""")
 cur.execute("""CREATE TABLE game (gid serial unique, title varchar(200));""")
 cur.execute("""CREATE TABLE character (cid serial unique, name varchar(200), imageurl varchar(200), description text, objectives text, strategy text, topsecret text);""")
