@@ -1,3 +1,90 @@
+html {
+	overflow: hidden;
+}
+
+html, body, .bod {
+	height: 100vh;
+	margin: 0px;
+}
+
 body {
+	overflow: scroll;
+}
+
+#middle {
+	margin: 0px;
+	margin-top: 4em;
 	text-align: center;
 }
+
+h1 {
+	font-size: 2em;
+}
+
+.navbar {
+  margin: 0;
+  border-radius: 0;
+}
+
+.navbar-brand {
+	letter-spacing: .1em;
+}
+
+.row.content {
+	height: 100%;
+}
+
+.sidenav {
+  padding-top: 20px;
+  background-color: #f1f1f1;
+  height: 100%;
+}
+
+footer {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+  background-color: #555;
+  color: white;
+  padding: 15px;
+}
+
+#formsearch {
+	line-height: 3.5em;
+}
+
+.form-control {
+	border: none;
+	border-bottom: 1px solid rgb(200,200,200);
+	border-radius: 0px;
+	box-shadow: none;
+	transition: .2s;
+}
+
+.form-control:focus {
+	border-bottom: 1px solid rgb(150,150,150);
+	font-weight: 700;
+	box-shadow: 0 4px 4px -4px gray;
+}
+
+.btn {
+	border-radius: 100px;
+	transition: .2s;
+}
+
+a:hover {
+	text-decoration: none;
+	font-weight: bold;
+	transition: .2s;
+}
+
+/* Adjustments for small screens */
+@media screen and (max-width: 767px) {
+  .sidenav {
+    height: auto;
+    padding: 15px;
+  }
+
+  .row.content {
+		height: auto;
+	}

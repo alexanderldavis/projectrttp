@@ -1,18 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Page Title</title>
-  <link rel="stylesheet" href="../static/css/layout.css">
-</head>
+{% extends "base.html" %}
 
-<body>
-  Hello World!
+{% block title %}RTTPortal{% endblock %}
+
+{% block content %}
+
+  <h1>Create your Account</h1>
   <form id="formsearch" class="form-inline" action="/login" method="get">
-    <input class="form-control" type="text" name="name" placeholder="name">
-    <input class="form-control" type="text" name="email" placeholder="email">
-    <input class="form-control" type="text" name="charid" placeholder="charid">
-    <button class="btn btn-primary" type="submit">Search!</button>
-  </form>
-</body>
+    <span class="glyphicon glyphicon-user"></span>
+    <input class="form-control" type="text" name="name" placeholder="name"><br />
+    <span class="glyphicon glyphicon-envelope"></span>
+    <input class="form-control" type="text" name="email" placeholder="email"><br />
+    <span class="glyphicon glyphicon-asterisk"></span>
+    <input class="form-control" type="text" name="charid" placeholder="charid"><br />
 
-</html>
+    <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-ok"></span></button>
+  </form>
+
+{% endblock %}
