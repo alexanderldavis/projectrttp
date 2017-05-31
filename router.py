@@ -30,7 +30,7 @@ def createUser():
     if len(lst) == 0:
         print("LINKING NEW STUDENT EMAIL TO CHARACTER")
         # the email address is not already taken
-        cur.execute("""INSERT INTO students (email, name, charid, gid, characterid) VALUES ('test.test@gmail.com', 'nametest', 'charid', 'gid', 'characterid');""")
+        cur.execute("""INSERT INTO students (email, name, charid, gid, characterid) VALUES (%s, %s, %s, %s, %s);""",(email, name, charid, gid, characterid))
         conn.commit()
         print("INSERTED NEW USER")
     print("USER EMAIL ACQUIRED")
