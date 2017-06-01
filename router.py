@@ -4,8 +4,8 @@ import os
 import urllib.parse
 import json
 import requests as req
-import bcrypt
-from bcrypt import hashpw
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 urllib.parse.uses_netloc.append("postgres")
 url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
@@ -42,43 +42,43 @@ def createUser():
     print("SIGNED IN, NOW LOADING PAGE")
     return render_template('main.html', uid = lst)
 
-# PASSWORD AUTHENTICATION
-def get_hashed_password(plain_text_password):
-    # Hash a password for the first time
-    #   (Using bcrypt, the salt is saved into the hash itself)
-    return bcrypt.hashpw(plain_text_password, bcrypt.gensalt())
-
-def check_password(plain_text_password, hashed_password):
-    # Check hased password. Using bcrypt, the salt is saved into the hash itself
-    return bcrypt.checkpw(plain_text_password, hashed_password)
+def hashed_password(password):
+        # return bcrypt.generate_password_hash(password)
+        return generate_password_hash(password)
 
 @app.route("/plogin/<email>/<password>")
 def loginProfessor(email, password):
-    hashpassword = get_hashed_password(password)
     cur.execute("""SELECT hashpswd from professor where email = %s;""", (email,))
     lst = cur.fetchall()
-    if lst[0][0] == hashpassword:
+    # Check password to hashed pass in table
+    if check_password_hash(lst[0][0], password):
         cur.execute("""SELECT * from professor where email = %s;""", (email,))
         lst = cur.fetchall()
         return str(lst)
     return "Professor account not created. Please create an account first."
 
 
-@app.route("/pcreate")
-def createProfessor():
-    email = request.args['email']
-    password = request.args['hash']
-    gameName = request.args['gameName']
-    hashpassword = get_hashed_password(password)
+@app.route("/pcreate/<email>/<password>/<gameName>")
+def createProfessor(email, password, gameName):
+    hashpassword = hashed_password(password)
+    print("CREATED PASSWORD HASH")
 
+    # ALREADY EXISTS CHECK
+    cur.execute("""SELECT * from game where title = %s;""", (gameName,))
+    lst = cur.fetchall()
+    if len(lst) != 0:
+        return "Game name is taken"
     cur.execute("""SELECT * from professor where email = %s;""", (email,))
-    if len(lst) == 0:
+    lst = cur.fetchall()
+    if len(lst) != 0:
         return "Professor Account already exists! Please login to your account."
 
+    # INSERT STATEMENTS
     cur.execute("""INSERT INTO professor (email, hashpswd) VALUES (%s, %s);""",(email,hashpassword))
-    conn.commit()
+    print("PROFESSOR ACCOUNT CREATED")
     cur.execute("""INSERT INTO game (title) VALUES (%s);""", (gameName,))
-    conn.commit()
-    cur.execute("""INSERT INTO professor_game (pid, gid) VALUES (SELECT pid from professor where email = %s, SELECT gid from game where title = %s);""", (email, gameName))
+    print("CREATED GAME ENTRY")
+    cur.execute("""INSERT INTO professor_game (pid, gid) VALUES ((SELECT pid from professor where email = %s), (SELECT gid from game where title = %s));""", (email, gameName))
+    print("PROFESSOR_GAME RELATION CREATED")
     conn.commit()
     return "Professor Account Created!"
