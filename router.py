@@ -48,7 +48,6 @@ def hashed_password(password):
 
 @app.route("/plogin/<email>/<password>")
 def loginProfessor(email, password):
-
     cur.execute("""SELECT hashpswd from professor where email = %s;""", (email,))
     lst = cur.fetchall()
     # Check password to hashed pass in table
@@ -65,7 +64,7 @@ def createProfessor(email, password, gameName):
     print("CREATED PASSWORD HASH")
 
     # ALREADY EXISTS CHECK
-    cur.execute(""""SELECT * from game where title = %s;""", (gameName,))
+    cur.execute("""SELECT * from game where title = %s;""", (gameName,))
     lst = cur.fetchall()
     if len(lst) != 0:
         return "Game name is taken"
