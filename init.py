@@ -12,6 +12,7 @@ cur = conn.cursor()
 
 ## WARNING: RUNNING THIS CODE WILL DELETE ALL EXISTING USER ACCOUNTS AND CONNECTED DATA!
 cur.execute("""DROP TABLE IF EXISTS students CASCADE;
+               DROP TABLE IF EXISTS students_game CASCADE;
                DROP TABLE IF EXISTS professor CASCADE;
                DROP TABLE IF EXISTS game CASCADE;
                DROP TABLE IF EXISTS character CASCADE;
@@ -22,7 +23,9 @@ print("TABLES DELETED")
 # Create new tables here
 # cur.execute("""CREATE TABLE students (uid serial unique, email varchar(200) unique, name varchar(200), charid varchar(200), gid varchar(100), characterid varchar(100));""")
 cur.execute("""CREATE TABLE students (sid serial unique, email varchar(200) unique, hashpswd varchar(200));""")
+cur.execute("""CREATE TABLE students_game (sid int, gid int, FOREIGN KEY (sid) references students(sid), FOREIGN KEY (gid) references game(gid));""")
 cur.execute("""CREATE TABLE professor (pid serial unique, email varchar(200) unique, hashpswd varchar(200));""")
+cur.execute("""CREATE TABLE professor_game (pid int, gid int, FOREIGN KEY (pid) references professor(pid), FOREIGN KEY (gid) references game(gid));""")
 cur.execute("""CREATE TABLE game (gid serial unique, title varchar(200) unique);""")
 cur.execute("""CREATE TABLE character (cid serial unique, name varchar(200), imageurl varchar(200), description text, objectives text, strategy text, topsecret text);""")
 # cur.execute("""CREATE TABLE professor_game (pid int, gid int, FOREIGN KEY (pid) references professor(pid), FOREIGN KEY (gid) references game(gid));""")

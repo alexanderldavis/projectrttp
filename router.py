@@ -22,7 +22,7 @@ def hashed_password(password):
 def index():
     return render_template('index.html')
 
-# DEPRECATED MOVED TO /slogin
+# DEPRECATED (MOVED TO /slogin)
 @app.route("/login")
 def createUser():
     email = request.args['email']
@@ -76,13 +76,6 @@ def loginStudent(email, password):
         return "Password is wrong. Shame on you."
     return "Student account does not exist yet"
 
-# @app.route("/sjoin/<email>/<gameName>")
-# def gameJoinStudent(email, gameName):
-#     cur.execute("""SELECT * from students where email """)
-#     lst = cur.fetchall()
-#     if len(lst) == 0:
-#         r
-
 @app.route("/pcreate/<email>/<password>")
 def newProfessor(email, password):
     cur.execute("""SELECT * from professor where email = %s;""", (email,))
@@ -111,6 +104,37 @@ def loginProfessor(email, password):
         return "Password is wrong. Shame on you."
     return "Some error -- Contact Webmaster"
 
+@app.route("/sjoin/<email>/<inviteCode>")
+def gameJoinStudent(email, inviteCode):
+    if "-" not in inviteCode:
+        return "InviteCode invalid"
+    characterID = inviteCode.split("-")[0]
+    gameName = inviteCode.split("-")[0]
+    cur.execute("""SELECT sid from students where email = %s;""")
+    lst = cur.fetchall()
+    if len(lst) == 0:
+        return "You must create a student account first!"
+    sid = lst[0][0]
+    cur.execute("""SELECT gid from game where title = %s;""", (gameName,))
+    lst = cur.fetchall()
+    if len(lst) == 0:
+        return "Game not yet created"
+    gid = lst[0][0]
+    cur.execute("""INSERT INTO students_game (sid, gid) VALUES (%s, %s);""", (sid, gid))
+    conn.commit()
+    print("STUDENT JOINED GAME")
+    return "Student " + sid + " joined game " + gid
+
+@app.route("/pjoin/<email>/<gameName>")
+def gameJoinProfessor(email, gameName):
+    cur.excute("""SELECT * from game where title = %s;""", (gameName,))
+    lst = cur.fetchall()
+    if len(lst) != 0:
+        return "A Game with this name already exists"
+    cur.execute("""INSERT INTO game (title) VALUES (%s);""",(gameName,))
+    cur.execute("""INSERT INTO professor_game (pid, gid) VALUES ((SELECT pid from professor where email = %s), (SELECT gid from game where title = %s));""", (email, gameName))
+    conn.commit()
+    return "Professor has created game"
 
 # @app.route("/pcreate/<email>/<password>/<gameName>")
 # def createProfessor(email, password, gameName):
