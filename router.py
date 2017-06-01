@@ -71,6 +71,6 @@ def createProfessor(email, password, gameName):
     conn.commit()
     cur.execute("""INSERT INTO game (title) VALUES (%s);""", (gameName,))
     conn.commit()
-    cur.execute("""INSERT INTO professor_game (pid, gid) VALUES (SELECT pid from professor where email = %s, SELECT gid from game where title = %s);""", (email, gameName))
+    cur.execute("""INSERT INTO professor_game (pid, gid) VALUES ((SELECT pid from professor where email = %s), (SELECT gid from game where title = %s));""", (email, gameName))
     conn.commit()
     return "Professor Account Created!"
