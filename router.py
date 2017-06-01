@@ -127,7 +127,7 @@ def gameJoinStudent(email, inviteCode):
 
 @app.route("/pjoin/<email>/<gameName>")
 def gameJoinProfessor(email, gameName):
-    cur.excute("""SELECT * from game where title = %s;""", (gameName,))
+    cur.execute("""SELECT * from game where title = %s;""", (gameName,))
     lst = cur.fetchall()
     if len(lst) != 0:
         return "A Game with this name already exists"
