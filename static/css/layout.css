@@ -69,7 +69,16 @@ footer {
 
 .btn {
 	border-radius: 100px;
-	transition: .2s;
+	transition: .3s;
+}
+
+.btn:hover {
+	width: auto;
+}
+
+.btn:hover :after{
+  content: 'Submit';
+	transition: .3s;
 }
 
 a:hover {
