@@ -58,10 +58,10 @@ def loginProfessor(email, password):
     return "Professor account not created. Please create an account first."
 
 
-@app.route("/pcreate")
-def createProfessor():
+@app.route("/pcreate/<email>/<password>/<gameName>")
+def createProfessor(email, password):
     email = request.args['email']
-    password = request.args['hash']
+    password = request.args['password']
     gameName = request.args['gameName']
     hashpassword = get_hashed_password(password)
 
