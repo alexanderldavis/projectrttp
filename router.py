@@ -64,7 +64,7 @@ def createProfessor(email, password, gameName):
 
     cur.execute("""SELECT * from professor where email = %s;""", (email,))
     lst = cur.fetchall()
-    if len(lst) == 0:
+    if len(lst) != 0:
         return "Professor Account already exists! Please login to your account."
 
     cur.execute("""INSERT INTO professor (email, hashpswd) VALUES (%s, %s);""",(email,hashpassword))
