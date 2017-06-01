@@ -63,6 +63,7 @@ def createProfessor(email, password, gameName):
     hashpassword = hashed_password(password)
 
     cur.execute("""SELECT * from professor where email = %s;""", (email,))
+    lst = cur.fetchall()
     if len(lst) == 0:
         return "Professor Account already exists! Please login to your account."
 
