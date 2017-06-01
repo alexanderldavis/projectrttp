@@ -54,7 +54,7 @@ def newStudent(email, password):
         print("""NOW ADDING NEW STUDENT""")
         hashpassword = hashed_password(password)
         print("CREATED PASSWORD HASH")
-        cur.execute("""INSERT INTO students (email, password) VALUES (%s, %s);""", (email, haspassword))
+        cur.execute("""INSERT INTO students (email, hashpswd) VALUES (%s, %s);""", (email, hashpassword))
         conn.commit()
         print("INSERTED NEW STUDENT")
         return "Student Inserted"
@@ -66,7 +66,7 @@ def loginStudent(email, password):
     lst = cur.fetchall()
     if len(lst) == 0:
         return "Please create a student account first"
-    cur.execute("""SELECT hashpassword from students where email = %s;""", (email,))
+    cur.execute("""SELECT hashpswd from students where email = %s;""", (email,))
     lst = cur.fetchall()
     if check_password_hash(lst[0][0], password):
         cur.execute("""SELECT * from student where email = %s;""", (email,))
@@ -127,6 +127,10 @@ def gameJoinStudent(email, inviteCode):
 
 @app.route("/pjoin/<email>/<gameName>")
 def gameJoinProfessor(email, gameName):
+    cur.execute("""SELECT * from professor where email = %s;""", (email,))
+    lst = cur.fetchall()
+    if len(lst) == 0:
+        return "Professor does not exist. Register first."
     cur.execute("""SELECT * from game where title = %s;""", (gameName,))
     lst = cur.fetchall()
     if len(lst) != 0:
