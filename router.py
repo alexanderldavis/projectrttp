@@ -60,7 +60,7 @@ def loginProfessor(email, password):
 
 @app.route("/pcreate/<email>/<password>/<gameName>")
 def createProfessor(email, password, gameName):
-    hashpassword = get_hashed_password(password)
+    hashpassword = hashed_password(password)
 
     cur.execute("""SELECT * from professor where email = %s;""", (email,))
     if len(lst) == 0:
