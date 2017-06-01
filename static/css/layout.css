@@ -30,6 +30,23 @@ h1 {
 	letter-spacing: .1em;
 }
 
+#usercircle {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	height: 80px;
+	width: 80px;
+	background-size: cover;
+	border-radius: 60px;
+	border: 8px solid rgb(34, 34, 34);
+	box-shadow: inset 0 0 15px rgba(0,0,0,.8);
+	transition: .2s;
+}
+
+#usercircle:hover {
+	box-shadow: inset 0 0 5px white;
+}
+
 .row.content {
 	height: 100%;
 }
@@ -68,17 +85,26 @@ footer {
 }
 
 .btn {
-	border-radius: 100px;
+	border-radius: 0px;
+	height: 3.5em;
 	transition: .3s;
+}
+
+.btn:before{
+	content: 'Submit';
 }
 
 .btn:hover {
-	width: auto;
+	border-radius: 50px;
+	width: 3.5em;
+	height: 3.5em;
 }
 
-.btn:hover :after{
-  content: 'Submit';
-	transition: .3s;
+.btn:hover:before{
+	font-family: 'Glyphicons Halflings';
+  src: url('../fonts/glyphicons-halflings-regular.eot');
+  src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+  content: "\e013";
 }
 
 a:hover {
@@ -96,4 +122,4 @@ a:hover {
 
   .row.content {
 		height: auto;
-	}
+}

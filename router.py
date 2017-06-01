@@ -20,7 +20,7 @@ def hashed_password(password):
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template('index.html', username="John")
 
 # DEPRECATED (MOVED TO /slogin)
 @app.route("/login")

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 
 {% block head %}
 <meta charset="utf-8">
@@ -33,7 +34,15 @@
         <li><a href="#"><span class="glyphicon glyphicon-comment"></span> Chat</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        {% if not username %}
         <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        {% else %}
+        <li><a href="#">{{ username }}</a></li>
+        <li>
+          <div id="usercircle" style="background-image:url(https://cdn-s3.si.com/s3fs-public/golf/2016/01/07/Screen%20Shot%202016-01-07%20at%2011.49.20%20AM.png)">
+          </div>
+        </li>
+        {% endif %}
       </ul>
     </div>
   </div>
@@ -70,3 +79,4 @@
 </footer>
 
 </body>
+</html>
