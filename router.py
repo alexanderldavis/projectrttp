@@ -69,7 +69,7 @@ def loginStudent(email, password):
     cur.execute("""SELECT hashpswd from students where email = %s;""", (email,))
     lst = cur.fetchall()
     if check_password_hash(lst[0][0], password):
-        cur.execute("""SELECT * from student where email = %s;""", (email,))
+        cur.execute("""SELECT * from students where email = %s;""", (email,))
         lst = cur.fetchall()
         return "Logged in "+str(lst)
     if not check_password_hash(lst[0][0], password):
