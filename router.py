@@ -101,13 +101,15 @@ def loginProfessor(email, password):
     cur.execute("""SELECT hashpswd from professor where email = %s;""", (email,))
     lst = cur.fetchall()
     # Check password to hashed pass in table
+    if len(lst) == 0:
+        return "Professor account not created. Please create an account first."
     if check_password_hash(lst[0][0], password):
         cur.execute("""SELECT * from professor where email = %s;""", (email,))
         lst = cur.fetchall()
         return "Logged in "+str(lst)
     if not check_password_hash(lst[0][0], password):
         return "Password is wrong. Shame on you."
-    return "Professor account not created. Please create an account first."
+    return "Some error -- Contact Webmaster"
 
 
 # @app.route("/pcreate/<email>/<password>/<gameName>")
