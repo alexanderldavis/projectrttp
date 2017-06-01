@@ -21,7 +21,7 @@ print("TABLES DELETED")
 
 # Create new tables here
 # cur.execute("""CREATE TABLE students (uid serial unique, email varchar(200) unique, name varchar(200), charid varchar(200), gid varchar(100), characterid varchar(100));""")
-cur.execute("""CREATE TABLE students (sid serial unique, email varchar(200) unique, hashpass varchar(200));""")
+cur.execute("""CREATE TABLE students (sid serial unique, email varchar(200) unique, hashpswd varchar(200));""")
 cur.execute("""CREATE TABLE professor (pid serial unique, email varchar(200) unique, hashpswd varchar(200));""")
 cur.execute("""CREATE TABLE game (gid serial unique, title varchar(200) unique);""")
 cur.execute("""CREATE TABLE character (cid serial unique, name varchar(200), imageurl varchar(200), description text, objectives text, strategy text, topsecret text);""")
@@ -34,6 +34,6 @@ print("TABLES CREATED")
 # cur.execite("""INSERT INTO character (name, imageurl, description, objectives, strategy, topsecret) VALUES ('Test', 'TestUrl', 'testdescription', 'teststrategy', 'testtest', 'testtopsecret');""")
 # cur.execute("""INSERT INTO character """)
 
-conn.commit()
+
 print("POPULATED TABLE CHARACTER")
 # str = ([introstr],[objectivesstr],[responsibilitiesstr],[strategystr],[topsecretstr])
