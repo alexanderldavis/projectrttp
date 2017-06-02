@@ -32,6 +32,10 @@
         <li><a href="#"><span class="glyphicon glyphicon-book"></span> Overview</a></li>
         <li><a href="#"><span class="glyphicon glyphicon-knight"></span> Characters</a></li>
         <li><a href="#"><span class="glyphicon glyphicon-comment"></span> Chat</a></li>
+        {% if not username %}
+        {% else %}
+        <li><a href="#"><span class="glyphicon glyphicons-log-out"></span> Logout</a></li>
+        {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if not username %}
