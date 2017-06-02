@@ -27,7 +27,7 @@ cur.execute("""CREATE TABLE professor (pid serial unique, email varchar(200) uni
 cur.execute("""CREATE TABLE game (gid serial unique, title varchar(200) unique);""")
 cur.execute("""CREATE TABLE students_game (sid int, gid int, FOREIGN KEY (sid) references students(sid), FOREIGN KEY (gid) references game(gid));""")
 cur.execute("""CREATE TABLE professor_game (pid int, gid int, FOREIGN KEY (pid) references professor(pid), FOREIGN KEY (gid) references game(gid));""")
-cur.execute("""CREATE TABLE character (cid serial unique, name varchar(200), imageurl varchar(200), description text, objectives text, strategy text, topsecret text);""")
+cur.execute("""CREATE TABLE character (cid serial unique, name varchar(200), descriptionURL text, imageURL text);""")
 # cur.execute("""CREATE TABLE professor_game (pid int, gid int, FOREIGN KEY (pid) references professor(pid), FOREIGN KEY (gid) references game(gid));""")
 # cur.execute("""CREATE TABLE game_character (gid int, cid int, FOREIGN KEY (gid) references game(gid), FOREIGN KEY (cid) references character(cid));""")
 conn.commit()
@@ -37,6 +37,7 @@ print("TABLES CREATED")
 # cur.execite("""INSERT INTO character (name, imageurl, description, objectives, strategy, topsecret) VALUES ('Test', 'TestUrl', 'testdescription', 'teststrategy', 'testtest', 'testtopsecret');""")
 # cur.execute("""INSERT INTO character """)
 
+cur.execute("""INSERT INTO CHARACTER (name, descriptionURL, imageURL) VALUES ('Jacques Chirac', '<iframe src="https://docs.google.com/document/d/1WOYKuY6ZFRR6s_3Wt2aurdLk_mO7RWhX1KxJ83kbaHI/pub?embedded=true"></iframe>', 'https://upload.wikimedia.org/wikipedia/commons/7/73/Jacques_Chirac_2.jpg')""")
 
 print("POPULATED TABLE CHARACTER")
 # str = ([introstr],[objectivesstr],[responsibilitiesstr],[strategystr],[topsecretstr])
