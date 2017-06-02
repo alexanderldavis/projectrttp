@@ -41,7 +41,7 @@ def newStudent(email, password):
     return "Student Exists Already"
 
 @app.route("/slogin")
-def loginStudent(email, password):
+def loginStudent():
     email = request.args['email']
     password = request.args['hp']
     cur.execute("""SELECT * from students where email = %s;""", (email,))
