@@ -23,7 +23,7 @@ def index():
     return render_template('index.html')
 
 @app.route("/login")
-def createUser():
+def mainLogin():
     return render_template('login.html')
 
 @app.route("/screate/<email>/<password>")
@@ -40,10 +40,10 @@ def newStudent(email, password):
         return "Student Inserted"
     return "Student Exists Already"
 
-@app.route("/slogin/<email>/<password>")
+@app.route("/slogin")
 def loginStudent(email, password):
     email = request.args['email']
-    charid = request.args['password']
+    charid = request.args['hp']
     cur.execute("""SELECT * from students where email = %s;""", (email,))
     lst = cur.fetchall()
     if len(lst) == 0:
