@@ -37,7 +37,7 @@ print("TABLES CREATED")
 # cur.execite("""INSERT INTO character (name, imageurl, description, objectives, strategy, topsecret) VALUES ('Test', 'TestUrl', 'testdescription', 'teststrategy', 'testtest', 'testtopsecret');""")
 # cur.execute("""INSERT INTO character """)
 
-cur.execute("""INSERT INTO CHARACTER (name, descriptionURL, imageURL) VALUES ('Jacques Chirac', '<iframe src="https://docs.google.com/document/d/1WOYKuY6ZFRR6s_3Wt2aurdLk_mO7RWhX1KxJ83kbaHI/pub?embedded=true"></iframe>', 'https://upload.wikimedia.org/wikipedia/commons/7/73/Jacques_Chirac_2.jpg')""")
+cur.execute("""INSERT INTO character (name, descriptionURL, imageURL) VALUES ('Jacques Chirac', '<iframe src="https://docs.google.com/document/d/1WOYKuY6ZFRR6s_3Wt2aurdLk_mO7RWhX1KxJ83kbaHI/pub?embedded=true"></iframe>', 'https://upload.wikimedia.org/wikipedia/commons/7/73/Jacques_Chirac_2.jpg');""")
 
 print("POPULATED TABLE CHARACTER")
 # str = ([introstr],[objectivesstr],[responsibilitiesstr],[strategystr],[topsecretstr])
