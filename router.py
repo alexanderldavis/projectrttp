@@ -43,7 +43,7 @@ def newStudent(email, password):
 @app.route("/slogin")
 def loginStudent(email, password):
     email = request.args['email']
-    charid = request.args['hp']
+    password = request.args['hp']
     cur.execute("""SELECT * from students where email = %s;""", (email,))
     lst = cur.fetchall()
     if len(lst) == 0:
