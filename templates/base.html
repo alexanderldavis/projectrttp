@@ -27,6 +27,8 @@
       <a class="navbar-brand" href="http://www.rttportal.com">RTTPortal</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
+      {% if curid == 0 %}
+      {% else %}
       <ul class="nav navbar-nav">
         {% if curid == 1 %}
         <li class="active"><a href="#"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
@@ -41,6 +43,7 @@
         <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
         {% endif %}
       </ul>
+      {% endif %}
       <ul class="nav navbar-nav navbar-right">
         {% if not username %}
         <li><a href="http://www.rttportal.com/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
