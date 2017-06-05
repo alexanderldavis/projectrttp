@@ -24,7 +24,11 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+      {% if sid == a %}
       <a class="navbar-brand" href="http://www.rttportal.com">RTTPortal</a>
+      {% else %}
+      <a class="navbar-brand" href="http://www.rttportal.com/dashboard/{{sid}}">RTTPortal</a>
+      {% endif %}
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       {% if curid == 0 %}
