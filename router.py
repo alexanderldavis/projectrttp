@@ -170,6 +170,10 @@ def upload():
         # will basicaly show on the browser the uploaded file
         return redirect(url_for('uploaded_file', filename=filename))
 
+# This route is expecting a parameter containing the name
+# of a file. Then it will locate that file on the upload
+# directory and show it on the browser, so if the user uploads
+# an image, that image is going to be show after the upload
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
