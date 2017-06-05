@@ -20,11 +20,11 @@ def hashed_password(password):
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template('index.html', curid = 0)
 
 @app.route("/login")
 def mainLogin():
-    return render_template('login.html')
+    return render_template('login.html', curid = 0)
 
 @app.route("/screate/<email>/<password>")
 def newStudent(email, password):
@@ -52,9 +52,11 @@ def loginStudent():
     cur.execute("""SELECT hashpswd from students where email = %s;""", (email,))
     lst = cur.fetchall()
     if check_password_hash(lst[0][0], password):
-        cur.execute("""SELECT * from students where email = %s;""", (email,))
+        cur.execute("""SELECT sid from students where email = %s;""", (email,))
         lst = cur.fetchall()
-        return render_template('index.html', username="John")
+        cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (lst[0][0],))
+        charlst = cur.fetchall()
+        return render_template('dashboard.html', sid = lst[0][0], curid = 1, username="John", description = charlst[0][2])
     if not check_password_hash(lst[0][0], password):
         return "Password is wrong. Shame on you."
     return "Student account does not exist yet"
@@ -122,6 +124,13 @@ def gameJoinProfessor(email, gameName):
     cur.execute("""INSERT INTO professor_game (pid, gid) VALUES ((SELECT pid from professor where email = %s), (SELECT gid from game where title = %s));""", (email, gameName))
     conn.commit()
     return "Professor has created game"
+
+@app.route("/dashboard/<sid>")
+def getCustomDashboard(sid):
+    cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (sid,))
+    charlst = cur.fetchall()
+    return render_template('dashboard.html', sid = sid, curid = 1, username="John", description = charlst[0][2])
+
 
 # @app.route("/pcreate/<email>/<password>/<gameName>")
 # def createProfessor(email, password, gameName):

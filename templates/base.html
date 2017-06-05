@@ -26,18 +26,30 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="/">RTTPortal</a>
+      {% if sid == a %}
+      <a class="navbar-brand" href="http://www.rttportal.com">RTTPortal</a>
+      {% else %}
+      <a class="navbar-brand" href="http://www.rttportal.com/dashboard/{{sid}}">RTTPortal</a>
+      {% endif %}
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
+      {% if curid == 0 %}
+      {% else %}
       <ul class="nav navbar-nav">
+        {% if curid == 1 %}
         <li class="active"><a href="#"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-book"></span> Overview</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-knight"></span> Characters</a></li>
+        {% else %}
+        <li><a href="#"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+        {% endif %}
+        <li><a href="#"><span class="glyphicon glyphicon-book"></span> Newspaper</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-knight"></span> Character Profile</a></li>
         <li><a href="#"><span class="glyphicon glyphicon-comment"></span> Chat</a></li>
         {% if not username %}
         {% else %}
-        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        <li><a href="http://www.rttportal.com"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
         {% endif %}
       </ul>
+      {% endif %}
       <ul class="nav navbar-nav navbar-right">
         {% if not username %}
         <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>

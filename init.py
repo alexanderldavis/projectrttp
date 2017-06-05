@@ -17,7 +17,8 @@ cur.execute("""DROP TABLE IF EXISTS students CASCADE;
                DROP TABLE IF EXISTS game CASCADE;
                DROP TABLE IF EXISTS character CASCADE;
                DROP TABLE IF EXISTS professor_game CASCADE;
-               DROP TABLE IF EXISTS game_character CASCADE;""")
+               DROP TABLE IF EXISTS game_character CASCADE;
+               DROP TABLE IF EXISTS student_character CASCADE;""")
 print("TABLES DELETED")
 
 # Create new tables here
@@ -28,6 +29,7 @@ cur.execute("""CREATE TABLE game (gid serial unique, title varchar(200) unique);
 cur.execute("""CREATE TABLE students_game (sid int, gid int, FOREIGN KEY (sid) references students(sid), FOREIGN KEY (gid) references game(gid));""")
 cur.execute("""CREATE TABLE professor_game (pid int, gid int, FOREIGN KEY (pid) references professor(pid), FOREIGN KEY (gid) references game(gid));""")
 cur.execute("""CREATE TABLE character (cid serial unique, name varchar(200), descriptionURL text, imageURL text);""")
+cur.execute("""CREATE TABLE student_character (sid int, cid int, FOREIGN KEY (sid) references students(sid), FOREIGN KEY (cid) references character(cid));""")
 # cur.execute("""CREATE TABLE professor_game (pid int, gid int, FOREIGN KEY (pid) references professor(pid), FOREIGN KEY (gid) references game(gid));""")
 # cur.execute("""CREATE TABLE game_character (gid int, cid int, FOREIGN KEY (gid) references game(gid), FOREIGN KEY (cid) references character(cid));""")
 conn.commit()
