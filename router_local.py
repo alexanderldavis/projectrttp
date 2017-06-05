@@ -1,5 +1,5 @@
 import psycopg2
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 from flask_bootstrap import Bootstrap
 import os
 import urllib.parse
@@ -18,11 +18,11 @@ def hashed_password(password):
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template('index.html', curid = 0)
 
 @app.route("/login")
 def mainLogin():
-    return render_template('login.html')
+    return render_template('login.html', curid = 0)
 
 @app.route("/screate/<email>/<password>")
 def newStudent(email, password):
@@ -108,6 +108,13 @@ def gameJoinProfessor(email, gameName):
     cur.execute("""INSERT INTO professor_game (pid, gid) VALUES ((SELECT pid from professor where email = %s), (SELECT gid from game where title = %s));""", (email, gameName))
     conn.commit()
     return "Professor has created game"
+
+@app.route("/dashboard/<sid>")
+def getCustomDashboard(sid):
+    cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (sid,))
+    charlst = cur.fetchall()
+    return render_template('dashboard.html', sid = sid, curid = 1, username="John", description = charlst[0][2])
+
 
 # @app.route("/pcreate/<email>/<password>/<gameName>")
 # def createProfessor(email, password, gameName):
