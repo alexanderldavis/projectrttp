@@ -161,7 +161,7 @@ def uploads():
 def upload():
     # Get the name of the uploaded file
     file = request.files['file']
-    print("IN /upload, "+file)
+    print("IN /upload, ")
     # Check if the file is one of the allowed types/extensions
     if file and allowed_file(file.filename):
         # Make the filename safe, remove unsupported chars
