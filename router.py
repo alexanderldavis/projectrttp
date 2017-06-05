@@ -54,7 +54,7 @@ def loginStudent():
     if check_password_hash(lst[0][0], password):
         cur.execute("""SELECT sid from students where email = %s;""", (email,))
         lst = cur.fetchall()
-        cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (sid,))
+        cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (lst[0][0],))
         charlst = cur.fetchall()
         return render_template('dashboard.html', sid = lst[0][0], curid = 1, username="John", description = charlst[0][2])
     if not check_password_hash(lst[0][0], password):
