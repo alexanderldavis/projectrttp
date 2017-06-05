@@ -54,7 +54,7 @@ def loginStudent():
     if check_password_hash(lst[0][0], password):
         cur.execute("""SELECT sid from students where email = %s;""", (email,))
         lst = cur.fetchall()
-        return render_template('index.html', sid = lst[0][0], curid = 1, username="John")
+        return render_template('dashboard.html', sid = lst[0][0], curid = 1, username="John")
     if not check_password_hash(lst[0][0], password):
         return "Password is wrong. Shame on you."
     return "Student account does not exist yet"
@@ -123,9 +123,11 @@ def gameJoinProfessor(email, gameName):
     conn.commit()
     return "Professor has created game"
 
-@app.route("/dashboard/sid")
+@app.route("/dashboard/<sid>")
 def getCustomDashboard(sid):
-    return "Signed into "+str(sid)
+    cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (sid,))
+    lst = cur.fetchall()
+    return render_template('dashboard.html', sid = sid, curid = 1, username="John", description = lst[0][2])
 
 # @app.route("/pcreate/<email>/<password>/<gameName>")
 # def createProfessor(email, password, gameName):
