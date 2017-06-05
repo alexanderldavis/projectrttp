@@ -161,6 +161,7 @@ def uploads():
 def upload():
     # Get the name of the uploaded file
     file = request.files['file']
+    print("IN /upload, "+file)
     # Check if the file is one of the allowed types/extensions
     if file and allowed_file(file.filename):
         # Make the filename safe, remove unsupported chars
@@ -170,6 +171,7 @@ def upload():
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         # Redirect the user to the uploaded_file route, which
         # will basicaly show on the browser the uploaded file
+        print("about to return")
         return redirect(url_for('uploaded_file', filename=filename))
 
 # This route is expecting a parameter containing the name
