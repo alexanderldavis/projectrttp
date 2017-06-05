@@ -28,7 +28,11 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
+        {% if curid == 1 %}
         <li class="active"><a href="#"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+        {% else %}
+        <li><a href="#"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+        {% endif %}
         <li><a href="#"><span class="glyphicon glyphicon-book"></span> Overview</a></li>
         <li><a href="#"><span class="glyphicon glyphicon-knight"></span> Characters</a></li>
         <li><a href="#"><span class="glyphicon glyphicon-comment"></span> Chat</a></li>

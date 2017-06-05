@@ -20,11 +20,11 @@ def hashed_password(password):
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template('index.html', curid = 0)
 
 @app.route("/login")
 def mainLogin():
-    return render_template('login.html')
+    return render_template('login.html', curid = 0)
 
 @app.route("/screate/<email>/<password>")
 def newStudent(email, password):
@@ -54,7 +54,7 @@ def loginStudent():
     if check_password_hash(lst[0][0], password):
         cur.execute("""SELECT * from students where email = %s;""", (email,))
         lst = cur.fetchall()
-        return render_template('index.html', username="John")
+        return render_template('index.html', curid = 1, username="John")
     if not check_password_hash(lst[0][0], password):
         return "Password is wrong. Shame on you."
     return "Student account does not exist yet"
