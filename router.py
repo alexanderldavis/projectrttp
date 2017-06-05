@@ -14,7 +14,9 @@ conn = psycopg2.connect(database=url.path[1:],user=url.username,password=url.pas
 cur = conn.cursor()
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = './uploads/'
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static/uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['ALLOWED_EXTENSIONS'] = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 # Function used to generate password hash with the werkzeug.security package
