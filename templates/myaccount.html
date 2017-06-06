@@ -1,19 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
-          rel="stylesheet">
-  </head>
-  <body>
-    <input type="file" id="file_input"/>
-    <p id="status">Please select a file</p>
+{% extends "base.html" %}
+
+{% block title %}RTTPortal{% endblock %}
+
+{% block content %}
+    <!-- <input type="file" id="file_input"/>
+    <p id="status">Please select a file</p> -->
+
+    <div class="box">
+					<input type="file" name="file-1[]" id="file_input" class="inputfile inputfile-1" data-multiple-caption="{count} files selected" multiple />
+					<label for="file-1"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg> <span>Choose a file&hellip;</span></label>
+		</div>
 
     <form method="POST" action="/submit_form/">
       <input type="hidden" id="file-url" name="file-url" value="">
-      <input type="submit" value="Update profile">
+      <input type="submit" value="Submit!">
     </form>
-  </body>
-</html>
 
 <script type="text/javascript">
 (function() {
@@ -28,21 +29,25 @@ document.getElementById("file_input").onchange = function(){
 })();
 
 function getSignedRequest(file){
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
-  alert("/sign_s3?file_name="+file.name+"&file_type="+file.type);
-  xhr.onreadystatechange = function(){
-    if(xhr.readyState === 4){
-      if(xhr.status === 200){
-        var response = JSON.parse(xhr.responseText);
-        uploadFile(file, response.data, response.url);
+  if (file.type == "/application/pdf") {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
+    xhr.onreadystatechange = function(){
+      if(xhr.readyState === 4){
+        if(xhr.status === 200){
+          var response = JSON.parse(xhr.responseText);
+          uploadFile(file, response.data, response.url);
+        }
+        else{
+          alert("Could not get signed URL.");
+        }
       }
-      else{
-        alert("Could not get signed URL.");
-      }
-    }
-  };
-  xhr.send();
+    };
+    xhr.send();
+  } else {
+    alert("Sorry! File must be of type PDF.");
+    window.location.href = "http://www.rttportal.com/documents/{{sid}}";
+  }
 }
 
 function uploadFile(file, s3Data, url){
@@ -79,3 +84,5 @@ function uploadFile(file, s3Data, url){
     ga('create', 'UA-100590857-1', 'auto');
     ga('send', 'pageview');
 </script>
+
+{% endblock %}
