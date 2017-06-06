@@ -33,7 +33,9 @@ cur.execute("""CREATE TABLE student_character (sid int, cid int, FOREIGN KEY (si
 cur.execute("""CREATE TABLE game_character (gid int, cid int, FOREIGN KEY (gid) references game(gid), FOREIGN KEY (cid) references character (cid));""")
 
 # NEW ROLLOUT v2
-cur.execute("""CREATE TABLE newspaper (nid serial unique, url text, uploaddate date, )""")
+# cur.execute("""CREATE TABLE newspaper (nid serial unique, url text, uploaddate date);""")
+
+cur.execute("""CREATE TABLE documents (did serial unique, url text, uploaddate date, )""")
 # cur.execute("""CREATE TABLE professor_game (pid int, gid int, FOREIGN KEY (pid) references professor(pid), FOREIGN KEY (gid) references game(gid));""")
 # cur.execute("""CREATE TABLE game_character (gid int, cid int, FOREIGN KEY (gid) references game(gid), FOREIGN KEY (cid) references character(cid));""")
 conn.commit()

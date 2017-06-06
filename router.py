@@ -196,4 +196,5 @@ def sign_s3():
 def submit_form():
     avatar_url = request.form["file-url"]
     print(avatar_url)
+    
     return str(avatar_url)
