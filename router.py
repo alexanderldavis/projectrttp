@@ -176,30 +176,25 @@ def sign_s3():
   file_name = id_generator()
   file_name+=".pdf"
   file_type = request.args.get('file_type')
-  if file_type != "application/pdf":
-      print("stop!")
-      return "Must be pdf type"
-  else:
-      print(file_name)
+  print(file_name)
+  print(file_type)
+  s3 = boto3.client('s3')
 
-      print(file_type)
-      s3 = boto3.client('s3')
+  presigned_post = s3.generate_presigned_post(
+      Bucket = S3_BUCKET,
+      Key = file_name,
+      Fields = {"acl": "public-read", "Content-Type": file_type},
+      Conditions = [
+             {"acl": "public-read"},
+             {"Content-Type": file_type}
+       ],
+       ExpiresIn = 3600
+       )
 
-      presigned_post = s3.generate_presigned_post(
-        Bucket = S3_BUCKET,
-        Key = file_name,
-        Fields = {"acl": "public-read", "Content-Type": file_type},
-        Conditions = [
-          {"acl": "public-read"},
-          {"Content-Type": file_type}
-        ],
-        ExpiresIn = 3600
-      )
-
-      return json.dumps({
-        'data': presigned_post,
-        'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)
-      })
+   return json.dumps({
+    'data': presigned_post,
+    'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)
+   })
 
 
 @app.route("/submit_form/", methods = ["POST"])

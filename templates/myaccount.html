@@ -28,7 +28,7 @@ document.getElementById("file_input").onchange = function(){
 })();
 
 function getSignedRequest(file){
-  if (file.type === "/application/pdf") {
+  if (file.type == "/application/pdf") {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
     xhr.onreadystatechange = function(){
