@@ -186,7 +186,7 @@ def sign_s3():
 
 @app.route("/submit_form/", methods = ["POST"])
 def submit_form():
-    
+    avatar_url = request.form["avatar-url"]
     print(avatar_url)
     return "success!"
 
