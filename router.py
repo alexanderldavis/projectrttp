@@ -145,6 +145,10 @@ def gameJoinProfessor(email, gameName):
 
 @app.route("/dashboard/<sid>")
 def getCustomDashboard(sid):
+    cur.execute("""SELECT * FROM student where sid = %s;""", (sid))
+    lst = cur.fetchall()
+    if len(lst) == 0:
+        return "Create account or log in"
     cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (sid,))
     charlst = cur.fetchall()
     # return render_template('dashboard.html', sid = sid, curid = 1, username="John", description = charlst[0][2])
@@ -196,5 +200,5 @@ def sign_s3():
 def submit_form():
     avatar_url = request.form["file-url"]
     print(avatar_url)
-    
+
     return str(avatar_url)
