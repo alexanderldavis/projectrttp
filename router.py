@@ -62,13 +62,10 @@ def loginStudent():
         cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (lst[0][0],))
         charlst = cur.fetchall()
         #return render_template('dashboard.html', sid = lst[0][0], curid = 1, username="John", description = charlst[0][2])
-        return redirect(url_for('signed_in', sid = lst[0][0], curid = 1, username="John", description = charlst[0][2]))
+        return redirect("http://www.dashboard.html", sid = lst[0][0], curid = 1, username="John", description = charlst[0][2])
     if not check_password_hash(lst[0][0], password):
         return "Password is wrong. Shame on you."
     return "Student account does not exist yet"
-
-def signed_in(sid, curid, username, description):
-    return render_template('dashboard.html', sid = sid, curid = curid, username=username, description = description)
 
 @app.route("/pcreate/<email>/<password>")
 def newProfessor(email, password):
