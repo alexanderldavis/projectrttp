@@ -7,12 +7,8 @@
   <body>
     <input type="file" id="file_input"/>
     <p id="status">Please select a file</p>
-    <img id="preview" src="/static/default.png" />
 
     <form method="POST" action="/submit_form/">
-      <input type="hidden" id="avatar-url" name="avatar-url" value="/static/default.png">
-      <input type="text" name="username" placeholder="Username">
-      <input type="text" name="full-name" placeholder="Full name">
       <input type="submit" value="Update profile">
     </form>
   </body>
@@ -58,15 +54,6 @@ function uploadFile(file, s3Data, url){
   postData.append('file', file);
 
   xhr.onreadystatechange = function() {
-    if(xhr.readyState === 4){
-      if(xhr.status === 200 || xhr.status === 204){
-        document.getElementById("preview").src = url;
-        document.getElementById("avatar-url").value = url;
-      }
-      else{
-        alert("Could not upload file.");
-      }
-   }
   };
   xhr.send(postData);
 }
