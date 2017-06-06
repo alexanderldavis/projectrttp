@@ -145,7 +145,8 @@ def gameJoinProfessor(email, gameName):
 def getCustomDashboard(sid):
     cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (sid,))
     charlst = cur.fetchall()
-    return render_template('dashboard.html', sid = sid, curid = 1, username="John", description = charlst[0][2])
+    # return render_template('dashboard.html', sid = sid, curid = 1, username="John", description = charlst[0][2])
+    return render_template('dashboard.html', sid = sid, curid = 1, username="John")
 
 @app.route("/newspaper/<sid>")
 def getCustomNewspaper(sid):
