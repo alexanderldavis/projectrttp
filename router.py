@@ -178,7 +178,7 @@ def sign_s3():
   print(file_name)
   print(file_type)
   s3 = boto3.client('s3')
-  if file_type == "/application/pdf":
+  if file_type == "application/pdf":
       presigned_post = s3.generate_presigned_post(
           Bucket = S3_BUCKET,
           Key = file_name,
