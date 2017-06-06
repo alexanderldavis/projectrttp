@@ -53,7 +53,7 @@ def newStudent():
         sidlst = cur.fetchall()
         sid = sidlst[0][0]
         return redirect("http://www.rttportal.com/dashboard/"+str(sid))
-    return redirect("http://www.rttportal.com/dashboard/"+str(lst[0][0]))
+    return redirect("http://www.rttportal.com/slogin?email="+email+"&hp="+password)
 
 @app.route("/slogin")
 def loginStudent():
