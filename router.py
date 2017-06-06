@@ -3,6 +3,8 @@ from flask import Flask, render_template, request, redirect, url_for, send_from_
 import os
 import urllib.parse
 import json
+import string
+import random
 import boto3
 import requests as req
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -19,6 +21,9 @@ app = Flask(__name__)
 # Function used to generate password hash with the werkzeug.security package
 def hashed_password(password):
         return generate_password_hash(password)
+
+def id_generator(size=20, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 @app.route("/")
 def index():
@@ -162,58 +167,39 @@ def account():
 def sign_s3():
   S3_BUCKET = os.environ.get('S3_BUCKET')
 
-  file_name = request.args.get('file_name')
+  file_name1 = request.args.get('file_name')
+
+  file_name = id_generator()
+  file_name+=".pdf"
   file_type = request.args.get('file_type')
+  if file_type != "application/pdf":
+      print("stop!")
+      return "Must be pdf type"
+  else:
+      print(file_name)
 
-  s3 = boto3.client('s3')
+      print(file_type)
+      s3 = boto3.client('s3')
 
-  presigned_post = s3.generate_presigned_post(
-    Bucket = S3_BUCKET,
-    Key = file_name,
-    Fields = {"acl": "public-read", "Content-Type": file_type},
-    Conditions = [
-      {"acl": "public-read"},
-      {"Content-Type": file_type}
-    ],
-    ExpiresIn = 3600
-  )
+      presigned_post = s3.generate_presigned_post(
+        Bucket = S3_BUCKET,
+        Key = file_name,
+        Fields = {"acl": "public-read", "Content-Type": file_type},
+        Conditions = [
+          {"acl": "public-read"},
+          {"Content-Type": file_type}
+        ],
+        ExpiresIn = 3600
+      )
 
-  return json.dumps({
-    'data': presigned_post,
-    'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)
-  })
+      return json.dumps({
+        'data': presigned_post,
+        'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)
+      })
+
 
 @app.route("/submit_form/", methods = ["POST"])
 def submit_form():
-  username = request.form["username"]
-  full_name = request.form["full-name"]
-  avatar_url = request.form["avatar-url"]
-
-  # update_account(username, full_name, avatar_url) This is where we update the user account
-
-  return redirect(url_for('profile'))
-
-# @app.route("/pcreate/<email>/<password>/<gameName>")
-# def createProfessor(email, password, gameName):
-#     hashpassword = hashed_password(password)
-#     print("CREATED PASSWORD HASH")
-#
-#     # ALREADY EXISTS CHECK
-#     cur.execute("""SELECT * from game where title = %s;""", (gameName,))
-#     lst = cur.fetchall()
-#     if len(lst) != 0:
-#         return "Game name is taken"
-#     cur.execute("""SELECT * from professor where email = %s;""", (email,))
-#     lst = cur.fetchall()
-#     if len(lst) != 0:
-#         return "Professor Account already exists! Please login to your account."
-#
-#     # INSERT STATEMENTS
-#     cur.execute("""INSERT INTO professor (email, hashpswd) VALUES (%s, %s);""",(email,hashpassword))
-#     print("PROFESSOR ACCOUNT CREATED")
-#     cur.execute("""INSERT INTO game (title) VALUES (%s);""", (gameName,))
-#     print("CREATED GAME ENTRY")
-#     cur.execute("""INSERT INTO professor_game (pid, gid) VALUES ((SELECT pid from professor where email = %s), (SELECT gid from game where title = %s));""", (email, gameName))
-#     print("PROFESSOR_GAME RELATION CREATED")
-#     conn.commit()
-#     return "Professor Account Created!"
+    avatar_url = request.form["file-url"]
+    print(avatar_url)
+    return str(avatar_url)
