@@ -62,7 +62,7 @@ def loginStudent():
         cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (lst[0][0],))
         charlst = cur.fetchall()
         #return render_template('dashboard.html', sid = lst[0][0], curid = 1, username="John", description = charlst[0][2])
-        return redirect("http://www.dashboard.html", sid = lst[0][0], curid = 1, username="John", description = charlst[0][2])
+        return redirect("http://www.rttportal.com/dashboard/"+lst[0][0])
     if not check_password_hash(lst[0][0], password):
         return "Password is wrong. Shame on you."
     return "Student account does not exist yet"
