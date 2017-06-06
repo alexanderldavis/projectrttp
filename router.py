@@ -185,13 +185,13 @@ def sign_s3():
 
 @app.route("/submit_form/", methods = ["POST"])
 def submit_form():
-  username = request.form["username"]
-  full_name = request.form["full-name"]
-  avatar_url = request.form["avatar-url"]
+  # username = request.form["username"]
+  # full_name = request.form["full-name"]
+  # avatar_url = request.form["avatar-url"]
 
   # update_account(username, full_name, avatar_url) This is where we update the user account
 
-  return redirect(url_for('profile'))
+  return "success!"
 
 # @app.route("/pcreate/<email>/<password>/<gameName>")
 # def createProfessor(email, password, gameName):
