@@ -28,8 +28,8 @@ document.getElementById("file_input").onchange = function(){
 })();
 
 function getSignedRequest(file){
-  var xhr = new XMLHttpRequest();
   if (file.type === "/application/pdf") {
+    var xhr = new XMLHttpRequest();
     xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
     xhr.onreadystatechange = function(){
       if(xhr.readyState === 4){
@@ -44,7 +44,7 @@ function getSignedRequest(file){
     };
     xhr.send();
   } else {
-    alert("Sorry! File must be of type PDF.")
+    alert("Sorry! File must be of type PDF.");
   }
 }
 
