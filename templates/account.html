@@ -58,7 +58,7 @@ function uploadFile(file, s3Data, url){
   xhr.onreadystatechange = function() {
     if(xhr.readyState === 4){
       if(xhr.status === 200 || xhr.status === 204){
-        document.getElementById("avatar-url").value = url;
+        document.getElementById("file-url").value = url;
       }
       else{
         alert("Could not upload file.");

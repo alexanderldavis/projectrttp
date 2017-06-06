@@ -186,31 +186,6 @@ def sign_s3():
 
 @app.route("/submit_form/", methods = ["POST"])
 def submit_form():
-    avatar_url = request.form["avatar-url"]
+    avatar_url = request.form["file-url"]
     print(avatar_url)
-    return "success!"
-
-# @app.route("/pcreate/<email>/<password>/<gameName>")
-# def createProfessor(email, password, gameName):
-#     hashpassword = hashed_password(password)
-#     print("CREATED PASSWORD HASH")
-#
-#     # ALREADY EXISTS CHECK
-#     cur.execute("""SELECT * from game where title = %s;""", (gameName,))
-#     lst = cur.fetchall()
-#     if len(lst) != 0:
-#         return "Game name is taken"
-#     cur.execute("""SELECT * from professor where email = %s;""", (email,))
-#     lst = cur.fetchall()
-#     if len(lst) != 0:
-#         return "Professor Account already exists! Please login to your account."
-#
-#     # INSERT STATEMENTS
-#     cur.execute("""INSERT INTO professor (email, hashpswd) VALUES (%s, %s);""",(email,hashpassword))
-#     print("PROFESSOR ACCOUNT CREATED")
-#     cur.execute("""INSERT INTO game (title) VALUES (%s);""", (gameName,))
-#     print("CREATED GAME ENTRY")
-#     cur.execute("""INSERT INTO professor_game (pid, gid) VALUES ((SELECT pid from professor where email = %s), (SELECT gid from game where title = %s));""", (email, gameName))
-#     print("PROFESSOR_GAME RELATION CREATED")
-#     conn.commit()
-#     return "Professor Account Created!"
+    return str(avatar_url)
