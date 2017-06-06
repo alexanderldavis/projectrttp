@@ -165,6 +165,7 @@ def sign_s3():
   file_name = request.args.get('file_name')
   file_type = request.args.get('file_type')
 
+  print(file_type)
   s3 = boto3.client('s3')
 
   presigned_post = s3.generate_presigned_post(
@@ -185,11 +186,6 @@ def sign_s3():
 
 @app.route("/submit_form/", methods = ["POST"])
 def submit_form():
-  # username = request.form["username"]
-  # full_name = request.form["full-name"]
-  # avatar_url = request.form["avatar-url"]
-
-  # update_account(username, full_name, avatar_url) This is where we update the user account
 
   return "success!"
 
