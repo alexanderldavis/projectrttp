@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
-          rel="stylesheet">
-  </head>
-  <body>
+{% extends "base.html" %}
+
+{% block title %}RTTPortal{% endblock %}
+
+{% block content %}
     <input type="file" id="file_input"/>
     <p id="status">Please select a file</p>
 
@@ -12,8 +10,6 @@
       <input type="hidden" id="file-url" name="file-url" value="">
       <input type="submit" value="Update profile">
     </form>
-  </body>
-</html>
 
 <script type="text/javascript">
 (function() {
@@ -83,3 +79,5 @@ function uploadFile(file, s3Data, url){
     ga('create', 'UA-100590857-1', 'auto');
     ga('send', 'pageview');
 </script>
+
+{% endblock %}
