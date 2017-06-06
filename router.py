@@ -145,7 +145,7 @@ def gameJoinProfessor(email, gameName):
 
 @app.route("/dashboard/<sid>")
 def getCustomDashboard(sid):
-    cur.execute("""SELECT * FROM students where sid = %s;""", (sid))
+    cur.execute("""SELECT * FROM students where sid = %s;""", (sid,))
     lst = cur.fetchall()
     if len(lst) == 0:
         return "Create account or log in"
