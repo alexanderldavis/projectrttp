@@ -31,6 +31,10 @@ def index():
 def mainLogin():
     return render_template('login.html', curid = 0)
 
+@app.route("/screatefrontend")
+def mainSCreate():
+    return render_template('screate.html', curid = 0)
+
 @app.route("/screate/<email>/<password>")
 def newStudent(email, password):
     cur.execute("""SELECT * from students where email = %s;""",(email,))
