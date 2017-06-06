@@ -164,7 +164,8 @@ def sign_s3():
 
   file_name = request.args.get('file_name')
   file_type = request.args.get('file_type')
-
+  print(file_name)
+  
   print(file_type)
   s3 = boto3.client('s3')
 
