@@ -161,7 +161,7 @@ def getCustomNewspaper(sid):
 ### UPLOADS!!!
 @app.route("/account/")
 def account():
-    return render_template('account.html')
+    return render_template('myaccount.html')
 
 @app.route('/sign_s3/')
 def sign_s3():
