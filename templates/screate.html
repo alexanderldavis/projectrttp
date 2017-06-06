@@ -4,11 +4,14 @@
 
 {% block content %}
 
-  {% for (uid, name) in uid %}
-
-  <p>{{ uid }}</p>
-
-  {% endfor %}
+  <h1>Create Student Account</h1>
+  <form id="formsearch" class="form-inline" action="/screate" method="get">
+    <span class="glyphicon glyphicon-envelope"></span>
+    <input class="form-control" type="text" name="email" placeholder="email"><br />
+    <span class="glyphicon glyphicon-asterisk"></span>
+    <input class="form-control" type="password" name="hp" placeholder="password"><br />
+    <button class="btn btn-primary" type="submit"></span></button>
+  </form>
 
   <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
