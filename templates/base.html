@@ -40,7 +40,11 @@
         {% else %}
         <li><a href="#"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
         {% endif %}
+        {% if curid == 2 %}
+        <li class="active"><a href="#"><span class="glyphicon glyphicon-book"></span> Newspaper</a></li>
+        {% else %}
         <li><a href="#"><span class="glyphicon glyphicon-book"></span> Newspaper</a></li>
+        {% endif %}
         <li><a href="#"><span class="glyphicon glyphicon-knight"></span> Character Profile</a></li>
         <li><a href="#"><span class="glyphicon glyphicon-comment"></span> Chat</a></li>
       </ul>

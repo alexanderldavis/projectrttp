@@ -150,8 +150,7 @@ def getCustomDashboard(sid):
 
 @app.route("/newspaper/<sid>")
 def getCustomNewspaper(sid):
-    cur.execute("""SELECT * FROM character where cid = """)
-    return "newspaper"
+    return render_template('newspaper.html', sid = sid, curid = 2, username="John")
 
 # @app.route("/characterprofile/<sid>")
 #
