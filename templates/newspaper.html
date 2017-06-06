@@ -2,6 +2,11 @@
 
 {% block title %}RTTPortal{% endblock %}
 
+
+{% block morejs %}
+  <script src="{{ url_for('static', filename='js/newspaper.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 
   <h1>Your Newspaper Shelf</h1>

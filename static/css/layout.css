@@ -165,7 +165,7 @@ a:hover {
 	background-image: url("http://media.istockphoto.com/vectors/seamless-newspaper-background-vector-id539964252?s=2048x2048");
 	background-size: 20em;
 	background-position: left;
-	transition: .4s;
+	transition: .6s;
 }
 
 .newspaperbox:hover {
@@ -182,11 +182,6 @@ a:hover {
 	width: 100%;
 	background-color: rgba(0,0,0,.7);
 	transition: .2s;
-}
-
-.nplabel:hover {
-	height: 100%;
-	background-color: rgba(0,0,0,.4);
 }
 
 /* Adjustments for small screens */
