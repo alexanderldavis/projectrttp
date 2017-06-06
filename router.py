@@ -46,7 +46,7 @@ def newStudent():
         print("""NOW ADDING NEW STUDENT""")
         hashpassword = hashed_password(password)
         print("CREATED PASSWORD HASH")
-        cur.execute("""INSERT INTO students (email, hashpswd) VALUES ((SELECT floor(random()*(100000-223+1))+10), %s, %s);""", (email, hashpassword))
+        cur.execute("""INSERT INTO students (sid, email, hashpswd) VALUES ((SELECT floor(random()*(100000-223+1))+10), %s, %s);""", (email, hashpassword))
         conn.commit()
         print("INSERTED NEW STUDENT")
         return "Student Inserted"
