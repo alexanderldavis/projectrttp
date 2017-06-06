@@ -54,6 +54,14 @@ function uploadFile(file, s3Data, url){
   postData.append('file', file);
 
   xhr.onreadystatechange = function() {
+    if(xhr.readyState === 4){
+      if(xhr.status === 200 || xhr.status === 204){
+        alert("success");
+      }
+      else{
+        alert("Could not upload file.");
+      }
+   }
   };
   xhr.send(postData);
 }
