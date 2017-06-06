@@ -120,11 +120,15 @@ footer {
 	border-radius: 0px;
 	height: 3.5em;
 	width: 5em;
-	transition: .4s;
+	transition: .5s;
 }
 
-.btn:before{
+#submitbutton:before{
 	content: 'Submit';
+}
+
+#updatebutton:before{
+	content: 'Update';
 }
 
 .btn:hover {
@@ -133,7 +137,7 @@ footer {
 	height: 3.5em;
 }
 
-.btn:hover:before{
+#submitbutton:hover:before, #updatebutton:hover:before {
 	font-family: 'Glyphicons Halflings';
   src: url('../fonts/glyphicons-halflings-regular.eot');
   src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
@@ -144,6 +148,45 @@ a:hover {
 	text-decoration: none;
 	font-weight: bold;
 	transition: .2s;
+}
+
+.newsshelf {
+	padding: 2em;
+}
+
+.newspaperbox {
+	overflow: hidden;
+	display: inline-block;
+	margin: 1em;
+	width: 9em;
+	height: 13em;
+	text-align: center;
+	box-shadow: 1px 1px 4px black;
+	background-image: url("http://media.istockphoto.com/vectors/seamless-newspaper-background-vector-id539964252?s=2048x2048");
+	background-size: 20em;
+	background-position: left;
+	transition: .4s;
+}
+
+.newspaperbox:hover {
+	background-size: 30em;
+	background-position: center;
+}
+
+.nplabel {
+	color: white;
+	position: relative;
+	padding: .5em;
+	bottom: 0px;
+	height: 4em;
+	width: 100%;
+	background-color: rgba(0,0,0,.7);
+	transition: .2s;
+}
+
+.nplabel:hover {
+	height: 100%;
+	background-color: rgba(0,0,0,.4);
 }
 
 /* Adjustments for small screens */
