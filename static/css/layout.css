@@ -30,10 +30,41 @@ h1 {
 	letter-spacing: .1em;
 }
 
-#usercircle {
+#userbox {
 	position: absolute;
 	right: 0px;
 	top: 0px;
+}
+
+#usermenu {
+	position: absolute;
+	overflow: hidden;
+	font-size: 14px;
+	top: 35px;
+	right: 35px;
+	opacity: 0;
+	padding-left: 3px;
+	background: rgb(240, 240, 240);
+	width: 0px;
+	height: 0px;
+	border: 4px solid rgb(34, 34, 34);
+	box-shadow: 1px 1px 4px 1px rgba(255, 255, 255, .4);
+	z-index: -2;
+	transition: .3s;
+}
+
+#usermenu:hover {
+	opacity: 1;
+	width: 150px;
+	height: 150px;
+}
+
+#usermenu ul {
+	list-style: none;
+	padding: 4px;
+}
+
+#usercircle {
 	height: 80px;
 	width: 80px;
 	background-size: cover;
@@ -41,6 +72,7 @@ h1 {
 	border: 8px solid rgb(34, 34, 34);
 	box-shadow: inset 0 0 15px rgba(0,0,0,.8);
 	transition: .2s;
+	z-index: 10;
 }
 
 #usercircle:hover {
