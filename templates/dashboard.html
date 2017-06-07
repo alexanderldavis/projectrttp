@@ -12,8 +12,8 @@
     <button class="btn btn-primary" type="submit"></span></button>
   </form>
   {% else %}
-    {% for game in games %}
-    <p>{{game}}</p>
+    {% for (charname, gametitle) in gameinfo %}
+    <p>You are playing {{charname}} in {{gametitle}}</p>
     {% endfor %}
     <h3>Add a game:</h3>
     <form id="formsearch" class="form-inline" action="/sjoin/{{sid}}" method="get">

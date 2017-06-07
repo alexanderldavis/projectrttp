@@ -161,10 +161,17 @@ def getCustomDashboard(sid):
     cur.execute("""SELECT gid from students_game where sid = %s;""",(sid,))
     gamelst = cur.fetchall()
     cleanGamelst = []
-    for game in gamelst:
-        print(game)
+    for (gid,) in gamelst:
+        print(gid)
+        cur.execute("""SELECT title from game where gid = %s;""", (gid,))
+        gametitle = cur.fetchall()
+        gametitle = gametitle[0][0]
+        cur.execute("""SELECT name from character where cid = (SELECT cid from student_character where sid = %s);""", (sid,))
+        charname = cur.fetchall()
+        charname = charname[0][0]
+        cleanGamelst.append((charname, gametitle))
     print("###########ENDGAME###########")
-    return render_template('dashboard.html', sid = sid, curid = 1, username=lst[0][0], games = cleanGamelst)
+    return render_template('dashboard.html', sid = sid, curid = 1, username=lst[0][0], gameinfo = cleanGamelst)
 
 @app.route("/newspaper/<sid>")
 def getCustomNewspaper(sid):
