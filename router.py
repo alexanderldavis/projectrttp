@@ -158,11 +158,12 @@ def getCustomDashboard(sid):
     if len(lst) == 0:
         return "Create account or log in"
     # return render_template('dashboard.html', sid = sid, curid = 1, username="John", description = charlst[0][2])
-    cur.execute("""SELECT * from students_game where sid = %s;""",(sid,))
+    cur.execute("""SELECT gid from students_game where sid = %s;""",(sid,))
     gamelst = cur.fetchall()
     cleanGamelst = []
     for game in gamelst:
-        cleanGamelst.append(game[1])
+        print(game)
+    print("###########ENDGAME###########")
     return render_template('dashboard.html', sid = sid, curid = 1, username=lst[0][0], games = cleanGamelst)
 
 @app.route("/newspaper/<sid>")
