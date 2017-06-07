@@ -19,11 +19,12 @@ cur.execute("""DROP TABLE IF EXISTS students CASCADE;
                DROP TABLE IF EXISTS professor_game CASCADE;
                DROP TABLE IF EXISTS game_character CASCADE;
                DROP TABLE IF EXISTS student_character CASCADE;
-               DROP TABLE IF EXISTS game_character CASCADE;""")
+               DROP TABLE IF EXISTS game_character CASCADE;
+               DROP TABLE IF EXISTS documents CASCADE;""")
 print("TABLES DELETED")
 
 ## CREATE NEW TABLES
-cur.execute("""CREATE TABLE students (sid unique, email varchar(200) unique, hashpswd varchar(200));""")
+cur.execute("""CREATE TABLE students (sid unique, name varchar(300), email varchar(200) unique, hashpswd varchar(200));""")
 cur.execute("""CREATE TABLE professor (pid unique, email varchar(200) unique, hashpswd varchar(200));""")
 cur.execute("""CREATE TABLE game (gid serial unique, title varchar(200) unique);""")
 cur.execute("""CREATE TABLE students_game (sid int, gid int, FOREIGN KEY (sid) references students(sid), FOREIGN KEY (gid) references game(gid));""")
@@ -35,7 +36,7 @@ cur.execute("""CREATE TABLE game_character (gid int, cid int, FOREIGN KEY (gid) 
 # NEW ROLLOUT v2
 # cur.execute("""CREATE TABLE newspaper (nid serial unique, url text, uploaddate date);""")
 
-cur.execute("""CREATE TABLE documents (did serial unique, url text, uploaddate date, )""")
+# cur.execute("""CREATE TABLE documents (did serial unique, url text, uploaddate date, )""")
 # cur.execute("""CREATE TABLE professor_game (pid int, gid int, FOREIGN KEY (pid) references professor(pid), FOREIGN KEY (gid) references game(gid));""")
 # cur.execute("""CREATE TABLE game_character (gid int, cid int, FOREIGN KEY (gid) references game(gid), FOREIGN KEY (cid) references character(cid));""")
 conn.commit()

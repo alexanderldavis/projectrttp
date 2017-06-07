@@ -39,6 +39,7 @@ def mainSCreate():
 
 @app.route("/screate")
 def newStudent():
+    name = request.args['name']
     email = request.args['email']
     email = email.replace('%40', "@")
     password = request.args['hp']
@@ -48,7 +49,7 @@ def newStudent():
         print("""NOW ADDING NEW STUDENT""")
         hashpassword = hashed_password(password)
         print("CREATED PASSWORD HASH")
-        cur.execute("""INSERT INTO students (sid, email, hashpswd) VALUES ((SELECT floor(random()*(100000-223+1))+10), %s, %s);""", (email, hashpassword))
+        cur.execute("""INSERT INTO students (sid, name, email, hashpswd) VALUES ((SELECT floor(random()*(100000-223+1))+10), %s, %s, %s);""", (name, email, hashpassword))
         conn.commit()
         print("INSERTED NEW STUDENT")
         cur.execute("""SELECT sid from students where email = %s;"""(email,))
@@ -145,21 +146,28 @@ def gameJoinProfessor(email, gameName):
 
 @app.route("/dashboard/<sid>")
 def getCustomDashboard(sid):
-    cur.execute("""SELECT * FROM students where sid = %s;""", (sid,))
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     lst = cur.fetchall()
     if len(lst) == 0:
         return "Create account or log in"
-    cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (sid,))
-    charlst = cur.fetchall()
     # return render_template('dashboard.html', sid = sid, curid = 1, username="John", description = charlst[0][2])
-    return render_template('dashboard.html', sid = sid, curid = 1, username="John")
+    return render_template('dashboard.html', sid = sid, curid = 1, username=lst[0][0])
 
 @app.route("/newspaper/<sid>")
 def getCustomNewspaper(sid):
-    return render_template('newspaper.html', sid = sid, curid = 2, username="John")
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    lst = cur.fetchall()
+    if len(lst) == 0:
+        return "Create account or log in"
+    return render_template('newspaper.html', sid = sid, curid = 2, username=lst[0][0])
 
-# @app.route("/characterprofile/<sid>")
-#
+@app.route("/characterprofile/<sid>")
+def getCustomCharacterProfile(sid):
+    cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (sid,))
+    charlst = cur.fetchall()
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    namelst = cur.fetchall()
+    return render_template('characterprofile.html', sid = sid, username=namelst[0][0])
 # @app.route("/chat/<sid>")
 
 ### UPLOADS!!!
