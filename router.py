@@ -108,26 +108,33 @@ def loginProfessor(email, password):
         return "Password is wrong. Shame on you."
     return "Some error -- Contact Webmaster"
 
-@app.route("/sjoin/<email>/<inviteCode>")
-def gameJoinStudent(email, inviteCode):
+@app.route("/sjoin/<sid>")
+def gameJoinStudent(sid):
+    inviteCode = request.args['inviteCode']
     if "-" not in inviteCode:
         return "InviteCode invalid"
-    characterID = inviteCode.split("-")[0]
+    characterID = inviteCode.split("-")[1]
     gameName = inviteCode.split("-")[0]
-    cur.execute("""SELECT sid from students where email = %s;""")
+    cur.execute("""SELECT * from students where sid = %s;""", (sid,))
     lst = cur.fetchall()
     if len(lst) == 0:
         return "You must create a student account first!"
-    sid = lst[0][0]
     cur.execute("""SELECT gid from game where title = %s;""", (gameName,))
     lst = cur.fetchall()
     if len(lst) == 0:
-        return "Game not yet created"
+        return "Game not yet created or InviteCode invalid"
     gid = lst[0][0]
     cur.execute("""INSERT INTO students_game (sid, gid) VALUES (%s, %s);""", (sid, gid))
     conn.commit()
     print("STUDENT JOINED GAME")
-    return "Student " + sid + " joined game " + gid
+    cur.execute("""SELECT * from charcter where cid = %s;""", (characterID,))
+    lst = cur.fetchall()
+    if len(lst) == 0:
+        return "Charcter not yet created or InviteCode invalid"
+    cur.execute("""INSERT INTO student_character (sid, cid) VALUES (%s, %s);""", (sid, characterID))
+    conn.commit()
+    print("STUDENT LINKED TO CHARACTER")
+    return redirect("http://www.rttportal.com/dashboard/"+str(sid))
 
 @app.route("/pjoin/<email>/<gameName>")
 def gameJoinProfessor(email, gameName):
@@ -151,7 +158,12 @@ def getCustomDashboard(sid):
     if len(lst) == 0:
         return "Create account or log in"
     # return render_template('dashboard.html', sid = sid, curid = 1, username="John", description = charlst[0][2])
-    return render_template('dashboard.html', sid = sid, curid = 1, username=lst[0][0])
+    cur.execute("""SELECT * from students_game where sid = %s;""",(sid,))
+    gamelst = cur.fetchall()
+    cleanGamelst = []
+    for game in gamelst:
+        cleanGamelst.append(game[1])
+    return render_template('dashboard.html', sid = sid, curid = 1, username=lst[0][0], games = cleanGamelst)
 
 @app.route("/newspaper/<sid>")
 def getCustomNewspaper(sid):
@@ -167,7 +179,7 @@ def getCustomCharacterProfile(sid):
     charlst = cur.fetchall()
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     namelst = cur.fetchall()
-    return render_template('characterprofile.html', sid = sid, username=namelst[0][0])
+    return render_template('characterprofile.html', sid = sid, curid = 3, username=namelst[0][0])
 # @app.route("/chat/<sid>")
 
 ### UPLOADS!!!

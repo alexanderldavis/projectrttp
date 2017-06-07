@@ -49,4 +49,6 @@ print("TABLES CREATED")
 cur.execute("""INSERT INTO character (name, descriptionURL, imageURL) VALUES ('Jacques Chirac', 'https://docs.google.com/document/d/1WOYKuY6ZFRR6s_3Wt2aurdLk_mO7RWhX1KxJ83kbaHI/pub?embedded=true', 'https://upload.wikimedia.org/wikipedia/commons/7/73/Jacques_Chirac_2.jpg');""")
 
 print("POPULATED TABLE CHARACTER")
+
+print("POPULATED TABLE GAME_CHARACTER")
 # str = ([introstr],[objectivesstr],[responsibilitiesstr],[strategystr],[topsecretstr])
