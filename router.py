@@ -124,6 +124,10 @@ def gameJoinStudent(sid):
     if len(lst) == 0:
         return "Game not yet created or InviteCode invalid"
     gid = lst[0][0]
+    cur.execute("""SELECT * from students_game where sid = %s and gid = %s;""", (sid, gid))
+    lst = cur.fetchall()
+    if len(lst) != 0:
+        return "student already in game"
     cur.execute("""INSERT INTO students_game (sid, gid) VALUES (%s, %s);""", (sid, gid))
     conn.commit()
     print("STUDENT JOINED GAME")
