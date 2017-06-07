@@ -52,7 +52,7 @@ def newStudent():
         cur.execute("""INSERT INTO students (sid, name, email, hashpswd) VALUES ((SELECT floor(random()*(100000-223+1))+10), %s, %s, %s);""", (name, email, hashpassword))
         conn.commit()
         print("INSERTED NEW STUDENT")
-        cur.execute("""SELECT sid from students where email = %s;"""(email,))
+        cur.execute("""SELECT sid from students where email = %s;""",(email,))
         sidlst = cur.fetchall()
         sid = sidlst[0][0]
         return redirect("http://www.rttportal.com/dashboard/"+str(sid))
