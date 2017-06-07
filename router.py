@@ -158,24 +158,27 @@ def gameJoinProfessor(email, gameName):
 @app.route("/dashboard/<sid>")
 def getCustomDashboard(sid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
-    lst = cur.fetchall()
-    if len(lst) == 0:
+    mylst = cur.fetchall()
+    if len(mylst) == 0:
         return "Create account or log in"
     # return render_template('dashboard.html', sid = sid, curid = 1, username="John", description = charlst[0][2])
     cur.execute("""SELECT gid from students_game where sid = %s;""",(sid,))
     gamelst = cur.fetchall()
+    cur.execute("""SELECT * from student_character where sid = %s;""", (sid,))
+    mlst = cur.fetchall()
     cleanGamelst = []
-    for (gid,) in gamelst:
-        print(gid)
-        cur.execute("""SELECT title from game where gid = %s;""", (gid,))
-        gametitle = cur.fetchall()
-        gametitle = gametitle[0][0]
-        cur.execute("""SELECT name from character where cid = (SELECT cid from student_character where sid = %s);""", (sid,))
-        charname = cur.fetchall()
-        charname = charname[0][0]
-        cleanGamelst.append((charname, gametitle))
+    if len(lst) != 0:
+        for (gid,) in gamelst:
+            print(gid)
+            cur.execute("""SELECT title from game where gid = %s;""", (gid,))
+            gametitle = cur.fetchall()
+            gametitle = gametitle[0][0]
+            cur.execute("""SELECT name from character where cid = (SELECT cid from student_character where sid = %s);""", (sid,))
+            charname = cur.fetchall()
+            charname = charname[0][0]
+            cleanGamelst.append((charname, gametitle))
     print("###########ENDGAME###########")
-    return render_template('dashboard.html', sid = sid, curid = 1, username=lst[0][0], gameinfo = cleanGamelst)
+    return render_template('dashboard.html', sid = sid, curid = 1, username=mylst[0][0], gameinfo = cleanGamelst)
 
 @app.route("/newspaper/<sid>")
 def getCustomNewspaper(sid):
