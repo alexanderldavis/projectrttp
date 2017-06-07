@@ -18,9 +18,7 @@ cur.execute("""DROP TABLE IF EXISTS students CASCADE;
                DROP TABLE IF EXISTS character CASCADE;
                DROP TABLE IF EXISTS professor_game CASCADE;
                DROP TABLE IF EXISTS game_character CASCADE;
-               DROP TABLE IF EXISTS student_character CASCADE;
-               DROP TABLE IF EXISTS game_character CASCADE;
-               DROP TABLE IF EXISTS documents CASCADE;""")
+               DROP TABLE IF EXISTS student_character CASCADE;""")
 print("TABLES DELETED")
 
 ## CREATE NEW TABLES
@@ -51,4 +49,3 @@ conn.commit()
 print("POPULATED TABLE CHARACTER")
 
 print("POPULATED TABLE GAME_CHARACTER")
-# str = ([introstr],[objectivesstr],[responsibilitiesstr],[strategystr],[topsecretstr])
