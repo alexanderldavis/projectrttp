@@ -53,7 +53,7 @@ def newProfessor(email, password):
         return "Professor Account already exists! Please login to your account."
     hashpassword = hashed_password(password)
     print("CREATED PASSWORD HASH")
-    cur.execute("""INSERT INTO professor (email, hashpswd) VALUES (%s, %s);""",(email,hashpassword))
+    cur.execute("""INSERT INTO professor (pid, email, hashpswd) VALUES ((SELECT floor(random()*(20003-434+1))+10), %s, %s);""",(email,hashpassword))
     print("PROFESSOR ACCOUNT CREATED")
     conn.commit()
     return "Professor account created!"
@@ -73,26 +73,37 @@ def loginProfessor(email, password):
         return "Password is wrong. Shame on you."
     return "Some error -- Contact Webmaster"
 
-@app.route("/sjoin/<email>/<inviteCode>")
-def gameJoinStudent(email, inviteCode):
+@app.route("/sjoin/<sid>")
+def gameJoinStudent(sid):
+    inviteCode = request.args['inviteCode']
     if "-" not in inviteCode:
         return "InviteCode invalid"
-    characterID = inviteCode.split("-")[0]
+    characterID = inviteCode.split("-")[1]
     gameName = inviteCode.split("-")[0]
-    cur.execute("""SELECT sid from students where email = %s;""")
+    cur.execute("""SELECT * from students where sid = %s;""", (sid,))
     lst = cur.fetchall()
     if len(lst) == 0:
         return "You must create a student account first!"
-    sid = lst[0][0]
     cur.execute("""SELECT gid from game where title = %s;""", (gameName,))
     lst = cur.fetchall()
     if len(lst) == 0:
-        return "Game not yet created"
+        return "Game not yet created or InviteCode invalid"
     gid = lst[0][0]
+    cur.execute("""SELECT * from students_game where sid = %s and gid = %s;""", (sid, gid))
+    lst = cur.fetchall()
+    if len(lst) != 0:
+        return "student already in game"
     cur.execute("""INSERT INTO students_game (sid, gid) VALUES (%s, %s);""", (sid, gid))
     conn.commit()
     print("STUDENT JOINED GAME")
-    return "Student " + sid + " joined game " + gid
+    cur.execute("""SELECT * from character where cid = %s;""", (characterID,))
+    lst = cur.fetchall()
+    if len(lst) == 0:
+        return "Charcter not yet created or InviteCode invalid"
+    cur.execute("""INSERT INTO student_character (sid, cid) VALUES (%s, %s);""", (sid, characterID))
+    conn.commit()
+    print("STUDENT LINKED TO CHARACTER")
+    return redirect("http://www.rttportal.com/dashboard/"+str(sid))
 
 @app.route("/pjoin/<email>/<gameName>")
 def gameJoinProfessor(email, gameName):
@@ -111,17 +122,41 @@ def gameJoinProfessor(email, gameName):
 
 @app.route("/dashboard/<sid>")
 def getCustomDashboard(sid):
-    cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (sid,))
-    charlst = cur.fetchall()
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    lst = cur.fetchall()
+    if len(lst) == 0:
+        return "Create account or log in"
     # return render_template('dashboard.html', sid = sid, curid = 1, username="John", description = charlst[0][2])
-    return render_template('dashboard.html', sid = sid, curid = 1, username="John")
+    cur.execute("""SELECT gid from students_game where sid = %s;""",(sid,))
+    gamelst = cur.fetchall()
+    cleanGamelst = []
+    for (gid,) in gamelst:
+        print(gid)
+        cur.execute("""SELECT title from game where gid = %s;""", (gid,))
+        gametitle = cur.fetchall()
+        gametitle = gametitle[0][0]
+        cur.execute("""SELECT name from character where cid = (SELECT cid from student_character where sid = %s);""", (sid,))
+        charname = cur.fetchall()
+        charname = charname[0][0]
+        cleanGamelst.append((charname, gametitle))
+    print("###########ENDGAME###########")
+    return render_template('dashboard.html', sid = sid, curid = 1, username=lst[0][0], gameinfo = cleanGamelst)
 
 @app.route("/newspaper/<sid>")
 def getCustomNewspaper(sid):
-    return render_template('newspaper.html', sid = sid, curid = 2, username="John")
+    #cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    #lst = cur.fetchall()
+    #if len(lst) == 0:
+    #    return "Create account or log in"
+    return render_template('newspaper.html', sid = sid, curid = 2, username="username")
 
-# @app.route("/characterprofile/<sid>")
-#
+@app.route("/characterprofile/<sid>")
+def getCustomCharacterProfile(sid):
+    cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (sid,))
+    charlst = cur.fetchall()
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    namelst = cur.fetchall()
+    return render_template('characterprofile.html', sid = sid, curid = 3, username=namelst[0][0])
 # @app.route("/chat/<sid>")
 
 ### UPLOADS!!!
@@ -129,64 +164,40 @@ def getCustomNewspaper(sid):
 def account():
     return render_template('account.html')
 
+@app.route("/myaccount/")
+def myaccount():
+    return render_template("myaccount.html")
+
 @app.route('/sign_s3/')
 def sign_s3():
   S3_BUCKET = os.environ.get('S3_BUCKET')
-
-  file_name = request.args.get('file_name')
+  file_name1 = request.args.get('file_name')
+  ext = file_name1.split(".")[1]
+  file_name = id_generator()
+  file_name+=ext
   file_type = request.args.get('file_type')
-
+  print(file_name)
+  print(file_type)
   s3 = boto3.client('s3')
-
-  presigned_post = s3.generate_presigned_post(
-    Bucket = S3_BUCKET,
-    Key = file_name,
-    Fields = {"acl": "public-read", "Content-Type": file_type},
-    Conditions = [
-      {"acl": "public-read"},
-      {"Content-Type": file_type}
-    ],
-    ExpiresIn = 3600
-  )
-
-  return json.dumps({
-    'data': presigned_post,
-    'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)
-  })
+  if file_type == "application/pdf":
+      presigned_post = s3.generate_presigned_post(
+          Bucket = S3_BUCKET,
+          Key = file_name,
+          Fields = {"acl": "public-read", "Content-Type": file_type},
+          Conditions = [
+                 {"acl": "public-read"},
+                 {"Content-Type": file_type}
+           ],
+           ExpiresIn = 3600
+           )
+      return json.dumps({'data': presigned_post, 'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)})
+  return "Wrong!"
 
 @app.route("/submit_form/", methods = ["POST"])
 def submit_form():
-  username = request.form["username"]
-  full_name = request.form["full-name"]
-  avatar_url = request.form["avatar-url"]
+    avatar_url = request.form["file-url"]
+    print(avatar_url)
 
-  # update_account(username, full_name, avatar_url) This is where we update the user account
-
-  return redirect(url_for('profile'))
-
-# @app.route("/pcreate/<email>/<password>/<gameName>")
-# def createProfessor(email, password, gameName):
-#     hashpassword = hashed_password(password)
-#     print("CREATED PASSWORD HASH")
-#
-#     # ALREADY EXISTS CHECK
-#     cur.execute("""SELECT * from game where title = %s;""", (gameName,))
-#     lst = cur.fetchall()
-#     if len(lst) != 0:
-#         return "Game name is taken"
-#     cur.execute("""SELECT * from professor where email = %s;""", (email,))
-#     lst = cur.fetchall()
-#     if len(lst) != 0:
-#         return "Professor Account already exists! Please login to your account."
-#
-#     # INSERT STATEMENTS
-#     cur.execute("""INSERT INTO professor (email, hashpswd) VALUES (%s, %s);""",(email,hashpassword))
-#     print("PROFESSOR ACCOUNT CREATED")
-#     cur.execute("""INSERT INTO game (title) VALUES (%s);""", (gameName,))
-#     print("CREATED GAME ENTRY")
-#     cur.execute("""INSERT INTO professor_game (pid, gid) VALUES ((SELECT pid from professor where email = %s), (SELECT gid from game where title = %s));""", (email, gameName))
-#     print("PROFESSOR_GAME RELATION CREATED")
-#     conn.commit()
-#     return "Professor Account Created!"
+    return str(avatar_url)
 
 app.run(debug=True)
