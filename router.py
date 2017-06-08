@@ -126,21 +126,6 @@ def gameJoinStudent(sid):
     print("STUDENT LINKED TO CHARACTER")
     return redirect("http://www.rttportal.com/dashboard/"+str(sid))
 
-@app.route("/pjoin/<email>/<gameName>")
-def gameJoinProfessor(email, gameName):
-    cur.execute("""SELECT * from professor where email = %s;""", (email,))
-    lst = cur.fetchall()
-    if len(lst) == 0:
-        return "Professor does not exist. Register first."
-    cur.execute("""SELECT * from game where title = %s;""", (gameName,))
-    lst = cur.fetchall()
-    if len(lst) != 0:
-        return "A Game with this name already exists"
-    cur.execute("""INSERT INTO game (title) VALUES (%s);""",(gameName,))
-    cur.execute("""INSERT INTO professor_game (pid, gid) VALUES ((SELECT pid from professor where email = %s), (SELECT gid from game where title = %s));""", (email, gameName))
-    conn.commit()
-    return "Professor has created game"
-
 @app.route("/dashboard/<sid>")
 def getCustomDashboard(sid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
