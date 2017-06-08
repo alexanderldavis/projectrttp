@@ -1,0 +1,52 @@
+.gameshelf {
+	padding: 2em;
+}
+
+.gamebox {
+	overflow: hidden;
+	display: inline-block;
+	margin: 1em;
+	width: 12em;
+	height: 12em;
+	text-align: center;
+	box-shadow: 1px 1px 4px black;
+	background-image: url("https://previews.123rf.com/images/shippee/shippee1010/shippee101000018/8098045-beautiful-wooden-chess-pieces-on-wooden-chess-game-board-Stock-Photo.jpg");
+	background-size: 20em;
+	background-position: left;
+	transition: .6s;
+}
+
+.gamebox:hover {
+	background-size: 30em;
+	background-position: center;
+}
+
+.gamelabel {
+  display: block;
+	color: white;
+	position: relative;
+	padding: 1em;
+	bottom: 0px;
+	height: 100%;
+	background-color: rgba(0,0,0,.7);
+	transition: .4s;
+}
+
+.gamelabel:hover {
+  padding-top: 1.5em;
+  background-color: rgba(36,75,87, .7);
+}
+
+#gameform {
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  bottom: 0px;
+}
+
+#plussign {
+  position: absolute;
+  top: 2.5em;
+  left: 2.5em;
+  font-size: 2em;
+}

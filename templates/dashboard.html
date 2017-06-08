@@ -2,6 +2,13 @@
 
 {% block title %}RTTPortal{% endblock %}
 
+{% block page_specific_css %}
+<link rel="stylesheet" href="/static/css/dashboard.css">
+{% endblock %}
+{% block page_specific_js %}
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
+
 {% block content %}
   <h1>Dashboard for {{ username }}</h1>
   {% if not gameinfo %}
@@ -12,15 +19,19 @@
     <button id="submitbutton" class="btn btn-primary" type="submit"></button>
   </form>
   {% else %}
-    {% for (charname, gametitle) in gameinfo %}
-    <p>You are playing as {{charname}} in {{gametitle}}</p>
-    {% endfor %}
-    <h3>Add a game:</h3>
-    <form id="formsearch" class="form-inline" action="/sjoin/{{sid}}" method="get">
-      <span class="glyphicon glyphicon-asterisk"></span>
-      <input class="form-control" type="text" name="inviteCode" placeholder="XXXXX-00000"><br />
-      <button id="submitbutton" class="btn btn-primary" type="submit"></button>
-    </form>
+    <div class="gameshelf">
+      {% for (charname, gametitle) in gameinfo %}
+      <div class="gamebox"><div class="gamelabel">{{gametitle}}<hr />{{charname}}</div></div>
+      {% endfor %}
+      <div class="gamebox addgamebox">
+        <div class="gamelabel">Add a game<br /><span id="plussign" class="glyphicon glyphicon-plus"></span></div>
+        <form id="gameform" class="invisible" action="/sjoin/{{sid}}" method="get">
+          <span class="glyphicon glyphicon-asterisk"></span>
+          <input class="form-control" type="text" name="inviteCode" placeholder="XXXXX-00000"><br />
+          <button id="submitbutton" class="btn btn-primary" type="submit"></button>
+        </form>
+      </div>
+    </div>
   {% endif %}
   <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

@@ -89,7 +89,7 @@ def gameJoinProfessor(email, gameName):
 
 @app.route("/dashboard/<sid>")
 def getCustomDashboard(sid):
-    return render_template('dashboard.html', sid = "sid", curid = 1, username='username', gameinfo = [('charName','gametitle')])
+    return render_template('dashboard.html', sid = "sid", curid = 1, username='username', gameinfo = [('Jacques Guy','France 1823'),('Dag Fishinboi','Minnesota 1993'),('Dumbo','Conflicted Little Guys: Disney through the ages')])
 
 @app.route("/newspaper/<sid>")
 def getCustomNewspaper(sid):
