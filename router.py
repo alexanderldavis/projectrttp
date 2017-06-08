@@ -88,7 +88,7 @@ def newProfessor(email, password):
         return "Professor Account already exists! Please login to your account."
     hashpassword = hashed_password(password)
     print("CREATED PASSWORD HASH")
-    cur.execute("""INSERT INTO professor (pid, email, hashpswd) VALUES ((SELECT floor(random()*(20003-434+1))+10), %s, %s);""",(email,hashpassword))
+    cur.execute("""INSERT INTO professor (pid, email, hashpswd) VALUES ((SELECT floor(random()*(2034343003-4343434+1))+10), %s, %s);""",(email,hashpassword))
     print("PROFESSOR ACCOUNT CREATED")
     conn.commit()
     return "Professor account created!"
@@ -233,7 +233,9 @@ def accountUpdate(sid):
         hashpassword = hashed_password(password)
         cur.execute("""UPDATE students SET hashpswd = %s WHERE sid = %s;""", (hashpassword, sid))
         conn.commit()
-    return redirect("http://www.rttportal.com/account/"+str(sid))
+    return redirect("http://www.rttportal.com/dashboard/"+str(sid))
+
+
 
 
 
@@ -275,3 +277,15 @@ def submit_form():
     print(avatar_url)
 
     return str(avatar_url)
+
+
+
+
+
+
+
+##### ADMIN #####
+@app.route("/admin")
+def adminLogin():
+    return render_template("adminlogin.html")
+    
