@@ -4,13 +4,14 @@
 {% block title %}RTTPortal{% endblock %}
 
 {% block content %}
-  <h1>Your Profile</h1><br />
-  <form id="formsearch" class="form-inline" method="POST" action="/submit_form/">
+  <h1>{{username}}'s Profile</h1><br />
+  <form id="formsearch" class="form-inline" method="get" action="/accountUpdate/{{sid}}">
     <h4>Modify Account Details</h4>
+    <p>To modify details, enter in the changes you want to make, then press "Update" to commit the changes!</p>
     <span class="glyphicon glyphicon-user"></span>
-    <input class="form-control" type="text" name="username" placeholder="Username"><br />
+    <input class="form-control" type="text" name="name" placeholder="name"><br />
     <span class="glyphicon glyphicon-pencil"></span>
-    <input class="form-control" type="text" name="full-name" placeholder="Full name"><br />
+    <input class="form-control" type="text" name="password" placeholder="password"><br />
     <button id="updatebutton" class="btn btn-primary" onmouseover="hoverSubmit()" type="submit"></button>
   </form>
 {% endblock %}

@@ -190,17 +190,55 @@ def getCustomNewspaper(sid):
 
 @app.route("/characterprofile/<sid>")
 def getCustomCharacterProfile(sid):
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    lst = cur.fetchall()
+    if len(lst) == 0:
+        return "Create account or log in"
     cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (sid,))
     charlst = cur.fetchall()
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     namelst = cur.fetchall()
     return render_template('characterprofile.html', sid = sid, curid = 3, username=namelst[0][0])
-# @app.route("/chat/<sid>")
+
+@app.route("/chat/<sid>")
+def getCustomChat(sid):
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    lst = cur.fetchall()
+    if len(lst) == 0:
+        return "Create account or log in"
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    namelst = cur.fetchall()
+    return render_template('chat.html', sid=sid, curid = 5, username= namelst[0][0])
+
+@app.route("/account/<sid>")
+def getCustomAccount(sid):
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    lst = cur.fetchall()
+    if len(lst) == 0:
+        return "Create account or log in"
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    namelst = cur.fetchall()
+    return render_template('account.html', sid=sid, curid = 0, username = namelst[0][0])
+
+@app.route("/accountUpdate/<sid>")
+def accountUpdate(sid):
+    name = request.args['name']
+    password = request.args['password']
+    if name != "":
+        name.replace("+", " ")
+        name = name.title()
+        cur.execute("""UPDATE students SET name = %s WHERE sid = %s;""", (name, sid))
+        conn.commit()
+    if password != "":
+        hashpassword = hashed_password(password)
+        cur.execute("""UPDATE students SET hashpswd = %s WHERE sid = %s;""", (hashpassword, sid))
+        conn.commit()
+    return redirect("http://www.rttportal.com/account/"+str(sid))
+
+
 
 ### UPLOADS!!!
-@app.route("/account/")
-def account():
-    return render_template('account.html')
+
 
 @app.route("/myaccount/")
 def myaccount():
