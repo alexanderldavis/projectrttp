@@ -89,7 +89,7 @@ def gameJoinProfessor(email, gameName):
 
 @app.route("/dashboard/<sid>")
 def getCustomDashboard(sid):
-    return render_template('dashboard.html', sid = "sid", curid = '1', username='username', gameinfo = [('charName','gametitle')])
+    return render_template('dashboard.html', sid = "sid", curid = 1, username='username', gameinfo = [('charName','gametitle')])
 
 @app.route("/newspaper/<sid>")
 def getCustomNewspaper(sid):
@@ -102,13 +102,7 @@ def getCustomCharacterProfile(sid):
 
 @app.route("/chat/<sid>")
 def getCustomChat(sid):
-    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
-    lst = cur.fetchall()
-    if len(lst) == 0:
-        return "Create account or log in"
-    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
-    namelst = cur.fetchall()
-    return render_template('chat.html', sid=sid, curid = 5, username= namelst[0][0])
+    return render_template('chat.html', sid=sid, curid = 5, username= 'username')
 
 @app.route("/account/<sid>")
 def getCustomAccount(sid):
