@@ -5,7 +5,7 @@
 
 {% block content %}
   <h1>{{username}}'s Profile</h1><br />
-  <form id="formsearch" class="form-inline" method="POST" action="/accountUpdate/{{sid}}">
+  <form id="formsearch" class="form-inline" method="get" action="/accountUpdate/{{sid}}">
     <h4>Modify Account Details</h4>
     <p>To modify details, enter in the changes you want to make, then press "Update" to commit the changes!</p>
     <span class="glyphicon glyphicon-user"></span>
