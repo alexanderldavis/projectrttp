@@ -190,12 +190,23 @@ def getCustomNewspaper(sid):
 
 @app.route("/characterprofile/<sid>")
 def getCustomCharacterProfile(sid):
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    lst = cur.fetchall()
+    if len(lst) == 0:
+        return "Create account or log in"
     cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (sid,))
     charlst = cur.fetchall()
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     namelst = cur.fetchall()
     return render_template('characterprofile.html', sid = sid, curid = 3, username=namelst[0][0])
-# @app.route("/chat/<sid>")
+
+@app.route("/chat/<sid>")
+def getCustomChat(sid):
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    lst = cur.fetchall()
+    if len(lst) == 0:
+        return "Create account or log in"
+    return render_template('chat.html', sid=sid, curid = 5, username= namelst[0][0])
 
 ### UPLOADS!!!
 @app.route("/account/")

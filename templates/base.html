@@ -48,8 +48,16 @@
         {% else %}
         <li><a href="/newspaper/{{sid}}"><span class="glyphicon glyphicon-book"></span> Newspaper</a></li>
         {% endif %}
+        {% if curid == 3 %}
+        <li class="active"><a href="/characterprofile/{{sid}}"><span class="glyphicon glyphicon-knight"></span> Character Profile</a></li>
+        {% else %}
         <li><a href="/characterprofile/{{sid}}"><span class="glyphicon glyphicon-knight"></span> Character Profile</a></li>
+        {% endif %}
+        {% if curid == 5 %}
         <li><a href="/chat/{{sid}}"><span class="glyphicon glyphicon-comment"></span> Chat</a></li>
+        {% else %}
+        <li class="active"><a href="/chat/{{sid}}"><span class="glyphicon glyphicon-comment"></span> Chat</a></li>
+        {% endif %}
       </ul>
       {% endif %}
       <ul class="nav navbar-nav navbar-right">
