@@ -62,9 +62,9 @@ def newStudent():
 @app.route("/slogin")
 def loginStudent():
     email = request.args['email']
-    email = email.replace('%40', "@")
+    myemail = email.replace('%40', "@")
     password = request.args['hp']
-    cur.execute("""SELECT * from students where email = %s;""", (email,))
+    cur.execute("""SELECT * from students where email = %s;""", (myemail,))
     lst = cur.fetchall()
     if len(lst) == 0:
         return "Please create a student account first"
@@ -81,33 +81,18 @@ def loginStudent():
         return "Password is wrong. Shame on you."
     return "Student account does not exist yet"
 
-@app.route("/pcreate/<email>/<password>")
-def newProfessor(email, password):
+@app.route("/pcreate/<name>/<email>/<password>")
+def newProfessor(name, email, password):
     cur.execute("""SELECT * from professor where email = %s;""", (email,))
     lst = cur.fetchall()
     if len(lst) != 0:
         return "Professor Account already exists! Please login to your account."
     hashpassword = hashed_password(password)
     print("CREATED PASSWORD HASH")
-    cur.execute("""INSERT INTO professor (pid, email, hashpswd) VALUES ((SELECT floor(random()*(20003-434+1))+10), %s, %s);""",(email,hashpassword))
+    cur.execute("""INSERT INTO professor (pid, name, email, hashpswd) VALUES ((SELECT floor(random()*(2034343003-4343434+1))+10), %s, %s, %s);""",(name, email, hashpassword))
     print("PROFESSOR ACCOUNT CREATED")
     conn.commit()
     return "Professor account created!"
-
-@app.route("/plogin/<email>/<password>")
-def loginProfessor(email, password):
-    cur.execute("""SELECT hashpswd from professor where email = %s;""", (email,))
-    lst = cur.fetchall()
-    # Check password to hashed pass in table
-    if len(lst) == 0:
-        return "Professor account not created. Please create an account first."
-    if check_password_hash(lst[0][0], password):
-        cur.execute("""SELECT * from professor where email = %s;""", (email,))
-        lst = cur.fetchall()
-        return "Logged in "+str(lst)
-    if not check_password_hash(lst[0][0], password):
-        return "Password is wrong. Shame on you."
-    return "Some error -- Contact Webmaster"
 
 @app.route("/sjoin/<sid>")
 def gameJoinStudent(sid):
@@ -140,21 +125,6 @@ def gameJoinStudent(sid):
     conn.commit()
     print("STUDENT LINKED TO CHARACTER")
     return redirect("http://www.rttportal.com/dashboard/"+str(sid))
-
-@app.route("/pjoin/<email>/<gameName>")
-def gameJoinProfessor(email, gameName):
-    cur.execute("""SELECT * from professor where email = %s;""", (email,))
-    lst = cur.fetchall()
-    if len(lst) == 0:
-        return "Professor does not exist. Register first."
-    cur.execute("""SELECT * from game where title = %s;""", (gameName,))
-    lst = cur.fetchall()
-    if len(lst) != 0:
-        return "A Game with this name already exists"
-    cur.execute("""INSERT INTO game (title) VALUES (%s);""",(gameName,))
-    cur.execute("""INSERT INTO professor_game (pid, gid) VALUES ((SELECT pid from professor where email = %s), (SELECT gid from game where title = %s));""", (email, gameName))
-    conn.commit()
-    return "Professor has created game"
 
 @app.route("/dashboard/<sid>")
 def getCustomDashboard(sid):
@@ -234,7 +204,7 @@ def accountUpdate(sid):
         hashpassword = hashed_password(password)
         cur.execute("""UPDATE students SET hashpswd = %s WHERE sid = %s;""", (hashpassword, sid))
         conn.commit()
-    return redirect("http://www.rttportal.com/account/"+str(sid))
+    return redirect("http://www.rttportal.com/dashboard/"+str(sid))
 
 
 
@@ -276,3 +246,69 @@ def submit_form():
     print(avatar_url)
 
     return str(avatar_url)
+
+
+##### ADMIN #####
+@app.route("/admin")
+def adminLogin():
+    return render_template("adminlogin.html")
+
+@app.route("/plogin")
+def loginProfessor():
+    email = request.args['email']
+    password = request.args['password']
+    cur.execute("""SELECT hashpswd from professor where email = %s;""", (email,))
+    lst = cur.fetchall()
+    # Check password to hashed pass in table
+    if len(lst) == 0:
+        return "Professor account not created. Please create an account first."
+    if check_password_hash(lst[0][0], password):
+        cur.execute("""SELECT pid from professor where email = %s;""", (email,))
+        mylst = cur.fetchall()
+        pid = mylst[0][0]
+        return redirect("http://www.rttportal.com/admin/dashboard/"+str(pid))
+    if not check_password_hash(lst[0][0], password):
+        return "Password is wrong. Shame on you."
+    return "Some error -- Contact Webmaster"
+
+
+@app.route("/admin/dashboard/<pid>")
+def admindash(pid):
+    cur.execute("""SELECT name from professor where pid = %s;""", (pid,))
+    name = cur.fetchall()
+    name = name[0][0]
+    cur.execute("""SELECT gid from professor_game where pid = %s;""",(pid,))
+    gids = cur.fetchall()
+    cleangidlist = []
+    for gid in gids:
+        cleangidlist.append(gid[0])
+    cleangamelst = []
+    for gid in cleangidlist:
+        cur.execute("""SELECT gid, title from game where gid = %s;""", (gid,))
+        title = cur.fetchall()
+        cleangamelst.append((title[0][0], title[0][1]))
+    return render_template("adminindex.html", pid = pid, username = name, titlelist = cleangamelst)
+
+@app.route("/admin/addGame/<pid>")
+def adminaddgame(pid):
+    cur.execute("""SELECT email from professor where pid = %s;""", (pid,))
+    email = cur.fetchall()
+    email = email[0][0]
+    return render_template("adminaddgame.html", pid = pid, email = email)
+
+@app.route("/pjoin/<pid>")
+def gameJoinProfessor(pid):
+    gameName = request.args['gameName']
+    cur.execute("""SELECT * from professor where pid = %s;""", (pid,))
+    lst = cur.fetchall()
+    if len(lst) == 0:
+        return "Professor does not exist. Register first."
+    cur.execute("""SELECT * from game where title = %s;""", (gameName,))
+    lst = cur.fetchall()
+    if len(lst) != 0:
+        return "A Game with this name already exists"
+    cur.execute("""INSERT INTO game (title) VALUES (%s);""",(gameName,))
+    cur.execute("""INSERT INTO professor_game (pid, gid) VALUES (%s, (SELECT gid from game where title = %s));""", (pid, gameName))
+    conn.commit()
+    print("PROFESSOR GAME CREATED AND LINKED TO PID")
+    return redirect("http://www.rttportal.com/admin/dashboard/"+str(pid))
