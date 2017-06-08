@@ -223,8 +223,9 @@ def getCustomAccount(sid):
 @app.route("/accountUpdate/<sid>")
 def accountUpdate(sid):
     name = request.args['name']
+    password = request.args['password']
     if name != "":
-        name.replace("%20", " ")
+        name.replace("+", " ")
         name = name.title()
         cur.execute("""UPDATE students SET name = %s WHERE sid = %s;""", (name, sid))
         conn.commit()
