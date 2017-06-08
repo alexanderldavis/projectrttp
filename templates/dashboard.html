@@ -7,19 +7,19 @@
   {% if not gameinfo %}
   <h3>You are not currently enrolled in any games! Enter your invitation code below to join a game!</h3>
   <form id="formsearch" class="form-inline" action="/sjoin/{{sid}}" method="get">
-    <span class="glyphicon glyphicon-user"></span>
+    <span class="glyphicon glyphicon-asterisk"></span>
     <input class="form-control" type="text" name="inviteCode" placeholder="XXXXX-00000"><br />
-    <button class="btn btn-primary" type="submit"></span></button>
+    <button id="submitbutton" class="btn btn-primary" type="submit"></button>
   </form>
   {% else %}
     {% for (charname, gametitle) in gameinfo %}
-    <p>You are playing {{charname}} in {{gametitle}}</p>
+    <p>You are playing as {{charname}} in {{gametitle}}</p>
     {% endfor %}
     <h3>Add a game:</h3>
     <form id="formsearch" class="form-inline" action="/sjoin/{{sid}}" method="get">
-      <span class="glyphicon glyphicon-user"></span>
+      <span class="glyphicon glyphicon-asterisk"></span>
       <input class="form-control" type="text" name="inviteCode" placeholder="XXXXX-00000"><br />
-      <button class="btn btn-primary" type="submit"></span></button>
+      <button id="submitbutton" class="btn btn-primary" type="submit"></button>
     </form>
   {% endif %}
   <script>

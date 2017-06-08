@@ -38,26 +38,10 @@
       {% if curid == 0 %}
       {% else %}
       <ul class="nav navbar-nav">
-        {% if curid == 1 %}
-        <li class="active"><a href="/dashboard/{{sid}}"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
-        {% else %}
-        <li><a href="/dashboard/{{sid}}"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
-        {% endif %}
-        {% if curid == 2 %}
-        <li class="active"><a href="/newspaper/{{sid}}"><span class="glyphicon glyphicon-book"></span> Newspaper</a></li>
-        {% else %}
-        <li><a href="/newspaper/{{sid}}"><span class="glyphicon glyphicon-book"></span> Newspaper</a></li>
-        {% endif %}
-        {% if curid == 3 %}
-        <li class="active"><a href="/characterprofile/{{sid}}"><span class="glyphicon glyphicon-knight"></span> Character Profile</a></li>
-        {% else %}
-        <li><a href="/characterprofile/{{sid}}"><span class="glyphicon glyphicon-knight"></span> Character Profile</a></li>
-        {% endif %}
-        {% if curid == 5 %}
-        <li><a href="/chat/{{sid}}"><span class="glyphicon glyphicon-comment"></span> Chat</a></li>
-        {% else %}
-        <li class="active"><a href="/chat/{{sid}}"><span class="glyphicon glyphicon-comment"></span> Chat</a></li>
-        {% endif %}
+        <li class={{ "active" if curid==1 else "" }}><a href="/dashboard/{{sid}}"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+        <li class={{ "active" if curid==2 else "" }}><a href="/newspaper/{{sid}}"><span class="glyphicon glyphicon-book"></span> Newspaper</a></li>
+        <li class={{ "active" if curid==3 else "" }}><a href="/characterprofile/{{sid}}"><span class="glyphicon glyphicon-knight"></span> Character Profile</a></li>
+        <li class={{ "active" if curid==5 else "" }}><a href="/chat/{{sid}}"><span class="glyphicon glyphicon-comment"></span> Chat</a></li>
       </ul>
       {% endif %}
       <ul class="nav navbar-nav navbar-right">
@@ -68,7 +52,7 @@
           <div id="usercircle" onmouseover="hoverUser()" onmouseleave="leaveUser()" style="background-image:url(https://upload.wikimedia.org/wikipedia/commons/7/73/Jacques_Chirac_2.jpg)">
           <div id="usermenu" onmouseover="hoverUserMenu()" onmouseleave="leaveUserMenu()">
             <ul>
-              <li><a href="/#"> In-game Name</a></li>
+              <li>In-game Name</li>
               <li><a href="/account/{{sid}}"><span class="glyphicon glyphicon-user"></span> {{ username }}'s Account</a></li>
               <!-- <li><a href="/#"><span class="glyphicon glyphicon-option-horizontal"></span> Options</a></li> -->
               <li><a href="/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
