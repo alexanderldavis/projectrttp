@@ -182,19 +182,13 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="list-group">
-
-
-                                <a href="#" class="list-group-item">
-                                    GameName
+                                {% for (gid, title) in titlelist %}
+                                <a href="http://www.rttportal.com/admin/game/{{sid}}/{{gid}}" class="list-group-item">
+                                    {{title}}
                                     <span class="pull-right text-muted small"><em>Click to view options</em>
                                     </span>
                                 </a>
-                                <a href="#" class="list-group-item">
-                                    GameName
-                                    <span class="pull-right text-muted small"><em>Click to view options</em>
-                                    </span>
-                                </a>
-
+                                {% endfor %}
                             </div>
                             <a href="http://www.rttportal.com/admin/addGame/{{pid}}" class="btn btn-default btn-block">Add Game</a>
                         </div>

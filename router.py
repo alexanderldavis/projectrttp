@@ -62,9 +62,9 @@ def newStudent():
 @app.route("/slogin")
 def loginStudent():
     email = request.args['email']
-    email = email.replace('%40', "@")
+    myemail = email.replace('%40', "@")
     password = request.args['hp']
-    cur.execute("""SELECT * from students where email = %s;""", (email,))
+    cur.execute("""SELECT * from students where email = %s;""", (myemail,))
     lst = cur.fetchall()
     if len(lst) == 0:
         return "Please create a student account first"
