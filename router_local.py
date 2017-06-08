@@ -100,11 +100,21 @@ def getCustomCharacterProfile(sid):
     return render_template('characterprofile.html', sid = 'sid', curid = 3, username='username')
 # @app.route("/chat/<sid>")
 
-### UPLOADS!!!
-@app.route("/account/")
-def account():
-    return render_template('account.html')
+@app.route("/chat/<sid>")
+def getCustomChat(sid):
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    lst = cur.fetchall()
+    if len(lst) == 0:
+        return "Create account or log in"
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    namelst = cur.fetchall()
+    return render_template('chat.html', sid=sid, curid = 5, username= namelst[0][0])
 
+@app.route("/account/<sid>")
+def getCustomAccount(sid):
+    return render_template('account.html', sid=sid, curid = 6, username = "username")
+
+### UPLOADS!!!
 @app.route("/myaccount/")
 def myaccount():
     return render_template("myaccount.html")

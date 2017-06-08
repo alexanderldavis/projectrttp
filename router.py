@@ -218,7 +218,7 @@ def getCustomAccount(sid):
         return "Create account or log in"
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     namelst = cur.fetchall()
-    return render_template('account.html', sid=sid, curid = 0, username = namelst[0][0])
+    return render_template('account.html', sid=sid, curid = 6, username = namelst[0][0])
 
 @app.route("/accountUpdate/<sid>")
 def accountUpdate(sid):
