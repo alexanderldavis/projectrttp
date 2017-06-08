@@ -81,15 +81,15 @@ def loginStudent():
         return "Password is wrong. Shame on you."
     return "Student account does not exist yet"
 
-@app.route("/pcreate/<email>/<password>")
-def newProfessor(email, password):
+@app.route("/pcreate/<name>/<email>/<password>")
+def newProfessor(name, email, password):
     cur.execute("""SELECT * from professor where email = %s;""", (email,))
     lst = cur.fetchall()
     if len(lst) != 0:
         return "Professor Account already exists! Please login to your account."
     hashpassword = hashed_password(password)
     print("CREATED PASSWORD HASH")
-    cur.execute("""INSERT INTO professor (pid, email, hashpswd) VALUES ((SELECT floor(random()*(2034343003-4343434+1))+10), %s, %s);""",(email,hashpassword))
+    cur.execute("""INSERT INTO professor (pid, name, email, hashpswd) VALUES ((SELECT floor(random()*(2034343003-4343434+1))+10), %s, %s, %s);""",(name, email, hashpassword))
     print("PROFESSOR ACCOUNT CREATED")
     conn.commit()
     return "Professor account created!"
