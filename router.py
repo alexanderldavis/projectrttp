@@ -167,7 +167,7 @@ def getCustomDashboard(sid):
     cur.execute("""SELECT * from student_character where sid = %s;""", (sid,))
     mlst = cur.fetchall()
     cleanGamelst = []
-    if len(lst) != 0:
+    if len(mlst) != 0:
         for (gid,) in gamelst:
             print(gid)
             cur.execute("""SELECT title from game where gid = %s;""", (gid,))
