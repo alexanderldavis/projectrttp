@@ -94,21 +94,6 @@ def newProfessor(email, password):
     conn.commit()
     return "Professor account created!"
 
-@app.route("/plogin/<email>/<password>")
-def loginProfessor(email, password):
-    cur.execute("""SELECT hashpswd from professor where email = %s;""", (email,))
-    lst = cur.fetchall()
-    # Check password to hashed pass in table
-    if len(lst) == 0:
-        return "Professor account not created. Please create an account first."
-    if check_password_hash(lst[0][0], password):
-        cur.execute("""SELECT * from professor where email = %s;""", (email,))
-        lst = cur.fetchall()
-        return "Logged in "+str(lst)
-    if not check_password_hash(lst[0][0], password):
-        return "Password is wrong. Shame on you."
-    return "Some error -- Contact Webmaster"
-
 @app.route("/sjoin/<sid>")
 def gameJoinStudent(sid):
     inviteCode = request.args['inviteCode']
@@ -280,13 +265,43 @@ def submit_form():
     return str(avatar_url)
 
 
-
-
-
-
-
 ##### ADMIN #####
 @app.route("/admin")
 def adminLogin():
     return render_template("adminlogin.html")
-    
+
+@app.route("/plogin")
+def loginProfessor():
+    email = request.args['email']
+    password = request.args['password']
+    cur.execute("""SELECT hashpswd from professor where email = %s;""", (email,))
+    lst = cur.fetchall()
+    # Check password to hashed pass in table
+    if len(lst) == 0:
+        return "Professor account not created. Please create an account first."
+    if check_password_hash(lst[0][0], password):
+        cur.execute("""SELECT pid from professor where email = %s;""", (email,))
+        mylst = cur.fetchall()
+        pid = mylst[0][0]
+        return redirect("http://www.rttportal.com/admin/dashboard/"+str(pid))
+    if not check_password_hash(lst[0][0], password):
+        return "Password is wrong. Shame on you."
+    return "Some error -- Contact Webmaster"
+
+
+@app.route("/admin/dashboard/<pid>")
+def admindash(pid):
+    cur.execute("""SELECT name from professor where pid = %s;""", (pid,))
+    name = cur.fetchall()
+    name = name[0][0]
+    cur.execute("""SELECT gid from professor_game where pid = %s;""",(pid,))
+    gids = cur.fetchall()
+    cleangidlist = []
+    for gid in gids:
+        cleangidlist.append(gid[0])
+    cleangamelst = []
+    for gid in cleangidlist:
+        cur.execute("""SELECT title from game where gid = %s;""", (gid,))
+        title = cur.fetchall()
+        cleangamelst.append(title[0][0])
+    return render_template("adminindex.html", pid = pid, username = name, titlelist = cleangamelst)

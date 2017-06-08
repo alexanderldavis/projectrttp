@@ -23,7 +23,7 @@ print("TABLES DELETED")
 
 ## CREATE NEW TABLES
 cur.execute("""CREATE TABLE students (sid int unique, name varchar(300), email varchar(200) unique, hashpswd varchar(200));""")
-cur.execute("""CREATE TABLE professor (pid int unique, email varchar(200) unique, hashpswd varchar(200));""")
+cur.execute("""CREATE TABLE professor (pid int unique, name varchar(300), email varchar(200) unique, hashpswd varchar(200));""")
 cur.execute("""CREATE TABLE game (gid serial unique, title varchar(200) unique);""")
 cur.execute("""CREATE TABLE students_game (sid int, gid int, FOREIGN KEY (sid) references students(sid), FOREIGN KEY (gid) references game(gid));""")
 cur.execute("""CREATE TABLE professor_game (pid int, gid int, FOREIGN KEY (pid) references professor(pid), FOREIGN KEY (gid) references game(gid));""")
