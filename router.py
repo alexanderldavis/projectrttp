@@ -305,3 +305,27 @@ def admindash(pid):
         title = cur.fetchall()
         cleangamelst.append((title[0][0], title[0][1]))
     return render_template("adminindex.html", pid = pid, username = name, titlelist = cleangamelst)
+
+@app.route("/admin/addGame/<pid>")
+def adminaddgame(pid):
+    cur.execute("""SELECT email from professor where pid = %s;""", (pid,))
+    email = cur.fetchall()
+    email = email[0][0]
+    return render_template("adminaddgame.html", pid = pid, email = email)
+
+@app.route("/pjoin/<pid>")
+def gameJoinProfessor(pid):
+    gameName = request.args['gameName']
+    cur.execute("""SELECT * from professor where pid = %s;""", (pid,))
+    lst = cur.fetchall()
+    if len(lst) == 0:
+        return "Professor does not exist. Register first."
+    cur.execute("""SELECT * from game where title = %s;""", (gameName,))
+    lst = cur.fetchall()
+    if len(lst) != 0:
+        return "A Game with this name already exists"
+    cur.execute("""INSERT INTO game (title) VALUES (%s);""",(gameName,))
+    cur.execute("""INSERT INTO professor_game (pid, gid) VALUES (%s, (SELECT gid from game where title = %s));""", (pid, gameName))
+    conn.commit()
+    print("PROFESSOR GAME CREATED AND LINKED TO PID")
+    return redirect("http://www.rttportal.com/admin/dashboard/"+str(pid))
