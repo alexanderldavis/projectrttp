@@ -31,6 +31,10 @@ h1 {
 	letter-spacing: .1em;
 }
 
+nav a:hover {
+	font-weight: normal;
+}
+
 #userbox {
 	position: absolute;
 	right: 0px;
@@ -58,6 +62,10 @@ h1 {
 	opacity: 1;
 	width: 150px;
 	height: 150px;
+}
+
+#usermenu a:hover {
+	text-decoration: underline;
 }
 
 #usermenu ul {
