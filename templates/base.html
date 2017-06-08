@@ -65,12 +65,12 @@
         <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
         {% else %}
         <div id="userbox">
-          <div id="usercircle" onmouseover="hoverUser()" onmouseleave="leaveUser()" style="background-image:url(https://cdn-s3.si.com/s3fs-public/golf/2016/01/07/Screen%20Shot%202016-01-07%20at%2011.49.20%20AM.png)">
+          <div id="usercircle" onmouseover="hoverUser()" onmouseleave="leaveUser()" style="background-image:url(https://upload.wikimedia.org/wikipedia/commons/7/73/Jacques_Chirac_2.jpg)">
           <div id="usermenu" onmouseover="hoverUserMenu()" onmouseleave="leaveUserMenu()">
             <ul>
               <li><a href="/#"> In-game Name</a></li>
-              <li><a href="/#"><span class="glyphicon glyphicon-user"></span> {{ username }}'s Account</a></li>
-              <li><a href="/#"><span class="glyphicon glyphicon-option-horizontal"></span> Options</a></li>
+              <li><a href="/account/{{sid}}"><span class="glyphicon glyphicon-user"></span> {{ username }}'s Account</a></li>
+              <!-- <li><a href="/#"><span class="glyphicon glyphicon-option-horizontal"></span> Options</a></li> -->
               <li><a href="/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
           </div>
