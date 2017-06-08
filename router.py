@@ -301,7 +301,7 @@ def admindash(pid):
         cleangidlist.append(gid[0])
     cleangamelst = []
     for gid in cleangidlist:
-        cur.execute("""SELECT title from game where gid = %s;""", (gid,))
+        cur.execute("""SELECT gid, title from game where gid = %s;""", (gid,))
         title = cur.fetchall()
-        cleangamelst.append(title[0][0])
+        cleangamelst.append(title[0][0], title[0][1])
     return render_template("adminindex.html", pid = pid, username = name, titlelist = cleangamelst)
