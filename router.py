@@ -132,7 +132,7 @@ def gameJoinStudent(sid):
     lst = cur.fetchall()
     conn.commit()
     if len(lst) == 0:
-        return "Charcter not yet created or InviteCode invalid"
+        return "Character not yet created or InviteCode invalid"
     cur.execute("""INSERT INTO student_character (sid, cid) VALUES (%s, %s);""", (sid, characterID))
     conn.commit()
     print("STUDENT LINKED TO CHARACTER")
