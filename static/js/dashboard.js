@@ -2,14 +2,14 @@ $( document ).ready(function() {
 
   $(".addgamebox").click(function() {
     if ($(this).data("viewingform")) {
-      // returning gamebox to original state
+      /* // returning gamebox to original state
       $(this).find(".gamelabel").css('opacity', '');
       $(this).css('border', '');
       $(this).css('box-shadow', '');
       $(this).find("#gameform").addClass("invisible");
       $(this).css('background', '');
       $(this).data("viewingform", false);
-      $(this).find(".gamelabel").show(100);
+      $(this).find(".gamelabel").show(100); */
     } else {
       // melt away gamelabel, display form
       //$(this).find(".gamelabel").css('opacity', '0');
