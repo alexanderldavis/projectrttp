@@ -296,6 +296,24 @@ def adminaddgame(pid):
     email = email[0][0]
     return render_template("adminaddgame.html", pid = pid, email = email)
 
+@app.route("/admin/students/<pid>")
+def adminstudents(pid):
+    cur.execute("""SELECT gid from professor_game where pid = %s;""", (pid,))
+    gidlst = cur.fetchall()
+    cleangidlst = []
+    for gid in gidlst:
+        cleangidlst.append(gid[0])
+    cleanstudentgidlist = []
+    for gid in cleangidlst:
+        cur.execute("""SELECT students.sid, students.name, students.email, character.name from students JOIN students_game on (students.sid = students_game.sid) JOIN student_character ON (students.sid = student_character.sid) JOIN character ON (character.cid = student_character.cid) where gid = %s;""",(gid,))
+        studentlist = cur.fetchall()
+        cur.execute("""SELECT title from game where gid = %s;""", (gid,))
+        title = cur.fetchall()
+        title = title[0][0]
+        cleanstudentgidlist.append((gid, title, studentlist))
+    print(cleanstudentgidlist)
+    return render_template("adminstudents.html")
+
 @app.route("/pjoin/<pid>")
 def gameJoinProfessor(pid):
     gameName = request.args['gameName']
