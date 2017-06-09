@@ -312,7 +312,7 @@ def adminstudents(pid):
         title = title[0][0]
         cleanstudentgidlist.append((gid, title, studentlist))
     print(cleanstudentgidlist)
-    return render_template("adminstudents.html")
+    return render_template("adminstudents.html", cleanstudentgidlist = cleanstudentgidlist)
 
 @app.route("/pjoin/<pid>")
 def gameJoinProfessor(pid):
