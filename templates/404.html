@@ -1,19 +1,6 @@
-{% extends "base.html" %}
-
-{% block title %}RTTPortal{% endblock %}
-
-{% block page_specific_css %}
-<link rel="stylesheet" href="/static/css/dashboard.css">
-{% endblock %}
-{% block page_specific_js %}
-  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
-{% endblock %}
-
-{% block content %}
-
   <h1>Page Not Found</h1>
-  <p>What you were looking for is just not there.
-  <p><a href="{{ url_for('index') }}">go somewhere nice</a>
+  <p>What you were looking for is just not there. :( Sorry.
+  <p><a href="{{ url_for('index') }}">There's no place like home</a>
 
   <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -24,5 +11,3 @@
       ga('create', 'UA-100590857-1', 'auto');
       ga('send', 'pageview');
   </script>
-
-{% endblock %}
