@@ -4,6 +4,7 @@ $( document ).ready(function() {
     if ($(this).data("viewingform")) {
       // returning gamebox to original state
       $(this).find(".gamelabel").css('opacity', '');
+      $(this).css('border', '');
       $(this).css('box-shadow', '');
       $(this).find("#gameform").addClass("invisible");
       $(this).css('background', '');

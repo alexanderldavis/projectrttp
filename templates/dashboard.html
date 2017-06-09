@@ -23,10 +23,9 @@
       {% for (charname, gametitle) in gameinfo %}
       <div class="gamebox"><div class="gamelabel">{{gametitle}}<hr />{{charname}}</div></div>
       {% endfor %}
-      <div class="gamebox addgamebox">
+      <div class="gamebox addgamebox center">
         <div class="gamelabel">Add a game<br /><span id="plussign" class="glyphicon glyphicon-plus"></span></div>
         <form id="gameform" class="invisible" action="/sjoin/{{sid}}" method="get">
-          <span class="glyphicon glyphicon-asterisk"></span>
           <input class="form-control" type="text" name="inviteCode" placeholder="XXXXX-00000"><br />
           <button id="submitbutton" class="btn btn-primary" type="submit"></button>
         </form>
