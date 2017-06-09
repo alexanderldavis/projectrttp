@@ -368,3 +368,11 @@ def gameJoinProfessor(pid):
     conn.commit()
     print("PROFESSOR GAME CREATED AND LINKED TO PID")
     return redirect("http://www.rttportal.com/admin/dashboard/"+str(pid))
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html')
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template('404.html')
