@@ -382,7 +382,7 @@ def gameadminassignments(pid, gid):
         cleanaidlist.append((assignment[0], assignment[1]))
     finalcleansublst = []
     for (aid, title) in cleanaidlist:
-        cur.execute("""SELECT submissions.uploadTime, students.name, students.email, submissions.link FROM submissions JOIN student_submissions ON (student.sid = student_submissions.sid) JOIN assignments_submissions ON (submissions.subid = assignments_submissions.subid) WHERE assignments_submissions.aid = %s;""", (aid,))
+        cur.execute("""SELECT submissions.uploadTime, students.name, students.email, submissions.link FROM students JOIN student_submissions ON (students.sid = student_submissions.sid) JOIN submissions on (submissions.subid = student_submissions.subid) JOIN assignments_submissions ON (submissions.subid = assignments_submissions.subid) WHERE assignments_submissions.aid = %s;""", (aid,))
         submissioninfolst = cur.fetchall()
         conn.commit()
         for submission in submissioninfolst:
