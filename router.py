@@ -369,6 +369,9 @@ def gameJoinProfessor(pid):
     print("PROFESSOR GAME CREATED AND LINKED TO PID")
     return redirect("http://www.rttportal.com/admin/dashboard/"+str(pid))
 
+@app.route("/admin/game/<pid>/<gid>")
+    return render_template("admingameassignment.html", pid = pid, gid = gid)
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html')
