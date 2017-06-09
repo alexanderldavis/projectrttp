@@ -370,6 +370,7 @@ def gameJoinProfessor(pid):
     return redirect("http://www.rttportal.com/admin/dashboard/"+str(pid))
 
 @app.route("/admin/game/<pid>/<gid>")
+def gameadminassignments(pid, gid):
     return render_template("admingameassignment.html", pid = pid, gid = gid)
 
 @app.errorhandler(404)
