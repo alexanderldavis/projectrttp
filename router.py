@@ -371,7 +371,32 @@ def gameJoinProfessor(pid):
 
 @app.route("/admin/game/<pid>/<gid>")
 def gameadminassignments(pid, gid):
-    return render_template("admingameassignment.html", pid = pid, gid = gid)
+    cur.execute("""SELECT assignments.aid, assignments.title from assignments JOIN game_assignments on (assignments.aid = game_assignments.aid) where game_assignments.gid = %s;""", (gid,))
+    assignmentlst = cur.fetchall()
+    conn.commit()
+    cleanassignmentlist = []
+    cleanaidlist = []
+    titlelst = []
+    for assignment in assignmentlst:
+        cleanassignmentlist.append((assignment[0],assignment[1]))
+        cleanaidlist.append((assignment[0], assignment[1]))
+    finalcleansublst = []
+    for (aid, title) in cleanaidlist:
+        cur.execute("""SELECT submissions.uploadTime, students.name, students.email, submissions.link FROM submissions JOIN student_submissions ON (student.sid = student_submissions.sid) JOIN assignments_submissions ON (submissions.subid = assignments_submissions.subid) WHERE assignments_submissions.aid = %s;""", (aid,))
+        submissioninfolst = cur.fetchall()
+        conn.commit()
+        for submission in submissioninfolst:
+            finalcleansublst.append((aid, title, (submissioninfolst[0], submissioninfolst[1], submissioninfolst[2], submissioninfolst[3])))
+    return render_template("admingameassignment.html", pid = pid, gid = gid, assignments = finalcleansublst)
+
+#Add assignments:
+#insert into assignments (aid, title, due) values (1134343, 'title', '2004-10-19 10:23:54');
+#insert into game_assignments (gid, aid) values (1, 1134343);
+
+#Add submissions:
+#insert into submissions (subid, link, uploadTime) values (112234, 'link', '2004-10-19 10:23:54');
+#insert into student_submissions (sid, subid) values (27644, 112234);
+#insert into assignments_submissions (aid, subid) values (1134343, 112234);
 
 @app.errorhandler(404)
 def page_not_found(e):

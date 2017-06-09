@@ -34,7 +34,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">RTTPortal Admin</a>
+                <a class="navbar-brand" href="http://www.rttportal.com/admin/dashboard/{{pid}}">RTTPortal Admin</a>
             </div>
             <ul class="nav navbar-top-links navbar-right">
                 <li class="dropdown">
@@ -83,14 +83,15 @@
             <!-- /.row -->
 
             <div class="row">
-                    <form action="/plogin" method="get">
+                    <form action="/admin/addassignment" method="get">
                         <div class="form-group">
                             <button class="form-control" type="submit">Add Assignment</button>
                         </div>
                     </form>
+                    {% for (aid, title, submissions) in assignments %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            {{assignmentName}}
+                            {{title}}
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -105,12 +106,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                      {% for (upload, name, email, link) in submissions %}
                                         <tr>
-                                            <td>10/2/97</td>
-                                            <td>Alex Davis</td>
-                                            <td>alexander.davis54@gmail.com</td>
-                                            <td><a href="{{url1}}">PDF</a> | <a href="{{url2}}">WORD</a></td>
+                                            <td>{{upload}}</td>
+                                            <td>{{name}}</td>
+                                            <td>{{email}}</td>
+                                            <td><a href="{{link}}">PDF</a> | <a href="{{link}}">WORD</a></td>
                                         </tr>
+                                      {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -119,6 +122,7 @@
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
+                    {% endfor %}
 
                 <!-- /.col-lg-6 -->
 
