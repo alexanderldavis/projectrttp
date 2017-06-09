@@ -46,6 +46,7 @@ def newStudent():
     password = request.args['hp']
     cur.execute("""SELECT * from students where email = %s;""",(email,))
     lst = cur.fetchall()
+    conn.commit()
     if len(lst) == 0:
         print("""NOW ADDING NEW STUDENT""")
         hashpassword = hashed_password(password)
@@ -55,6 +56,7 @@ def newStudent():
         print("INSERTED NEW STUDENT")
         cur.execute("""SELECT sid from students where email = %s;""",(email,))
         sidlst = cur.fetchall()
+        conn.commit()
         sid = sidlst[0][0]
         return redirect("http://www.rttportal.com/dashboard/"+str(sid))
     return "User already exists! Log In instead!"
@@ -66,15 +68,19 @@ def loginStudent():
     password = request.args['hp']
     cur.execute("""SELECT * from students where email = %s;""", (myemail,))
     lst = cur.fetchall()
+    conn.commit()
     if len(lst) == 0:
         return "Please create a student account first"
     cur.execute("""SELECT hashpswd from students where email = %s;""", (email,))
     lst = cur.fetchall()
+    conn.commit()
     if check_password_hash(lst[0][0], password):
         cur.execute("""SELECT sid from students where email = %s;""", (email,))
         lst = cur.fetchall()
+        conn.commit()
         cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (lst[0][0],))
         charlst = cur.fetchall()
+        conn.commit()
         #return render_template('dashboard.html', sid = lst[0][0], curid = 1, username="John", description = charlst[0][2])
         return redirect("http://www.rttportal.com/dashboard/"+str(lst[0][0]))
     if not check_password_hash(lst[0][0], password):
@@ -86,13 +92,14 @@ def newProfessor(name, email, password):
     name = name.replace("+", " ")
     cur.execute("""SELECT * from professor where email = %s;""", (email,))
     lst = cur.fetchall()
+    conn.commit()
     if len(lst) != 0:
         return "Professor Account already exists! Please login to your account."
     hashpassword = hashed_password(password)
     print("CREATED PASSWORD HASH")
     cur.execute("""INSERT INTO professor (pid, name, email, hashpswd) VALUES ((SELECT floor(random()*(2034343003-4343434+1))+10), %s, %s, %s);""",(name, email, hashpassword))
-    print("PROFESSOR ACCOUNT CREATED")
     conn.commit()
+    print("PROFESSOR ACCOUNT CREATED")
     return "Professor account created!"
 
 @app.route("/sjoin/<sid>")
@@ -104,15 +111,18 @@ def gameJoinStudent(sid):
     gameName = inviteCode.split("-")[0]
     cur.execute("""SELECT * from students where sid = %s;""", (sid,))
     lst = cur.fetchall()
+    conn.commit()
     if len(lst) == 0:
         return "You must create a student account first!"
     cur.execute("""SELECT gid from game where title = %s;""", (gameName,))
     lst = cur.fetchall()
+    conn.commit()
     if len(lst) == 0:
         return "Game not yet created or InviteCode invalid"
     gid = lst[0][0]
     cur.execute("""SELECT * from students_game where sid = %s and gid = %s;""", (sid, gid))
     lst = cur.fetchall()
+    conn.commit()
     if len(lst) != 0:
         return "student already in game"
     cur.execute("""INSERT INTO students_game (sid, gid) VALUES (%s, %s);""", (sid, gid))
@@ -120,6 +130,7 @@ def gameJoinStudent(sid):
     print("STUDENT JOINED GAME")
     cur.execute("""SELECT * from character where cid = %s;""", (characterID,))
     lst = cur.fetchall()
+    conn.commit()
     if len(lst) == 0:
         return "Charcter not yet created or InviteCode invalid"
     cur.execute("""INSERT INTO student_character (sid, cid) VALUES (%s, %s);""", (sid, characterID))
@@ -131,22 +142,27 @@ def gameJoinStudent(sid):
 def getCustomDashboard(sid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     mylst = cur.fetchall()
+    conn.commit()
     if len(mylst) == 0:
         return "Create account or log in"
     # return render_template('dashboard.html', sid = sid, curid = 1, username="John", description = charlst[0][2])
     cur.execute("""SELECT gid from students_game where sid = %s;""",(sid,))
     gamelst = cur.fetchall()
+    conn.commit()
     cur.execute("""SELECT * from student_character where sid = %s;""", (sid,))
     mlst = cur.fetchall()
+    conn.commit()
     cleanGamelst = []
     if len(mlst) != 0:
         for (gid,) in gamelst:
             print(gid)
             cur.execute("""SELECT title from game where gid = %s;""", (gid,))
             gametitle = cur.fetchall()
+            conn.commit()
             gametitle = gametitle[0][0]
             cur.execute("""SELECT name from character where cid = (SELECT cid from student_character where sid = %s);""", (sid,))
             charname = cur.fetchall()
+            conn.commit()
             charname = charname[0][0]
             cleanGamelst.append((charname, gametitle))
     print("###########ENDGAME###########")
@@ -156,6 +172,7 @@ def getCustomDashboard(sid):
 def getCustomNewspaper(sid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     lst = cur.fetchall()
+    conn.commit()
     if len(lst) == 0:
         return "Create account or log in"
     return render_template('newspaper.html', sid = sid, curid = 2, username=lst[0][0])
@@ -164,32 +181,39 @@ def getCustomNewspaper(sid):
 def getCustomCharacterProfile(sid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     lst = cur.fetchall()
+    conn.commit()
     if len(lst) == 0:
         return "Create account or log in"
     cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (sid,))
     charlst = cur.fetchall()
+    conn.commit()
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     namelst = cur.fetchall()
+    conn.commit()
     return render_template('characterprofile.html', sid = sid, curid = 3, username=namelst[0][0])
 
 @app.route("/chat/<sid>")
 def getCustomChat(sid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     lst = cur.fetchall()
+    conn.commit()
     if len(lst) == 0:
         return "Create account or log in"
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     namelst = cur.fetchall()
+    conn.commit()
     return render_template('chat.html', sid=sid, curid = 5, username= namelst[0][0])
 
 @app.route("/account/<sid>")
 def getCustomAccount(sid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     lst = cur.fetchall()
+    conn.commit()
     if len(lst) == 0:
         return "Create account or log in"
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     namelst = cur.fetchall()
+    conn.commit()
     return render_template('account.html', sid=sid, curid = 6, username = namelst[0][0])
 
 @app.route("/accountUpdate/<sid>")
@@ -207,10 +231,7 @@ def accountUpdate(sid):
         conn.commit()
     return redirect("http://www.rttportal.com/dashboard/"+str(sid))
 
-
-
 ### UPLOADS!!!
-
 
 @app.route("/myaccount/")
 def myaccount():
@@ -260,12 +281,14 @@ def loginProfessor():
     password = request.args['password']
     cur.execute("""SELECT hashpswd from professor where email = %s;""", (email,))
     lst = cur.fetchall()
+    conn.commit()
     # Check password to hashed pass in table
     if len(lst) == 0:
         return "Professor account not created. Please create an account first."
     if check_password_hash(lst[0][0], password):
         cur.execute("""SELECT pid from professor where email = %s;""", (email,))
         mylst = cur.fetchall()
+        conn.commit()
         pid = mylst[0][0]
         return redirect("http://www.rttportal.com/admin/dashboard/"+str(pid))
     if not check_password_hash(lst[0][0], password):
@@ -277,9 +300,11 @@ def loginProfessor():
 def admindash(pid):
     cur.execute("""SELECT name from professor where pid = %s;""", (pid,))
     name = cur.fetchall()
+    conn.commit()
     name = name[0][0]
     cur.execute("""SELECT gid from professor_game where pid = %s;""",(pid,))
     gids = cur.fetchall()
+    conn.commit()
     cleangidlist = []
     for gid in gids:
         cleangidlist.append(gid[0])
@@ -287,9 +312,11 @@ def admindash(pid):
     for gid in cleangidlist:
         cur.execute("""SELECT gid, title from game where gid = %s;""", (gid,))
         title = cur.fetchall()
+        conn.commit()
         cleangamelst.append((title[0][0], title[0][1]))
     cur.execute("""SELECT count(students.sid) from students JOIN students_game ON (students.sid = students_game.sid) JOIN game ON (game.gid = students_game.gid) JOIN professor_game on (game.gid = professor_game.gid) where pid = %s;""", (pid,))
     studentcount = cur.fetchall()
+    conn.commit()
     studentcount = studentcount[0][0]
     return render_template("adminindex.html", pid = pid, username = name, titlelist = cleangamelst, studentcount=studentcount)
 
@@ -297,6 +324,7 @@ def admindash(pid):
 def adminaddgame(pid):
     cur.execute("""SELECT email from professor where pid = %s;""", (pid,))
     email = cur.fetchall()
+    conn.commit()
     email = email[0][0]
     return render_template("adminaddgame.html", pid = pid, email = email)
 
@@ -304,6 +332,7 @@ def adminaddgame(pid):
 def adminstudents(pid):
     cur.execute("""SELECT gid from professor_game where pid = %s;""", (pid,))
     gidlst = cur.fetchall()
+    conn.commit()
     cleangidlst = []
     for gid in gidlst:
         cleangidlst.append(gid[0])
@@ -311,8 +340,10 @@ def adminstudents(pid):
     for gid in cleangidlst:
         cur.execute("""SELECT students.sid, students.name, students.email, character.name from students JOIN students_game on (students.sid = students_game.sid) JOIN student_character ON (students.sid = student_character.sid) JOIN character ON (character.cid = student_character.cid) where gid = %s;""",(gid,))
         studentlist = cur.fetchall()
+        conn.commit()
         cur.execute("""SELECT title from game where gid = %s;""", (gid,))
         title = cur.fetchall()
+        conn.commit()
         title = title[0][0]
         cleanstudentgidlist.append((gid, title, studentlist))
     print(cleanstudentgidlist)
@@ -323,13 +354,16 @@ def gameJoinProfessor(pid):
     gameName = request.args['gameName']
     cur.execute("""SELECT * from professor where pid = %s;""", (pid,))
     lst = cur.fetchall()
+    conn.commit()
     if len(lst) == 0:
         return "Professor does not exist. Register first."
     cur.execute("""SELECT * from game where title = %s;""", (gameName,))
     lst = cur.fetchall()
+    conn.commit()
     if len(lst) != 0:
         return "A Game with this name already exists"
     cur.execute("""INSERT INTO game (title) VALUES (%s);""",(gameName,))
+    conn.commit()
     cur.execute("""INSERT INTO professor_game (pid, gid) VALUES (%s, (SELECT gid from game where title = %s));""", (pid, gameName))
     conn.commit()
     print("PROFESSOR GAME CREATED AND LINKED TO PID")
