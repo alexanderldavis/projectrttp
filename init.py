@@ -45,7 +45,27 @@ print("TABLES CREATED")
 # cur.execute("""INSERT INTO character """)
 
 cur.execute("""INSERT INTO character (name, descriptionURL, imageURL) VALUES ('Jacques Chirac', 'https://docs.google.com/document/d/1WOYKuY6ZFRR6s_3Wt2aurdLk_mO7RWhX1KxJ83kbaHI/pub?embedded=true', 'https://upload.wikimedia.org/wikipedia/commons/7/73/Jacques_Chirac_2.jpg');""")
+conn.commit()
+print("POPULATED TABLE CHARACTER")
 
+print("POPULATED TABLE GAME_CHARACTER")
+
+
+cur.execute("""INSERT INTO character (name, descriptionURL, imageURL) VALUES ('Arlette Laguiller', 'https://www.dropbox.com/s/4gedlbi2sddnyjz/Arlette%20Laguiller.docx?dl=0', 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Arlette_Laguiller.jpg');""")
+conn.commit()
+print("POPULATED TABLE CHARACTER")
+
+print("POPULATED TABLE GAME_CHARACTER")
+
+
+cur.execute("""INSERT INTO character (name, descriptionURL, imageURL) VALUES ('Christiana Taubira', 'https://www.dropbox.com/s/zmp3gk4vj3we5qc/Christiana%20Taubira.docx?dl=0', 'https://upload.wikimedia.org/wikipedia/commons/1/1e/Christiane_Taubira_par_Claude_Truong-Ngoc_juin_2013.jpg');""")
+conn.commit()
+print("POPULATED TABLE CHARACTER")
+
+print("POPULATED TABLE GAME_CHARACTER")
+
+
+cur.execute("""INSERT INTO character (name, descriptionURL, imageURL) VALUES ('Noel Mamère', 'https://www.dropbox.com/s/at1mspxgwtwjeiq/Noel%20Mam%C3%A8re.docx?dl=0', 'https://upload.wikimedia.org/wikipedia/commons/1/1a/Noel.Mamere2006.JPG');""")
 conn.commit()
 print("POPULATED TABLE CHARACTER")
 
