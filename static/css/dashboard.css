@@ -38,10 +38,10 @@
 }
 
 #gameform {
-  height: 30px;
-  width: 30px;
-  position: absolute;
-  bottom: 0px;
+	display: inline-block;
+	text-align: center;
+	width: 90%;
+	transition: .2s;
 }
 
 #plussign {
