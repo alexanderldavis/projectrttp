@@ -385,8 +385,10 @@ def gameadminassignments(pid, gid):
         cur.execute("""SELECT submissions.uploadTime, students.name, students.email, submissions.link FROM students JOIN student_submissions ON (students.sid = student_submissions.sid) JOIN submissions on (submissions.subid = student_submissions.subid) JOIN assignments_submissions ON (submissions.subid = assignments_submissions.subid) WHERE assignments_submissions.aid = %s;""", (aid,))
         submissioninfolst = cur.fetchall()
         conn.commit()
+        cleansubmissionlist = []
         for submission in submissioninfolst:
-            finalcleansublst.append((aid, title, (submissioninfolst[0], submissioninfolst[1], submissioninfolst[2], submissioninfolst[3])))
+            cleansubmissionlist.append((submission[0],submission[1],submission[2],submission[3]))
+        finalcleansublst.append((aid, title, cleansubmissionlist))
     return render_template("admingameassignment.html", pid = pid, gid = gid, assignments = finalcleansublst)
 
 #Add assignments:
