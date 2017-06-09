@@ -83,6 +83,7 @@ def loginStudent():
 
 @app.route("/pcreate/<name>/<email>/<password>")
 def newProfessor(name, email, password):
+    name = name.replace("+", " ")
     cur.execute("""SELECT * from professor where email = %s;""", (email,))
     lst = cur.fetchall()
     if len(lst) != 0:
@@ -287,7 +288,10 @@ def admindash(pid):
         cur.execute("""SELECT gid, title from game where gid = %s;""", (gid,))
         title = cur.fetchall()
         cleangamelst.append((title[0][0], title[0][1]))
-    return render_template("adminindex.html", pid = pid, username = name, titlelist = cleangamelst)
+    cur.execute("""SELECT count(students.sid) from students JOIN students_game ON (students.sid = students_game.sid) JOIN game ON (game.gid = students_game.gid) JOIN professor_game on (game.gid = professor_game.gid) where pid = %s;""", (pid,))
+    studentcount = cur.fetchall()
+    studentcount = studentcount[0][0]
+    return render_template("adminindex.html", pid = pid, username = name, titlelist = cleangamelst, studentcount=studentcount)
 
 @app.route("/admin/addGame/<pid>")
 def adminaddgame(pid):
@@ -312,7 +316,7 @@ def adminstudents(pid):
         title = title[0][0]
         cleanstudentgidlist.append((gid, title, studentlist))
     print(cleanstudentgidlist)
-    return render_template("adminstudents.html", cleanstudentgidlist = cleanstudentgidlist)
+    return render_template("adminstudents.html", pid= pid, cleanstudentgidlist = cleanstudentgidlist)
 
 @app.route("/pjoin/<pid>")
 def gameJoinProfessor(pid):
