@@ -19,6 +19,23 @@
     <link href="/static/vendor/morrisjs/morris.css" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="/static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Game name validation -->
+    <script>
+    function validateForm() {
+        var x = document.forms["myForm"]["fname"].value;
+        if (x == "") {
+            alert("Name must be filled out");
+            return false;
+        }
+        if (x.includes("-")) {
+        	alert('Game name may not contain "-"');
+            return false;
+       	}
+
+    }
+    </script>
+
 </head>
 
 <body>
@@ -85,7 +102,7 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form action="/pjoin/{{pid}}">
+                                    <form action="/pjoin/{{pid}}" onsubmit="return validateForm()">
                                         <div class="form-group">
                                             <label>Game Name</label>
                                             <input name="gameName" class="form-control">

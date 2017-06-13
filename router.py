@@ -416,7 +416,7 @@ def getInviteCodes(pid, gid):
     conn.commit()
     cleanfinalcinfolst = []
     for (cid, name, des, image) in cinfos:
-        cleanfinalcinfolst.append(((str(gid)+"-"+str(cid)), cid, name, des, image))
+        cleanfinalcinfolst.append(((str(title)+"-"+str(cid)), cid, name, des, image))
     return render_template("admininvitecodes.html", cinfo = cleanfinalcinfolst, title = title, gtname = gtname)
 
 
