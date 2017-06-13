@@ -160,7 +160,7 @@ def getCustomDashboard(sid):
             gametitle = cur.fetchall()
             conn.commit()
             gametitle = gametitle[0][0]
-            cur.execute("""SELECT name from character where cid = (SELECT cid from student_chargame where sid = %s and gid = %s);""", (sid,gid))
+            cur.execute("""SELECT name from character where cid = (SELECT cid from students_chargame where sid = %s and gid = %s);""", (sid,gid))
             charname = cur.fetchall()
             conn.commit()
             charname = charname[0][0]
