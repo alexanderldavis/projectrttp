@@ -427,7 +427,7 @@ def deleteGame(pid, gid, securecode):
         return "Professor does not exist. Register first."
     if int(securecode) != 848374949384743937:
         return "deleteGame authorization failed"
-    cur.execute("""SELECT """")
+    
 
 
 #Add assignments:
