@@ -408,9 +408,9 @@ def getInviteCodes(pid, gid):
     if len(lst) == 0:
         return "Professor does not exist. Register first."
     cur.execute("""SELECT game.title, gametype.title from game JOIN gametype ON (game.gtid = gametype.gtid) where game.gid = %s;""",(gid,))
-    title = cur.fetchall()
-    title = title[0][0]
-    gtname = title[0][1]
+    titles = cur.fetchall()
+    title = titles[0][0]
+    gtname = titles[0][1]
     cur.execute("""SELECT cid, name, descriptionURL, imageURL FROM character where gtid = (SELECT gtid from game where gid = %s);""", (gid))
     cinfos = cur.fetchall()
     conn.commit()
