@@ -427,7 +427,10 @@ def deleteGame(pid, gid, securecode):
         return "Professor does not exist. Register first."
     if int(securecode) != 848374949384743937:
         return "deleteGame authorization failed"
-
+    cur.execute("""DELETE from game_assignments where gid = %s; DELETE from professor_game where gid = %s; DELETE from students_chargame where gid = %s;  DELETE from game where gid = %s;""", (gid, gid, gid, gid))
+    conn.commit()
+    print("GAME "+str(gid)+" DELETED BY PROFESSOR ("+str(pid)+")")
+    return redirect("http://www.rttportal.com/admin/students/"+str(pid)")
 
 
 #Add assignments:

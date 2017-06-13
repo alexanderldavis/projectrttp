@@ -12,7 +12,6 @@ cur = conn.cursor()
 
 ## WARNING: RUNNING THIS CODE WILL DELETE ALL EXISTING USER ACCOUNTS AND CONNECTED DATA!
 cur.execute("""DROP TABLE IF EXISTS students CASCADE;
-               DROP TABLE IF EXISTS students_game CASCADE;
                DROP TABLE IF EXISTS professor CASCADE;
                DROP TABLE IF EXISTS game CASCADE;
                DROP TABLE IF EXISTS character CASCADE;
@@ -32,7 +31,6 @@ cur.execute("""CREATE TABLE students (sid int unique, name varchar(300), email v
 cur.execute("""CREATE TABLE professor (pid int unique, name varchar(300), email varchar(200) unique, hashpswd varchar(200));""")
 cur.execute("""CREATE TABLE gametype (gtid int unique, title varchar(200));""")
 cur.execute("""CREATE TABLE game (gid int unique, title varchar(200) unique, gtid int, FOREIGN KEY (gtid) references gametype(gtid));""")
-cur.execute("""CREATE TABLE students_game (sid int, gid int, FOREIGN KEY (sid) references students(sid), FOREIGN KEY (gid) references game(gid));""")
 cur.execute("""CREATE TABLE professor_game (pid int, gid int, FOREIGN KEY (pid) references professor(pid), FOREIGN KEY (gid) references game(gid));""")
 cur.execute("""CREATE TABLE character (cid int unique, name varchar(200), descriptionURL text, imageURL text, gtid int, FOREIGN KEY (gtid) references gametype(gtid));""")
 cur.execute("""CREATE TABLE student_character (sid int, cid int, FOREIGN KEY (sid) references students(sid), FOREIGN KEY (cid) references character(cid));""")
