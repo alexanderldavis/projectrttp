@@ -375,6 +375,11 @@ def gameJoinProfessor(pid):
 
 @app.route("/admin/game/<pid>/<gid>")
 def gameadminassignments(pid, gid):
+    cur.execute("""SELECT * from professor where pid = %s;""", (pid,))
+    lst = cur.fetchall()
+    conn.commit()
+    if len(lst) == 0:
+        return "Professor does not exist. Register first."
     cur.execute("""SELECT assignments.aid, assignments.title from assignments JOIN game_assignments on (assignments.aid = game_assignments.aid) where game_assignments.gid = %s;""", (gid,))
     assignmentlst = cur.fetchall()
     conn.commit()
@@ -397,7 +402,23 @@ def gameadminassignments(pid, gid):
 
 @app.route("/admin/getinvitecodes/<pid>/<gid>")
 def getInviteCodes(pid, gid):
-    cur.execute("""SELECT  FROM """)
+    cur.execute("""SELECT * from professor where pid = %s;""", (pid,))
+    lst = cur.fetchall()
+    conn.commit()
+    if len(lst) == 0:
+        return "Professor does not exist. Register first."
+    cur.execute("""SELECT game.title, gametype.title from game JOIN gametype ON (game.gtid = gametype.gtid) where game.gid = %s;""",(gid,))
+    title = cur.fetchall()
+    title = title[0][0]
+    gtname = title[0][1]
+    cur.execute("""SELECT cid, name, descriptionURL, imageURL FROM character where gtid = (SELECT gtid from game where gid = %s);""", (gid))
+    cinfos = cur.fetchall()
+    conn.commit()
+    cleanfinalcinfolst = []
+    for (cid, name, des, image) in cinfos:
+        cleanfinalcinfolst.append((str(gid)+"-"+str(cid)), cid, name, des, image)
+    return render_template("admininvitecodes.html", cinfo = cleanfinalcinfolst, title = title, gtname = gtname)
+
 
 #Add assignments:
 #insert into assignments (aid, title, due) values (1134343, 'title', '2004-10-19 10:23:54');
