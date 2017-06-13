@@ -97,7 +97,7 @@ def newProfessor(name, email, password):
         return "Professor Account already exists! Please login to your account."
     hashpassword = hashed_password(password)
     print("CREATED PASSWORD HASH")
-    cur.execute("""INSERT INTO professor (pid, name, email, hashpswd) VALUES ((SELECT floor(random()*(20343434343003-4343434+1))+10), %s, %s, %s);""",(name, email, hashpassword))
+    cur.execute("""INSERT INTO professor (pid, name, email, hashpswd) VALUES ((SELECT floor(random()*(2034343003-43434+1))+10), %s, %s, %s);""",(name, email, hashpassword))
     conn.commit()
     print("PROFESSOR ACCOUNT CREATED")
     return "Professor account created!"
