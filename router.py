@@ -120,12 +120,12 @@ def gameJoinStudent(sid):
     if len(lst) == 0:
         return "Game not yet created or InviteCode invalid"
     gid = lst[0][0]
-    cur.execute("""SELECT * from students_game where sid = %s and gid = %s;""", (sid, gid))
+    cur.execute("""SELECT * from students_chargame where sid = %s and gid = %s;""", (sid, gid))
     lst = cur.fetchall()
     conn.commit()
     if len(lst) != 0:
         return "student already in game"
-    cur.execute("""INSERT INTO students_game (sid, gid) VALUES (%s, %s);""", (sid, gid))
+    cur.execute("""INSERT INTO students_chargame (sid, cid, gid) VALUES (%s, %s, %s);""", (sid, cid, gid))
     conn.commit()
     print("STUDENT JOINED GAME")
     cur.execute("""SELECT * from character where cid = %s;""", (characterID,))
@@ -146,7 +146,7 @@ def getCustomDashboard(sid):
     if len(mylst) == 0:
         return "Create account or log in"
     # return render_template('dashboard.html', sid = sid, curid = 1, username="John", description = charlst[0][2])
-    cur.execute("""SELECT gid from students_game where sid = %s;""",(sid,))
+    cur.execute("""SELECT gid from students_chargame where sid = %s;""",(sid,))
     gamelst = cur.fetchall()
     conn.commit()
     cur.execute("""SELECT * from student_character where sid = %s;""", (sid,))
@@ -160,12 +160,11 @@ def getCustomDashboard(sid):
             gametitle = cur.fetchall()
             conn.commit()
             gametitle = gametitle[0][0]
-            cur.execute("""SELECT name from character where cid = (SELECT cid from student_character where sid = %s);""", (sid,))
+            cur.execute("""SELECT name from character where cid = (SELECT cid from student_chargame where sid = %s and gid = %s);""", (sid,gid))
             charname = cur.fetchall()
             conn.commit()
             charname = charname[0][0]
             cleanGamelst.append((charname, gametitle))
-    print("###########ENDGAME###########")
     return render_template('dashboard.html', sid = sid, curid = 1, username=mylst[0][0], gameinfo = cleanGamelst)
 
 @app.route("/newspaper/<sid>")
@@ -314,7 +313,7 @@ def admindash(pid):
         title = cur.fetchall()
         conn.commit()
         cleangamelst.append((title[0][0], title[0][1]))
-    cur.execute("""SELECT count(students.sid) from students JOIN students_game ON (students.sid = students_game.sid) JOIN game ON (game.gid = students_game.gid) JOIN professor_game on (game.gid = professor_game.gid) where pid = %s;""", (pid,))
+    cur.execute("""SELECT count(students.sid) from students JOIN students_chargame ON (students.sid = students_chargame.sid) JOIN game ON (game.gid = students_chargame.gid) JOIN professor_game on (game.gid = professor_game.gid) where pid = %s;""", (pid,))
     studentcount = cur.fetchall()
     conn.commit()
     studentcount = studentcount[0][0]
@@ -341,7 +340,7 @@ def adminstudents(pid):
         cleangidlst.append(gid[0])
     cleanstudentgidlist = []
     for gid in cleangidlst:
-        cur.execute("""SELECT students.sid, students.name, students.email, character.name from students JOIN students_game on (students.sid = students_game.sid) JOIN student_character ON (students.sid = student_character.sid) JOIN character ON (character.cid = student_character.cid) where gid = %s;""",(gid,))
+        cur.execute("""SELECT students.sid, students.name, students.email, character.name from students JOIN students_chargame on (students.sid = students_chargame.sid) JOIN student_character ON (students.sid = student_character.sid) JOIN character ON (character.cid = student_character.cid) where gid = %s;""",(gid,))
         studentlist = cur.fetchall()
         conn.commit()
         cur.execute("""SELECT title from game where gid = %s;""", (gid,))
@@ -418,6 +417,17 @@ def getInviteCodes(pid, gid):
     for (cid, name, des, image) in cinfos:
         cleanfinalcinfolst.append(((str(title)+"-"+str(cid)), cid, name, des, image))
     return render_template("admininvitecodes.html", cinfo = cleanfinalcinfolst, title = title, gtname = gtname)
+
+@app.route("/admin/deleteGame/<pid>/<gid>/<securecode>")
+def deleteGame(pid, gid, securecode):
+    cur.execute("""SELECT * from professor where pid = %s;""", (pid,))
+    lst = cur.fetchall()
+    conn.commit()
+    if len(lst) == 0:
+        return "Professor does not exist. Register first."
+    if int(securecode) != 848374949384743937:
+        return "deleteGame authorization failed"
+    cur.execute("""SELECT """")
 
 
 #Add assignments:

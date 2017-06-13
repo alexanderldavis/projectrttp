@@ -23,7 +23,8 @@ cur.execute("""DROP TABLE IF EXISTS students CASCADE;
                DROP TABLE IF EXISTS student_submissions CASCADE;
                DROP TABLE IF EXISTS submissions CASCADE;
                DROP TABLE IF EXISTS gametype CASCADE;
-               DROP TABLE IF EXISTS assignments_submissions CASCADE;""")
+               DROP TABLE IF EXISTS assignments_submissions CASCADE;
+               DROP TABLE IF EXISTS student_chargame CASCADE;""")
 print("TABLES DELETED")
 
 ## CREATE NEW TABLES
@@ -35,6 +36,8 @@ cur.execute("""CREATE TABLE students_game (sid int, gid int, FOREIGN KEY (sid) r
 cur.execute("""CREATE TABLE professor_game (pid int, gid int, FOREIGN KEY (pid) references professor(pid), FOREIGN KEY (gid) references game(gid));""")
 cur.execute("""CREATE TABLE character (cid int unique, name varchar(200), descriptionURL text, imageURL text, gtid int, FOREIGN KEY (gtid) references gametype(gtid));""")
 cur.execute("""CREATE TABLE student_character (sid int, cid int, FOREIGN KEY (sid) references students(sid), FOREIGN KEY (cid) references character(cid));""")
+
+cur.execute("""CREATE TABLE student_chargame (sid int, cid int, gid int, FOREIGN KEY (sid) references students(sid), FOREIGN KEY (cid) references character(cid), FOREIGN KEY (gid) references game(gid));""")
 
 ## V2 beta
 cur.execute("""CREATE TABLE assignments (aid int unique, title varchar(200), due timestamp);""")
