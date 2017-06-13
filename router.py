@@ -125,6 +125,11 @@ def gameJoinStudent(sid):
     conn.commit()
     if len(lst) != 0:
         return "student already in game"
+    cur.execute("""SELECT * from students_chargame where sid = %s and cid = %s and gid = %s;""", (sid, characterID, gid))
+    lst = cur.fetchall()
+    conn.commit()
+    if len(lst) != 0:
+        return "student character already in game"
     cur.execute("""INSERT INTO students_chargame (sid, cid, gid) VALUES (%s, %s, %s);""", (sid, characterID, gid))
     conn.commit()
     print("STUDENT JOINED GAME")
@@ -416,7 +421,7 @@ def getInviteCodes(pid, gid):
     cleanfinalcinfolst = []
     for (cid, name, des, image) in cinfos:
         cleanfinalcinfolst.append(((str(title)+"-"+str(cid)), cid, name, des, image))
-    return render_template("admininvitecodes.html", cinfo = cleanfinalcinfolst, title = title, gtname = gtname)
+    return render_template("admininvitecodes.html", cinfo = cleanfinalcinfolst, title = title, pid = pid, gtname = gtname)
 
 @app.route("/admin/deleteGame/<pid>/<gid>/<securecode>")
 def deleteGame(pid, gid, securecode):
