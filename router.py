@@ -411,7 +411,7 @@ def getInviteCodes(pid, gid):
     titles = cur.fetchall()
     title = titles[0][0]
     gtname = titles[0][1]
-    cur.execute("""SELECT cid, name, descriptionURL, imageURL FROM character where gtid = (SELECT gtid from game where gid = %s);""", (gid))
+    cur.execute("""SELECT cid, name, descriptionURL, imageURL FROM character where gtid = (SELECT gtid from game where gid = %s);""", (gid,))
     cinfos = cur.fetchall()
     conn.commit()
     cleanfinalcinfolst = []
