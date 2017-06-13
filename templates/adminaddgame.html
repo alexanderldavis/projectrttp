@@ -71,7 +71,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">New Game</h1>
+                    <h1 class="page-header">New Class</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -98,39 +98,20 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Game</label>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" name="game" value="">French Presidential Election 2002
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Number of Students</label>
                                             <select name="size" class="form-control">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                                <option>6</option>
-                                                <option>7</option>
-                        												<option>8</option>
-                        												<option>9</option>
-                        												<option>10</option>
-                        												<option>11</option>
-                        												<option>12</option>
-                        												<option>13</option>
-                        												<option>14</option>
-                        												<option>15</option>
-                        												<option>16</option>
-                        												<option>17</option>
-                        												<option>18</option>
-                        												<option>19</option>
-                        												<option>20</option>
-                        												<option>21</option>
+                                            {% for (gtid, title) in gametypes %}
+                                                <option value="{{id}}">{{title}}</option>
+                                            {% endfor %}
                                             </select>
                                         </div>
-
+                                        <div class="form-group">
+                                            <label>Class Size</label>
+                                            <select name="size" class="form-control">
+                                              {% for i in nums %}
+                                                  <option value="{{i}}">{{i}}</option>
+                                              {% endfor %}
+                                            </select>
+                                        </div>
                                         <button type="submit" class="form-control">Add Game</button>
                                     </form>
 

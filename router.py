@@ -326,7 +326,10 @@ def adminaddgame(pid):
     email = cur.fetchall()
     conn.commit()
     email = email[0][0]
-    return render_template("adminaddgame.html", pid = pid, email = email)
+    cur.execute("""SELECT gtid, title from gametype;""")
+    gametypes = cur.fetchall()
+    conn.commit()
+    return render_template("adminaddgame.html", pid = pid, email = email, gametypes=gametypes, nums = [i for i in range(1, 26)])
 
 @app.route("/admin/students/<pid>")
 def adminstudents(pid):
