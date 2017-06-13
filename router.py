@@ -125,7 +125,7 @@ def gameJoinStudent(sid):
     conn.commit()
     if len(lst) != 0:
         return "student already in game"
-    cur.execute("""INSERT INTO students_chargame (sid, cid, gid) VALUES (%s, %s, %s);""", (sid, cid, gid))
+    cur.execute("""INSERT INTO students_chargame (sid, cid, gid) VALUES (%s, %s, %s);""", (sid, characterID, gid))
     conn.commit()
     print("STUDENT JOINED GAME")
     cur.execute("""SELECT * from character where cid = %s;""", (characterID,))
@@ -427,7 +427,7 @@ def deleteGame(pid, gid, securecode):
         return "Professor does not exist. Register first."
     if int(securecode) != 848374949384743937:
         return "deleteGame authorization failed"
-    
+
 
 
 #Add assignments:
