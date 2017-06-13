@@ -7,9 +7,9 @@ def readfile(file):
     return info
 
 def writefile(characterList):
-    outfile = open('CharacterSheets', 'w')
+    outfile = open('CharacterSheetCode', 'w')
     for item in characterList:
-        outfile.write(str('\t'.join(item))+'\n')
+        outfile.write('''cur.execute("""INSERT INTO character (cid, name, desriptionURL, imageURL, gtid) VALUES ((SELECT floor(random()*(2034343003-43434+1))+10), '%s', '%s', '%s', ((SELECT gtid from gametype where title = '2002 French Presidential Election'));""")\n'''%(str(item[0]), str(item[1]), str(item[2])))
     outfile.close()
         
 characterList = readfile('charactersheets.txt')
