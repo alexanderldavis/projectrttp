@@ -39,7 +39,7 @@ cur.execute("""CREATE TABLE gametype (gtid int unique, title varchar(200));""")
 ## V2 beta
 cur.execute("""CREATE TABLE assignments (aid int unique, title varchar(200), due timestamp);""")
 cur.execute("""CREATE TABLE submissions (subid int unique, link varchar(300), uploadTime timestamp);""")
-cur.execuet("""CREATE table game_assignments (gid int, aid int, FOREIGN KEY (gid) references game(gid), FOREIGN KEY (aid) references assignments(aid));""")
+cur.execute("""CREATE table game_assignments (gid int, aid int, FOREIGN KEY (gid) references game(gid), FOREIGN KEY (aid) references assignments(aid));""")
 cur.execute("""CREATE TABLE student_submissions (sid int, subid int, FOREIGN KEY (sid) references students(sid), FOREIGN KEY (subid) references submissions(subid));""")
 cur.execute("""CREATE TABLE assignments_submissions (aid int, subid int, FOREIGN KEY (aid) references assignments(aid), FOREIGN KEY (subid) references submissions(subid));""")
 
