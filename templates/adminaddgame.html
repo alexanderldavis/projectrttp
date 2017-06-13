@@ -23,7 +23,7 @@
     <!-- Game name validation -->
     <script>
     function validateForm() {
-        var x = document.forms["myForm"]["fname"].value;
+        var x = document.forms["myForm"]["gameName"].value;
         if (x == "") {
             alert("Name must be filled out");
             return false;
@@ -102,7 +102,7 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form action="/pjoin/{{pid}}" onsubmit="return validateForm()">
+                                    <form name="myForm" action="/pjoin/{{pid}}" onsubmit="return validateForm()">
                                         <div class="form-group">
                                             <label>Game Name</label>
                                             <input name="gameName" class="form-control">
