@@ -355,6 +355,7 @@ def adminstudents(pid):
 @app.route("/pjoin/<pid>")
 def gameJoinProfessor(pid):
     gameName = request.args['gameName']
+    gtid = request.args['gtid']
     cur.execute("""SELECT * from professor where pid = %s;""", (pid,))
     lst = cur.fetchall()
     conn.commit()
@@ -365,7 +366,7 @@ def gameJoinProfessor(pid):
     conn.commit()
     if len(lst) != 0:
         return "A Game with this name already exists"
-    cur.execute("""INSERT INTO game (title) VALUES (%s);""",(gameName,))
+    cur.execute("""INSERT INTO game (gid, title, gtid) VALUES ((SELECT floor(random()*(2034343003-43434+1))+10), %s, %s);""",(gameName, gtid))
     conn.commit()
     cur.execute("""INSERT INTO professor_game (pid, gid) VALUES (%s, (SELECT gid from game where title = %s));""", (pid, gameName))
     conn.commit()
@@ -393,6 +394,10 @@ def gameadminassignments(pid, gid):
             cleansubmissionlist.append((submission[0],submission[1],submission[2],submission[3]))
         finalcleansublst.append((aid, title, cleansubmissionlist))
     return render_template("admingameassignment.html", pid = pid, gid = gid, assignments = finalcleansublst)
+
+@app.route("/admin/getinvitecodes/<pid>/<gid>")
+def getInviteCodes(pid, gid):
+    cur.execute("""SELECT  FROM """)
 
 #Add assignments:
 #insert into assignments (aid, title, due) values (1134343, 'title', '2004-10-19 10:23:54');
