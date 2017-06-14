@@ -169,7 +169,7 @@ def getCustomGameChooser(sid):
             conn.commit()
             charname = charname[0][0]
             cleanGamelst.append((charname, gametitle, gid))
-    return render_template('gamechooser.html', sid = sid, curid = 0, gamechooser = 0, username=mylst[0][0], gameinfo = cleanGamelst)
+    return render_template('gamechooser.html', sid = sid, curid = 0, gamechooser = 0, username=mylst[0][0], gameinfo = cleanGamelst, picurl = "https://cdn.pixabay.com/photo/2016/10/18/18/19/question-mark-1750942_960_720.png")
 
 @app.route("/dashboard/<sid>/<gid>")
 def getCustomDashboard(sid, gid):
