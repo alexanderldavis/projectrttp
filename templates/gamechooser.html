@@ -20,7 +20,7 @@
   </form>
   {% else %}
     <div class="gameshelf">
-      {% for (charname, gametitle) in gameinfo %}
+      {% for (charname, gametitle, gid) in gameinfo %}
       <a href="http://www.rttportal.com/dashboard/{{sid}}/{{gid}}"><div class="gamebox"><div class="gamelabel">{{gametitle}}<hr />{{charname}}</div></div></a>
       {% endfor %}
       <div class="gamebox addgamebox center">
