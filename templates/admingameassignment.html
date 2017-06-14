@@ -88,10 +88,10 @@
                             <button class="form-control" type="submit">Add Assignment</button>
                         </div>
                     </form>
-                    {% for (aid, title, submissions) in assignments %}
+                    {% for (aid, title, due, submissions) in assignments %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            {{title}}
+                            {{title}} (Due Date: {{due}})
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">

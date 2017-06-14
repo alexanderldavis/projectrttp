@@ -398,7 +398,7 @@ def gameadminassignments(pid, gid):
     conn.commit()
     if len(lst) == 0:
         return "Professor does not exist. Register first."
-    cur.execute("""SELECT assignments.aid, assignments.title from assignments JOIN game_assignments on (assignments.aid = game_assignments.aid) where game_assignments.gid = %s;""", (gid,))
+    cur.execute("""SELECT assignments.aid, assignments.title, assignments.due from assignments JOIN game_assignments on (assignments.aid = game_assignments.aid) where game_assignments.gid = %s;""", (gid,))
     assignmentlst = cur.fetchall()
     conn.commit()
     cleanassignmentlist = []
@@ -406,16 +406,16 @@ def gameadminassignments(pid, gid):
     titlelst = []
     for assignment in assignmentlst:
         cleanassignmentlist.append((assignment[0],assignment[1]))
-        cleanaidlist.append((assignment[0], assignment[1]))
+        cleanaidlist.append((assignment[0], assignment[1], assignment[2]))
     finalcleansublst = []
-    for (aid, title) in cleanaidlist:
+    for (aid, title, due) in cleanaidlist:
         cur.execute("""SELECT submissions.uploadTime, students.name, students.email, submissions.link FROM students JOIN student_submissions ON (students.sid = student_submissions.sid) JOIN submissions on (submissions.subid = student_submissions.subid) JOIN assignments_submissions ON (submissions.subid = assignments_submissions.subid) WHERE assignments_submissions.aid = %s;""", (aid,))
         submissioninfolst = cur.fetchall()
         conn.commit()
         cleansubmissionlist = []
         for submission in submissioninfolst:
             cleansubmissionlist.append((submission[0],submission[1],submission[2],submission[3]))
-        finalcleansublst.append((aid, title, cleansubmissionlist))
+        finalcleansublst.append((aid, title, due, cleansubmissionlist))
     return render_template("admingameassignment.html", pid = pid, gid = gid, assignments = finalcleansublst)
 
 @app.route("/admin/getinvitecodes/<pid>/<gid>")
