@@ -201,7 +201,7 @@ def getCustomCharacterProfile(sid, gid):
     conn.commit()
     if len(lst) == 0:
         return "Create account or log in"
-    cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (sid,))
+    cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_chargame WHERE sid = %s and gid = %s);""", (sid,gid))
     charlst = cur.fetchall()
     conn.commit()
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
