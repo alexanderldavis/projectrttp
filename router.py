@@ -229,6 +229,19 @@ def getCustomChat(sid, gid):
     charname = picurls[0][1]
     return render_template('chat.html', gid = gid, sid=sid, curid = 5, username= namelst[0][0], picurl = picurl)
 
+@app.route("/assignments/<sid>/<gid>")
+def getCustomAssignments(sid, gid):
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    lst = cur.fetchall()
+    conn.commit()
+    if len(lst) == 0:
+        return "Create account or log in"
+    cur.execute("""SELECT character.imageurl, character.name from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
+    picurls = cur.fetchall()
+    picurl = picurls[0][0]
+    charname = picurls[0][1]
+    return render_template('assignments.html', gid = gid, sid = sid, curid = 6, picurl = picurl)
+
 @app.route("/account/<sid>/<gid>")
 def getCustomAccount(sid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
