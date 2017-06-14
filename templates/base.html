@@ -32,17 +32,18 @@
       {% if sid == a %}
       <a class="navbar-brand" href="http://www.rttportal.com">RTTPortal</a>
       {% else %}
-      <a class="navbar-brand" href="http://www.rttportal.com/dashboard/{{sid}}">RTTPortal</a>
+      <a class="navbar-brand" href="http://www.rttportal.com/games/{{sid}}">RTTPortal</a>
       {% endif %}
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       {% if curid == 0 %}
       {% else %}
       <ul class="nav navbar-nav">
-        <li class={{ "active" if curid==1 else "" }}><a href="/dashboard/{{sid}}"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
-        <li class={{ "active" if curid==2 else "" }}><a href="/newspaper/{{sid}}"><span class="glyphicon glyphicon-book"></span> Newspaper</a></li>
-        <li class={{ "active" if curid==3 else "" }}><a href="/characterprofile/{{sid}}"><span class="glyphicon glyphicon-knight"></span> Character Profile</a></li>
-        <li class={{ "active" if curid==5 else "" }}><a href="/chat/{{sid}}"><span class="glyphicon glyphicon-comment"></span> Chat</a></li>
+        <li class={{ "active" if curid==1 else "" }}><a href="/dashboard/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+        <li class={{ "active" if curid==2 else "" }}><a href="/newspaper/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-book"></span> Newspaper</a></li>
+        <li class={{ "active" if curid==3 else "" }}><a href="/characterprofile/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-knight"></span> Character Profile</a></li>
+        <li class={{ "active" if curid==5 else "" }}><a href="/chat/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-comment"></span> Chat</a></li>
+        <li class={{ "active" if curid==6 else "" }}><a href="/assignments/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-file"></span> Assignments</a></li>
       </ul>
       {% endif %}
       <ul class="nav navbar-nav navbar-right">
@@ -50,11 +51,11 @@
         <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
         {% else %}
         <div id="userbox">
-          <div id="usercircle" onmouseover="hoverUser()" onmouseleave="leaveUser()" style="background-image:url(https://upload.wikimedia.org/wikipedia/commons/7/73/Jacques_Chirac_2.jpg)">
+          <div id="usercircle" onmouseover="hoverUser()" onmouseleave="leaveUser()" style="background-image:url({{picurl}})">
           <div id="usermenu" onmouseover="hoverUserMenu()" onmouseleave="leaveUserMenu()">
             <ul>
               <li>In-game Name</li>
-              <li><a href="/account/{{sid}}"><span class="glyphicon glyphicon-user"></span> {{ username }}'s Account</a></li>
+              <li><a href="/account/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-user"></span> {{ username }}'s Account</a></li>
               <!-- <li><a href="/#"><span class="glyphicon glyphicon-option-horizontal"></span> Options</a></li> -->
               <li><a href="/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
@@ -70,18 +71,17 @@
 {% block body %}
 <div class="bod container-fluid text-center">
   <div class="row content">
-    {% if curid == 0 and not gamechooser %}
+    {% if curid == 0 %}
     <div class="col-sm-2 sidenav">
       <h4>Information Center</h4>
-
       <p><a href="#">About RTTP</a></p>
       <p><a href="#">RTTP at Luther College</a></p>
+      <p><a href="#">Professor Portal</a></p>
     </div>
     {% else %}
       <div class="col-sm-2 sidenav">
         {% block leftnav %}
         <h4>Assignments</h4>
-
         <p><a href="#">Assignment 1</a></p>
         <p><a href="#">Assignment 2</a></p>
         <p><a href="#">Assignment 3</a></p>

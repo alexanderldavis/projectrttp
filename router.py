@@ -78,10 +78,6 @@ def loginStudent():
         cur.execute("""SELECT sid from students where email = %s;""", (email,))
         lst = cur.fetchall()
         conn.commit()
-        cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (lst[0][0],))
-        charlst = cur.fetchall()
-        conn.commit()
-        #return render_template('dashboard.html', sid = lst[0][0], curid = 1, username="John", description = charlst[0][2])
         return redirect("http://www.rttportal.com/games/"+str(lst[0][0]))
     if not check_password_hash(lst[0][0], password):
         return "Password is wrong. Shame on you."
@@ -169,38 +165,56 @@ def getCustomGameChooser(sid):
             conn.commit()
             charname = charname[0][0]
             cleanGamelst.append((charname, gametitle, gid))
-    return render_template('gamechooser.html', sid = sid, curid = 0, gamechooser = 0, username=mylst[0][0], gameinfo = cleanGamelst)
+    return render_template('gamechooser.html', sid = sid, curid = 0, gamechooser = 0, username=mylst[0][0], gameinfo = cleanGamelst, picurl = "https://cdn.pixabay.com/photo/2016/10/18/18/19/question-mark-1750942_960_720.png")
 
 @app.route("/dashboard/<sid>/<gid>")
 def getCustomDashboard(sid, gid):
-    return render_template('dashboard.html', sid = sid, curid = 1, username="Hi!", gameinfo = [])
-
-@app.route("/newspaper/<sid>")
-def getCustomNewspaper(sid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     lst = cur.fetchall()
     conn.commit()
     if len(lst) == 0:
         return "Create account or log in"
-    return render_template('newspaper.html', sid = sid, curid = 2, username=lst[0][0])
+    name = lst[0][0]
+    cur.execute("""SELECT character.imageurl, character.name from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
+    picurls = cur.fetchall()
+    picurl = picurls[0][0]
+    charname = picurls[0][1]
+    return render_template('dashboard.html', gid = gid, sid = sid, curid = 1, username=name, gameinfo = [], picurl = picurl, charname = charname)
 
-@app.route("/characterprofile/<sid>")
-def getCustomCharacterProfile(sid):
+@app.route("/newspaper/<sid>/<gid>")
+def getCustomNewspaper(sid, gid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     lst = cur.fetchall()
     conn.commit()
     if len(lst) == 0:
         return "Create account or log in"
-    cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_character WHERE sid = %s);""", (sid,))
+    cur.execute("""SELECT character.imageurl, character.name from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
+    picurls = cur.fetchall()
+    picurl = picurls[0][0]
+    charname = picurls[0][1]
+    return render_template('newspaper.html', gid = gid, sid = sid, curid = 2, username=lst[0][0], picurl = picurl)
+
+@app.route("/characterprofile/<sid>/<gid>")
+def getCustomCharacterProfile(sid, gid):
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    lst = cur.fetchall()
+    conn.commit()
+    if len(lst) == 0:
+        return "Create account or log in"
+    cur.execute("""SELECT * FROM character where cid = (SELECT cid FROM student_chargame WHERE sid = %s and gid = %s);""", (sid,gid))
     charlst = cur.fetchall()
     conn.commit()
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     namelst = cur.fetchall()
     conn.commit()
-    return render_template('characterprofile.html', sid = sid, curid = 3, username=namelst[0][0])
+    cur.execute("""SELECT character.imageurl, character.name from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
+    picurls = cur.fetchall()
+    picurl = picurls[0][0]
+    charname = picurls[0][1]
+    return render_template('characterprofile.html', gid = gid, sid = sid, curid = 3, username=namelst[0][0], picurl = picurl)
 
-@app.route("/chat/<sid>")
-def getCustomChat(sid):
+@app.route("/chat/<sid>/<gid>")
+def getCustomChat(sid, gid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     lst = cur.fetchall()
     conn.commit()
@@ -209,9 +223,26 @@ def getCustomChat(sid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     namelst = cur.fetchall()
     conn.commit()
-    return render_template('chat.html', sid=sid, curid = 5, username= namelst[0][0])
+    cur.execute("""SELECT character.imageurl, character.name from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
+    picurls = cur.fetchall()
+    picurl = picurls[0][0]
+    charname = picurls[0][1]
+    return render_template('chat.html', gid = gid, sid=sid, curid = 5, username= namelst[0][0], picurl = picurl)
 
-@app.route("/account/<sid>")
+@app.route("/assignments/<sid>/<gid>")
+def getCustomAssignments(sid, gid):
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    lst = cur.fetchall()
+    conn.commit()
+    if len(lst) == 0:
+        return "Create account or log in"
+    cur.execute("""SELECT character.imageurl, character.name from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
+    picurls = cur.fetchall()
+    picurl = picurls[0][0]
+    charname = picurls[0][1]
+    return render_template('assignments.html', gid = gid, sid = sid, curid = 6, picurl = picurl)
+
+@app.route("/account/<sid>/<gid>")
 def getCustomAccount(sid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     lst = cur.fetchall()
@@ -221,7 +252,11 @@ def getCustomAccount(sid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     namelst = cur.fetchall()
     conn.commit()
-    return render_template('account.html', sid=sid, curid = 6, username = namelst[0][0])
+    cur.execute("""SELECT character.imageurl, character.name from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
+    picurls = cur.fetchall()
+    picurl = picurls[0][0]
+    charname = picurls[0][1]
+    return render_template('account.html', gid = gid, sid=sid, curid = 6, username = namelst[0][0], picurl = picurl)
 
 @app.route("/accountUpdate/<sid>")
 def accountUpdate(sid):
@@ -236,7 +271,7 @@ def accountUpdate(sid):
         hashpassword = hashed_password(password)
         cur.execute("""UPDATE students SET hashpswd = %s WHERE sid = %s;""", (hashpassword, sid))
         conn.commit()
-    return redirect("http://www.rttportal.com/dashboard/"+str(sid))
+    return redirect("http://www.rttportal.com/games/"+str(sid))
 
 ### UPLOADS!!!
 
@@ -362,7 +397,7 @@ def adminstudents(pid):
         cleangidlst.append(gid[0])
     cleanstudentgidlist = []
     for gid in cleangidlst:
-        cur.execute("""SELECT students.sid, students.name, students.email, character.name from students JOIN students_chargame on (students.sid = students_chargame.sid) JOIN student_character ON (students.sid = student_character.sid) JOIN character ON (character.cid = student_character.cid) where gid = %s;""",(gid,))
+        cur.execute("""SELECT students.sid, students.name, students.email, character.name from students JOIN students_chargame on (students.sid = students_chargame.sid) JOIN character ON (character.cid = students_chargame.cid) where gid = %s;""",(gid,))
         studentlist = cur.fetchall()
         conn.commit()
         cur.execute("""SELECT title from game where gid = %s;""", (gid,))
