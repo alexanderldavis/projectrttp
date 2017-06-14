@@ -173,7 +173,13 @@ def getCustomGameChooser(sid):
 
 @app.route("/dashboard/<sid>/<gid>")
 def getCustomDashboard(sid, gid):
-    return render_template('dashboard.html', gid = gid, sid = sid, curid = 1, username="Hi!", gameinfo = [])
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    lst = cur.fetchall()
+    conn.commit()
+    if len(lst) == 0:
+        return "Create account or log in"
+    name = lst[0][0]
+    return render_template('dashboard.html', gid = gid, sid = sid, curid = 1, username=name, gameinfo = [])
 
 @app.route("/newspaper/<sid>/<gid>")
 def getCustomNewspaper(sid, gid):
@@ -362,7 +368,7 @@ def adminstudents(pid):
         cleangidlst.append(gid[0])
     cleanstudentgidlist = []
     for gid in cleangidlst:
-        cur.execute("""SELECT students.sid, students.name, students.email, character.name from students JOIN students_chargame on (students.sid = students_chargame.sid) JOIN character ON (character.cid = student_chargame.cid) where gid = %s;""",(gid,))
+        cur.execute("""SELECT students.sid, students.name, students.email, character.name from students JOIN students_chargame on (students.sid = students_chargame.sid) JOIN character ON (character.cid = students_chargame.cid) where gid = %s;""",(gid,))
         studentlist = cur.fetchall()
         conn.commit()
         cur.execute("""SELECT title from game where gid = %s;""", (gid,))
