@@ -469,7 +469,7 @@ def addassignmentadmin(pid, gid):
     print("ADDED ASSIGNMENT TO RELATION GAME_ASSIGNMENTS")
     return redirect("http://www.rttportal.com/admin/game/"+pid+"/"+gid)
 
-@app.route("")
+
 
 #Add submissions:
 #insert into submissions (subid, link, uploadTime) values (112234, 'link', '2004-10-19 10:23:54');
