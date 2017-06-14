@@ -179,10 +179,10 @@ def getCustomDashboard(sid, gid):
     if len(lst) == 0:
         return "Create account or log in"
     name = lst[0][0]
-    cur.execute("""SELECT character.name, character.imageurl from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
-    picurl = cur.fetchall()
-    picurl = picurl[0][0]
-    charname = picurl[0][1]
+    cur.execute("""SELECT character.imageurl, character.name from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
+    picurls = cur.fetchall()
+    picurl = picurls[0][0]
+    charname = picurls[0][1]
     return render_template('dashboard.html', gid = gid, sid = sid, curid = 1, username=name, gameinfo = [], picurl = picurl, charname = charname)
 
 @app.route("/newspaper/<sid>/<gid>")
