@@ -460,12 +460,12 @@ def addassignmentadmin(pid, gid):
     conn.commit()
     print("ADDED ASSIGNMENT TO RELATION ASSIGNMENTS")
     aid = cur.fetchall()
-    aid = [0][0]
+    aid = aid[0][0]
     cur.execute("""INSERT into game_assignments (gid, aid) values (%s, %s);""",(gid,aid))
     conn.commit()
     print("ADDED ASSIGNMENT TO RELATION GAME_ASSIGNMENTS")
     return redirect("http://www.rttportal.com/admin/game/"+pid+"/"+gid)
-    
+
 #Add assignments:
 #insert into assignments (aid, title, due) values (1134343, 'title', '2004-10-19 10:23:54');
 #insert into game_assignments (gid, aid) values (1, 1134343);
