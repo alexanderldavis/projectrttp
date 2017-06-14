@@ -58,7 +58,7 @@ def newStudent():
         sidlst = cur.fetchall()
         conn.commit()
         sid = sidlst[0][0]
-        return redirect("http://www.rttportal.com/dashboard/"+str(sid))
+        return redirect("http://www.rttportal.com/games/"+str(sid))
     return "User already exists! Log In instead!"
 
 @app.route("/slogin")
@@ -82,7 +82,7 @@ def loginStudent():
         charlst = cur.fetchall()
         conn.commit()
         #return render_template('dashboard.html', sid = lst[0][0], curid = 1, username="John", description = charlst[0][2])
-        return redirect("http://www.rttportal.com/dashboard/"+str(lst[0][0]))
+        return redirect("http://www.rttportal.com/games/"+str(lst[0][0]))
     if not check_password_hash(lst[0][0], password):
         return "Password is wrong. Shame on you."
     return "Student account does not exist yet"
