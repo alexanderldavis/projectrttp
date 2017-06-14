@@ -416,7 +416,10 @@ def gameadminassignments(pid, gid):
         for submission in submissioninfolst:
             cleansubmissionlist.append((submission[0],submission[1],submission[2],submission[3]))
         finalcleansublst.append((aid, title, due, cleansubmissionlist))
-    return render_template("admingameassignment.html", pid = pid, gid = gid, assignments = finalcleansublst)
+    cur.execute("""SELECT title from game where gid = %s;""",(gid,))
+    gameName = cur.fetchall()
+    gameName= gameName[0][0]
+    return render_template("admingameassignment.html", gameName = gameName, pid = pid, gid = gid, assignments = finalcleansublst)
 
 @app.route("/admin/getinvitecodes/<pid>/<gid>")
 def getInviteCodes(pid, gid):
