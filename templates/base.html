@@ -50,7 +50,7 @@
         <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
         {% else %}
         <div id="userbox">
-          <div id="usercircle" onmouseover="hoverUser()" onmouseleave="leaveUser()" style="background-image:url(https://upload.wikimedia.org/wikipedia/commons/7/73/Jacques_Chirac_2.jpg)">
+          <div id="usercircle" onmouseover="hoverUser()" onmouseleave="leaveUser()" style="background-image:url({{url if url else https://cdn.pixabay.com/photo/2016/10/18/18/19/question-mark-1750942_960_720.png}})">
           <div id="usermenu" onmouseover="hoverUserMenu()" onmouseleave="leaveUserMenu()">
             <ul>
               <li>In-game Name</li>
@@ -69,7 +69,7 @@
 
 <div class="bod container-fluid text-center">
   <div class="row content">
-    {% if curid == 0 and not gamechooser %}
+    {% if curid == 0 %}
     <div class="col-sm-2 sidenav">
       <h4>Information Center</h4>
       <p><a href="#">About RTTP</a></p>
