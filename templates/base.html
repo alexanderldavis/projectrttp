@@ -67,6 +67,7 @@
 </nav>
 {% endblock %}
 
+{% block body %}
 <div class="bod container-fluid text-center">
   <div class="row content">
     {% if curid == 0 and not gamechooser %}
@@ -75,7 +76,6 @@
 
       <p><a href="#">About RTTP</a></p>
       <p><a href="#">RTTP at Luther College</a></p>
-      <p><a href="#">Assignment 3</a></p>
     </div>
     {% else %}
       <div class="col-sm-2 sidenav">
@@ -107,6 +107,7 @@
     {% endif %}
   </div>
 </div>
+{% endblock %}
 
 <footer class="container-fluid text-center">
   <p>&copy Luther College.</p>
