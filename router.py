@@ -143,8 +143,8 @@ def gameJoinStudent(sid):
     print("STUDENT LINKED TO CHARACTER")
     return redirect("http://www.rttportal.com/dashboard/"+str(sid))
 
-@app.route("/dashboard/<sid>")
-def getCustomDashboard(sid):
+@app.route("/gamechooser/<sid>")
+def getCustomGameChooser(sid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     mylst = cur.fetchall()
     conn.commit()
@@ -170,6 +170,10 @@ def getCustomDashboard(sid):
             conn.commit()
             charname = charname[0][0]
             cleanGamelst.append((charname, gametitle))
+    return render_template('gamechooser.html', sid = sid, curid = 10, username=mylst[0][0], gameinfo = cleanGamelst)
+
+@app.route("/dashboard/<sid>/<gid>")
+def getCustomDashboard(sid, gid):
     return render_template('dashboard.html', sid = sid, curid = 1, username=mylst[0][0], gameinfo = cleanGamelst)
 
 @app.route("/newspaper/<sid>")
