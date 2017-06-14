@@ -179,7 +179,10 @@ def getCustomDashboard(sid, gid):
     if len(lst) == 0:
         return "Create account or log in"
     name = lst[0][0]
-    return render_template('dashboard.html', gid = gid, sid = sid, curid = 1, username=name, gameinfo = [])
+    cur.execute("""SELECT character.imageurl from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
+    picurl = cur.fetchall()
+    picurl[0][0]
+    return render_template('dashboard.html', gid = gid, sid = sid, curid = 1, username=name, gameinfo = [], picurl = picurl)
 
 @app.route("/newspaper/<sid>/<gid>")
 def getCustomNewspaper(sid, gid):
@@ -188,7 +191,10 @@ def getCustomNewspaper(sid, gid):
     conn.commit()
     if len(lst) == 0:
         return "Create account or log in"
-    return render_template('newspaper.html', gid = gid, sid = sid, curid = 2, username=lst[0][0])
+    cur.execute("""SELECT character.imageurl from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
+    picurl = cur.fetchall()
+    picurl[0][0]
+    return render_template('newspaper.html', gid = gid, sid = sid, curid = 2, username=lst[0][0], picurl = picurl)
 
 @app.route("/characterprofile/<sid>/<gid>")
 def getCustomCharacterProfile(sid, gid):
@@ -203,7 +209,10 @@ def getCustomCharacterProfile(sid, gid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     namelst = cur.fetchall()
     conn.commit()
-    return render_template('characterprofile.html', gid = gid, sid = sid, curid = 3, username=namelst[0][0])
+    cur.execute("""SELECT character.imageurl from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
+    picurl = cur.fetchall()
+    picurl[0][0]
+    return render_template('characterprofile.html', gid = gid, sid = sid, curid = 3, username=namelst[0][0], picurl = picurl)
 
 @app.route("/chat/<sid>/<gid>")
 def getCustomChat(sid, gid):
@@ -215,7 +224,10 @@ def getCustomChat(sid, gid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     namelst = cur.fetchall()
     conn.commit()
-    return render_template('chat.html', gid = gid, sid=sid, curid = 5, username= namelst[0][0])
+    cur.execute("""SELECT character.imageurl from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
+    picurl = cur.fetchall()
+    picurl[0][0]
+    return render_template('chat.html', gid = gid, sid=sid, curid = 5, username= namelst[0][0], picurl = picurl)
 
 @app.route("/account/<sid>/<gid>")
 def getCustomAccount(sid):
@@ -227,7 +239,10 @@ def getCustomAccount(sid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     namelst = cur.fetchall()
     conn.commit()
-    return render_template('account.html', gid = gid, sid=sid, curid = 6, username = namelst[0][0])
+    cur.execute("""SELECT character.imageurl from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
+    picurl = cur.fetchall()
+    picurl[0][0]
+    return render_template('account.html', gid = gid, sid=sid, curid = 6, username = namelst[0][0], picurl = picurl)
 
 @app.route("/accountUpdate/<sid>")
 def accountUpdate(sid):
