@@ -69,18 +69,29 @@
 
 <div class="bod container-fluid text-center">
   <div class="row content">
-    <div class="col-sm-2 sidenav">
-      {% block leftnav %}
-      <h4>Assignments</h4>
-      <p><a href="#">Assignment 1</a></p>
-      <p><a href="#">Assignment 2</a></p>
+    {% if curid = 0 %}
+      <h4>Information Center</h4>
+
+      <p><a href="#">About RTTP</a></p>
+      <p><a href="#">RTTP at Luther College</a></p>
       <p><a href="#">Assignment 3</a></p>
-      {% endblock %}
-    </div>
+    {% else %}
+      <div class="col-sm-2 sidenav">
+        {% block leftnav %}
+        <h4>Assignments</h4>
+
+        <p><a href="#">Assignment 1</a></p>
+        <p><a href="#">Assignment 2</a></p>
+        <p><a href="#">Assignment 3</a></p>
+        {% endblock %}
+      </div>
+    {% endif %}
     <div class="col-sm-8 text-left" id="middle">
       {% block content %}
       {% endblock %}
     </div>
+    {% if curid = 0 %}
+    {% else %}
     <div class="col-sm-2 sidenav">
       {% block rightnav %}
       <h4>Calendar</h4>
@@ -89,11 +100,12 @@
       </div>
       {% endblock %}
     </div>
+    {% endif %}
   </div>
 </div>
 
 <footer class="container-fluid text-center">
-  <p>Footer footer feet feet</p>
+  <p>&copy Luther College.</p>
 </footer>
 
 </body>

@@ -398,7 +398,7 @@ def gameadminassignments(pid, gid):
     conn.commit()
     if len(lst) == 0:
         return "Professor does not exist. Register first."
-    cur.execute("""SELECT assignments.aid, assignments.title, assignments.due from assignments JOIN game_assignments on (assignments.aid = game_assignments.aid) where game_assignments.gid = %s;""", (gid,))
+    cur.execute("""SELECT assignments.aid, assignments.title, assignments.due from assignments JOIN game_assignments on (assignments.aid = game_assignments.aid) where game_assignments.gid = %s order by assignments.due ASC;""", (gid,))
     assignmentlst = cur.fetchall()
     conn.commit()
     cleanassignmentlist = []
@@ -469,9 +469,7 @@ def addassignmentadmin(pid, gid):
     print("ADDED ASSIGNMENT TO RELATION GAME_ASSIGNMENTS")
     return redirect("http://www.rttportal.com/admin/game/"+pid+"/"+gid)
 
-#Add assignments:
-#insert into assignments (aid, title, due) values (1134343, 'title', '2004-10-19 10:23:54');
-#insert into game_assignments (gid, aid) values (1, 1134343);
+@app.route("")
 
 #Add submissions:
 #insert into submissions (subid, link, uploadTime) values (112234, 'link', '2004-10-19 10:23:54');
