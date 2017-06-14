@@ -130,14 +130,14 @@ def gameJoinStudent(sid):
     conn.commit()
     if len(lst) != 0:
         return "student character already in game"
-    cur.execute("""INSERT INTO students_chargame (sid, cid, gid) VALUES (%s, %s, %s);""", (sid, characterID, gid))
-    conn.commit()
-    print("STUDENT JOINED GAME")
     cur.execute("""SELECT * from character where cid = %s;""", (characterID,))
     lst = cur.fetchall()
     conn.commit()
     if len(lst) == 0:
         return "Character not yet created or InviteCode invalid"
+    cur.execute("""INSERT INTO students_chargame (sid, cid, gid) VALUES (%s, %s, %s);""", (sid, characterID, gid))
+    conn.commit()
+    print("STUDENT JOINED GAME")
     cur.execute("""INSERT INTO student_character (sid, cid) VALUES (%s, %s);""", (sid, characterID))
     conn.commit()
     print("STUDENT LINKED TO CHARACTER")
@@ -334,6 +334,20 @@ def adminaddgame(pid):
     gametypes = cur.fetchall()
     conn.commit()
     return render_template("adminaddgame.html", pid = pid, email = email, gametypes=gametypes, nums = [i for i in range(1, 26)])
+
+@app.route("/admin/addassignment/<pid>/<gid>")
+def adminaddassignment(pid, gid):
+    cur.execute("""SELECT * from professor where pid = %s;""", (pid,))
+    lst = cur.fetchall()
+    conn.commit()
+    if len(lst) == 0:
+        return "Professor does not exist. Register first."
+    cur.execute("""SELECT title from game where gid = %s;""",(gid,))
+    gametitle = cur.fetchall()
+    if len(gametitle) == 0:
+        return "Game does not exist. Create one first."
+    gametitle = gametitle[0][0]
+    return render_template("adminaddassignment.html", pid = pid, gid = gid, gametitle = gametitle)
 
 @app.route("/admin/students/<pid>")
 def adminstudents(pid):

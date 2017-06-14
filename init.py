@@ -38,7 +38,7 @@ cur.execute("""CREATE TABLE student_character (sid int, cid int, FOREIGN KEY (si
 cur.execute("""CREATE TABLE students_chargame (sid int, cid int, gid int, FOREIGN KEY (sid) references students(sid), FOREIGN KEY (cid) references character(cid), FOREIGN KEY (gid) references game(gid));""")
 
 ## V2 beta
-cur.execute("""CREATE TABLE assignments (aid int unique, title varchar(200), due timestamp);""")
+cur.execute("""CREATE TABLE assignments (aid int unique, title varchar(200), due timestamp), description text;""")
 cur.execute("""CREATE TABLE submissions (subid int unique, link varchar(300), uploadTime timestamp);""")
 cur.execute("""CREATE table game_assignments (gid int, aid int, FOREIGN KEY (gid) references game(gid), FOREIGN KEY (aid) references assignments(aid));""")
 cur.execute("""CREATE TABLE student_submissions (sid int, subid int, FOREIGN KEY (sid) references students(sid), FOREIGN KEY (subid) references submissions(subid));""")
