@@ -141,7 +141,7 @@ def gameJoinStudent(sid):
     cur.execute("""INSERT INTO student_character (sid, cid) VALUES (%s, %s);""", (sid, characterID))
     conn.commit()
     print("STUDENT LINKED TO CHARACTER")
-    return redirect("http://www.rttportal.com/dashboard/"+str(sid))
+    return redirect("http://www.rttportal.com/gamechooser/"+str(sid))
 
 @app.route("/gamechooser/<sid>")
 def getCustomGameChooser(sid):
@@ -170,11 +170,11 @@ def getCustomGameChooser(sid):
             conn.commit()
             charname = charname[0][0]
             cleanGamelst.append((charname, gametitle))
-    return render_template('gamechooser.html', sid = sid, curid = 10, username=mylst[0][0], gameinfo = cleanGamelst)
+    return render_template('gamechooser.html', sid = sid, curid = 0, username=mylst[0][0], gameinfo = cleanGamelst)
 
 @app.route("/dashboard/<sid>/<gid>")
 def getCustomDashboard(sid, gid):
-    return render_template('dashboard.html', sid = sid, curid = 1, username=mylst[0][0], gameinfo = cleanGamelst)
+    return render_template('dashboard.html', sid = sid, curid = 1, username="Hi!", gameinfo = [])
 
 @app.route("/newspaper/<sid>")
 def getCustomNewspaper(sid):
