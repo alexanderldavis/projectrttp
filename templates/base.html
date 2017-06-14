@@ -70,11 +70,13 @@
 <div class="bod container-fluid text-center">
   <div class="row content">
     {% if curid == 0 %}
+    <div class="col-sm-2 sidenav">
       <h4>Information Center</h4>
 
       <p><a href="#">About RTTP</a></p>
       <p><a href="#">RTTP at Luther College</a></p>
       <p><a href="#">Assignment 3</a></p>
+    </div>
     {% else %}
       <div class="col-sm-2 sidenav">
         {% block leftnav %}
@@ -91,6 +93,8 @@
       {% endblock %}
     </div>
     {% if curid == 0 %}
+    <div class="col-sm-2 sidenav">
+    </div>
     {% else %}
     <div class="col-sm-2 sidenav">
       {% block rightnav %}
