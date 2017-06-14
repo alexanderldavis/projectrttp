@@ -451,7 +451,21 @@ def deleteGame(pid, gid, securecode):
     print("GAME "+str(gid)+" DELETED BY PROFESSOR ("+str(pid)+")")
     return redirect("http://www.rttportal.com/admin/students/"+str(pid))
 
-
+@app.route("/paddassignment/<pid>/<gid>")
+def addassignmentadmin(pid, gid):
+    title = request.args['assignmentName']
+    description = request.args['title']
+    duedate = request.args['due']
+    cur.execute("""INSERT into assignments (aid, title, description, due) values ((SELECT floor(random()*(2034343003-43434+1))+10), %s, %s, %s) RETURNING aid;""",(title,description,duedate))
+    conn.commit()
+    print("ADDED ASSIGNMENT TO RELATION ASSIGNMENTS")
+    aid = cur.fetchall()
+    aid = [0][0]
+    cur.execute("""INSERT into game_assignments (gid, aid) values (%s, %s);""",(gid,aid))
+    conn.commit()
+    print("ADDED ASSIGNMENT TO RELATION GAME_ASSIGNMENTS")
+    return redirect("http://www.rttportal.com/admin/game/"+pid+"/"+gid)
+    
 #Add assignments:
 #insert into assignments (aid, title, due) values (1134343, 'title', '2004-10-19 10:23:54');
 #insert into game_assignments (gid, aid) values (1, 1134343);

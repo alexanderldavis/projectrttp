@@ -34,11 +34,10 @@ cur.execute("""CREATE TABLE game (gid int unique, title varchar(200) unique, gti
 cur.execute("""CREATE TABLE professor_game (pid int, gid int, FOREIGN KEY (pid) references professor(pid), FOREIGN KEY (gid) references game(gid));""")
 cur.execute("""CREATE TABLE character (cid int unique, name varchar(200), descriptionURL text, imageURL text, gtid int, FOREIGN KEY (gtid) references gametype(gtid));""")
 cur.execute("""CREATE TABLE student_character (sid int, cid int, FOREIGN KEY (sid) references students(sid), FOREIGN KEY (cid) references character(cid));""")
-
 cur.execute("""CREATE TABLE students_chargame (sid int, cid int, gid int, FOREIGN KEY (sid) references students(sid), FOREIGN KEY (cid) references character(cid), FOREIGN KEY (gid) references game(gid));""")
 
 ## V2 beta
-cur.execute("""CREATE TABLE assignments (aid int unique, title varchar(200), due timestamp), description text;""")
+cur.execute("""CREATE TABLE assignments (aid int unique, title varchar(200), description text, due timestamp);""")
 cur.execute("""CREATE TABLE submissions (subid int unique, link varchar(300), uploadTime timestamp);""")
 cur.execute("""CREATE table game_assignments (gid int, aid int, FOREIGN KEY (gid) references game(gid), FOREIGN KEY (aid) references assignments(aid));""")
 cur.execute("""CREATE TABLE student_submissions (sid int, subid int, FOREIGN KEY (sid) references students(sid), FOREIGN KEY (subid) references submissions(subid));""")
