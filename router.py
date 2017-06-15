@@ -297,7 +297,7 @@ def sign_s3():
       return json.dumps({'data': presigned_post, 'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)})
   return "Wrong!"
 
-@app.route("/submit_form/<sid>/<aid>/<gid>/", methods = ["POST"])
+@app.route("/submit_form/<sid>/<aid>/<gid>/")
 def submit_form(sid, aid, gid):
     avatar_url = request.form["file-url"]
     print(avatar_url)
