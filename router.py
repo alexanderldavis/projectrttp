@@ -272,7 +272,7 @@ def uploadAssignment(sid, gid, aid, securecode):
 # def myaccount():
 #     return render_template("myaccount.html")
 
-@app.route('/sign_s3')
+@app.route('/sign_s3/')
 def sign_s3():
   S3_BUCKET = os.environ.get('S3_BUCKET')
   file_name1 = request.args.get('file_name')
@@ -297,8 +297,8 @@ def sign_s3():
       return json.dumps({'data': presigned_post, 'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)})
   return "Wrong!"
 
-@app.route("/submit_form/<sid>/<aid>/<gid>/")
-def submit_form(sid, aid, gid):
+@app.route("/submit_form/<sid>/<aid>/", methods = ["POST"])
+def submit_form(sid, aid):
     avatar_url = request.form["file-url"]
     print(avatar_url)
     uploaddate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -311,18 +311,18 @@ def submit_form(sid, aid, gid):
     conn.commit()
     cur.execute("""INSERT into assignments_submissions (aid, subid) values (%s, %s);""", (aid, subid))
     conn.commit()
-    print("ASSIGNMENT SUBMISSION ADDED")
+    print("ASSIGNMENT ADDED")
     #insert into submissions (subid, link, uploadTime) values (112234, 'link', '2004-10-19 10:23:54');
     #insert into student_submissions (sid, subid) values (27644, 112234);
     #insert into assignments_submissions (aid, subid) values (1134343, 112234);
-    cur.execute("""SELECT character.imageurl, character.name from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
-    picurls = cur.fetchall()
-    picurl = picurls[0][0]
-    charname = picurls[0][1]
-    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
-    namelst = cur.fetchall()
-    conn.commit()
-    return render_template("myaccount.html", gid = gid, sid = sid, curid = 6, username= namelst[0][0], picurl = picurl, aid = aid)
+    return str(avatar_url)
+
+
+
+
+
+
+
 
 @app.route("/account/<sid>/<gid>")
 def getCustomAccount(sid):
