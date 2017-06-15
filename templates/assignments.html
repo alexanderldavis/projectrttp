@@ -12,19 +12,13 @@
         <th>Title</th>
         <th>Description</th>
         <th>Upload Link</th>
-        <th>Uploaded</th>
       </tr>
-      {% for (aid, title, description, due, uploaded) in assignments %}
+      {% for (aid, title, description, due) in assignments %}
       <tr>
         <td>{{due}}</td>
         <td>{{title}}</td>
         <td>{{description}}</td>
         <td><a href="http://www.rttportal.com/upload/{{sid}}/{{gid}}/{{aid}}/5739475839475">Upload Document</a></td>
-        {% if uploaded == "No"%}
-        <td>No Upload Yet!</td>
-        {% else %}
-        <td><a href="{{uploaded}}">Uploaded File</a></td>
-        {% endif %}
       </tr>
       {% endfor %}
     </table>

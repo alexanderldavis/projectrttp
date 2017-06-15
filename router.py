@@ -237,8 +237,8 @@ def getCustomAssignments(sid, gid):
     conn.commit()
     if len(lst) == 0:
         return "Create account or log in"
-    # cur.execute("""SELECT assignments.aid, assignments.title, assignments.description, assignments.due FROM assignments JOIN game_assignments ON (assignments.aid = game_assignments.aid) WHERE gid = %s order by assignments.due ASC;""", (gid,))
-    cur.execute("""SELECT assignments.aid, assignments.title, assignments.description, assignments.due, submissions.link FROM assignments JOIN game_assignments ON (assignments.aid = game_assignments.aid) JOIN assignments_submissions ON (assignments_submissions.aid = assignments.aid) JOIN submissions ON (assignments_submissions.subid = submissions.subid) WHERE gid = %s order by assignments.due ASC;""", (gid,))
+    cur.execute("""SELECT assignments.aid, assignments.title, assignments.description, assignments.due FROM assignments JOIN game_assignments ON (assignments.aid = game_assignments.aid) WHERE gid = %s order by assignments.due ASC;""", (gid,))
+    # cur.execute("""SELECT assignments.aid, assignments.title, assignments.description, assignments.due, submissions.link FROM assignments JOIN game_assignments ON (assignments.aid = game_assignments.aid) JOIN assignments_submissions ON (assignments_submissions.aid = assignments.aid) JOIN submissions ON (assignments_submissions.subid = submissions.subid) WHERE gid = %s order by assignments.due ASC;""", (gid,))
     assignments = cur.fetchall()
     cur.execute("""SELECT character.imageurl, character.name from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
     picurls = cur.fetchall()
