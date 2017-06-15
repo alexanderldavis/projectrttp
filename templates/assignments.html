@@ -5,9 +5,19 @@
 {% block content %}
 
   <h1>Assignments</h1>
-
   <table>
-    <th></th>
+    <tr>
+      <th>Due Date</th>
+      <th>Title</th>
+      <th>Description</th>
+    </tr>
+    {% for (aid, title, description, due) in assignments %}
+    <tr>
+      <td>{{due}}</td>
+      <td>{{title}}</td>
+      <td>{{description}}</td>
+    </tr>
+    {% endfor %}
   </table>
 
 

@@ -236,14 +236,13 @@ def getCustomAssignments(sid, gid):
     conn.commit()
     if len(lst) == 0:
         return "Create account or log in"
-    cur.execute("""""")    
-
-
+    cur.execute("""SELECT assignments.aid, assignments.title, assignments.description, assignments.due FROM assignments JOIN game_assignments ON (assignments.aid = game_assignments.aid) WHERE gid = %s order by assignments.due ASC;""", (gid,))
+    assignments = cur.fetchall()
     cur.execute("""SELECT character.imageurl, character.name from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
     picurls = cur.fetchall()
     picurl = picurls[0][0]
     charname = picurls[0][1]
-    return render_template('assignments.html', gid = gid, sid = sid, curid = 6, picurl = picurl)
+    return render_template('assignments.html', gid = gid, sid = sid, curid = 6, picurl = picurl, assignments = assignments)
 
 @app.route("/account/<sid>/<gid>")
 def getCustomAccount(sid):
@@ -490,7 +489,7 @@ def deleteGame(pid, gid, securecode):
         return "Professor does not exist. Register first."
     if int(securecode) != 848374949384743937:
         return "deleteGame authorization failed"
-    cur.execute("""DELETE from game_assignments where gid = %s; DELETE from professor_game where gid = %s; DELETE from students_chargame where gid = %s;  DELETE from game where gid = %s;""", (gid, gid, gid, gid))
+    cur.execute("""DELETE from game_assignments where gid = %s ; DELETE from professor_game where gid = %s; DELETE from students_chargame where gid = %s;  DELETE from game where gid = %s;""", (gid, gid, gid, gid))
     conn.commit()
     print("GAME "+str(gid)+" DELETED BY PROFESSOR ("+str(pid)+")")
     return redirect("http://www.rttportal.com/admin/students/"+str(pid))
