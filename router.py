@@ -309,7 +309,6 @@ def submit_form(gid, sid, aid):
 def addSubmissionFromStudent(url, sid, aid):
     cur.execute("""SELECT assignments_submissions.subid from student_submissions join assignments_submissions on (student_submissions.subid = assignments_submissions.subid) where student_submissions.sid = %s and assignments_submissions.aid = %s;""",(sid, aid))
     lst = cur.fetchall()
-    subid = lst[0][0]
     if len(lst) == 0:
         uploaddate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         cur.execute("""INSERT into submissions (subid, link, uploadTime) values ((SELECT floor(random()*(2034343003-43434+1))+10), %s, %s) returning subid;""",(url,uploaddate))
@@ -323,6 +322,7 @@ def addSubmissionFromStudent(url, sid, aid):
         print("Added new document")
         return True
     else:
+        subid = lst[0][0]
         uploaddate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         cur.execute("""UPDATE submissions SET link = %s, uploadTime = %s WHERE subid = %s;""", (url, uploaddate, sid))
         conn.commit()
