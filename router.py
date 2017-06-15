@@ -276,10 +276,8 @@ def uploadAssignment(sid, gid, aid, securecode):
 @app.route('/sign_s3/')
 def sign_s3():
   S3_BUCKET = os.environ.get('S3_BUCKET')
-  file_name1 = request.args.get('file_name')
-  ext = file_name1.split(".")[1]
   file_name = id_generator()
-  file_name+="."+ext
+  file_name+=".pdf"
   file_type = request.args.get('file_type')
   print(file_name)
   print(file_type)
