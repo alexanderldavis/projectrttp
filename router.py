@@ -297,28 +297,25 @@ def sign_s3():
       return json.dumps({'data': presigned_post, 'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)})
   return "Wrong!"
 
-@app.route("/submit_form/<sid>/<aid>/", methods = ["POST"])
+@app.route("/submit_form/", methods = ["POST"])
 def submit_form(sid, aid):
     avatar_url = request.form["file-url"]
     print(avatar_url)
-    uploaddate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    #Add submissions:
-    cur.execute("""INSERT into submissions (subid, link, uploadTime) values ((SELECT floor(random()*(2034343003-43434+1))+10), %s, %s) returning subid;""",(avatar_url,uploaddate))
-    conn.commit()
-    subid = cur.fetchall()
-    subid = subid[0][0]
-    cur.execute("""INSERT into student_submissions (sid, subid) values (%s, %s);""", (sid, subid))
-    conn.commit()
-    cur.execute("""INSERT into assignments_submissions (aid, subid) values (%s, %s);""", (aid, subid))
-    conn.commit()
-    print("ASSIGNMENT ADDED")
-    #insert into submissions (subid, link, uploadTime) values (112234, 'link', '2004-10-19 10:23:54');
-    #insert into student_submissions (sid, subid) values (27644, 112234);
-    #insert into assignments_submissions (aid, subid) values (1134343, 112234);
     return str(avatar_url)
 
+    #Add submissions:
+    # uploaddate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # cur.execute("""INSERT into submissions (subid, link, uploadTime) values ((SELECT floor(random()*(2034343003-43434+1))+10), %s, %s) returning subid;""",(avatar_url,uploaddate))
+    # conn.commit()
+    # subid = cur.fetchall()
+    # subid = subid[0][0]
+    # cur.execute("""INSERT into student_submissions (sid, subid) values (%s, %s);""", (sid, subid))
+    # conn.commit()
+    # cur.execute("""INSERT into assignments_submissions (aid, subid) values (%s, %s);""", (aid, subid))
 
-
+#insert into submissions (subid, link, uploadTime) values (112234, 'link', '2004-10-19 10:23:54');
+#insert into student_submissions (sid, subid) values (27644, 112234);
+#insert into assignments_submissions (aid, subid) values (1134343, 112234);
 
 
 
