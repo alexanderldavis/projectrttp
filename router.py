@@ -278,7 +278,7 @@ def sign_s3():
   file_name1 = request.args.get('file_name')
   ext = file_name1.split(".")[1]
   file_name = id_generator()
-  file_name+=ext
+  file_name+="."+ext
   file_type = request.args.get('file_type')
   print(file_name)
   print(file_type)
@@ -297,12 +297,24 @@ def sign_s3():
       return json.dumps({'data': presigned_post, 'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)})
   return "Wrong!"
 
-@app.route("/submit_form/", methods = ["POST"])
-def submit_form():
+@app.route("/submit_form/<gid>/<sid>/", methods = ["POST"])
+def submit_form(gid, sid):
     avatar_url = request.form["file-url"]
     print(avatar_url)
-    return str(avatar_url)
+    addSubmissionFromStudent(avatar_url, sid, aid)
+    return redirect("http://www.rttportal.com/assignments/<"+sid+">/<"+gid+">")
 
+
+def addSubmissionFromStudent(url, sid, aid):
+    uploaddate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    cur.execute("""INSERT into submissions (subid, link, uploadTime) values ((SELECT floor(random()*(2034343003-43434+1))+10), %s, %s) returning subid;""",(url,uploaddate))
+    conn.commit()
+    subid = cur.fetchall()
+    subid = subid[0][0]
+    cur.execute("""INSERT into student_submissions (sid, subid) values (%s, %s);""", (sid, subid))
+    conn.commit()
+    cur.execute("""INSERT into assignments_submissions (aid, subid) values (%s, %s);""", (aid, subid))
+    conn.commit()
     #Add submissions:
     # uploaddate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     # cur.execute("""INSERT into submissions (subid, link, uploadTime) values ((SELECT floor(random()*(2034343003-43434+1))+10), %s, %s) returning subid;""",(avatar_url,uploaddate))
