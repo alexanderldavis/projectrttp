@@ -273,7 +273,7 @@ def uploadAssignment(sid, gid, aid, securecode):
 # def myaccount():
 #     return render_template("myaccount.html")
 
-@app.route('/sign_s3/')
+@app.route('/sign_s3')
 def sign_s3():
   S3_BUCKET = os.environ.get('S3_BUCKET')
   file_name1 = request.args.get('file_name')
