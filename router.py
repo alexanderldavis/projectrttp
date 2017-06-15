@@ -304,10 +304,8 @@ def submit_form(gid, sid, aid):
     avatar_url = str(request.form["file-url"])
     print("IN HERE =================================")
     print(avatar_url)
-    if addSubmissionFromStudent(avatar_url, sid, aid):
-        return redirect("http://www.rttportal.com/assignments/"+sid+"/"+gid)
-    else:
-        return "fail"
+    addSubmissionFromStudent(avatar_url, sid, aid)
+    return redirect("http://www.rttportal.com/assignments/"+sid+"/"+gid)
 
 
 def addSubmissionFromStudent(url, sid, aid):
