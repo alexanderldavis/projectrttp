@@ -71,7 +71,8 @@ def gameJoinStudent(sid):
 
 @app.route("/dashboard/<sid>")
 def getCustomDashboard(sid):
-    return render_template('dashboard.html', sid = "sid", curid = 1, username='username', gameinfo = [('Jacques Guy','France 1823'),('Dag Fishinboi','Minnesota 1993'),('Dumbo','Conflicted Little Guys: Disney through the ages')])
+    return render_template('dashboard.html', sid = "sid", curid = 1, username='username',
+    picurl = "http://mediadirectory.economist.com/wp-content/uploads/2015/09/John-Prideaux-headshot_picmonkeyed.jpg", gameinfo = [('Jacques Guy','France 1823'),('Dag Fishinboi','Minnesota 1993'),('Dumbo','Conflicted Little Guys: Disney through the ages')])
 
 @app.route("/newspaper/<sid>")
 def getCustomNewspaper(sid):
@@ -85,6 +86,13 @@ def getCustomCharacterProfile(sid):
 @app.route("/chat/<sid>")
 def getCustomChat(sid):
     return render_template('chat.html', sid=sid, curid = 5, username= 'username')
+
+@app.route("/assignments/<sid>/<gid>")
+def getCustomAssignments(sid, gid):
+    return render_template('assignments.html', gid = "gid", sid = "sid", curid = 6, username= "username",
+    picurl = "http://mediadirectory.economist.com/wp-content/uploads/2015/09/John-Prideaux-headshot_picmonkeyed.jpg",
+    assignments = [["aid", "title", "description", "due"]])
+
 
 @app.route("/account/<sid>")
 def getCustomAccount(sid):
@@ -228,25 +236,7 @@ def gameJoinProfessor(pid):
 
 @app.route("/admin/game/<pid>/<gid>")
 def gameadminassignments(pid, gid):
-    cur.execute("""SELECT assignments.aid, assignments.title from assignments JOIN game_assignments on (assignments.aid = game_assignments.aid) where game_assignments.gid = %s;""", (gid,))
-    assignmentlst = cur.fetchall()
-    conn.commit()
-    cleanassignmentlist = []
-    cleanaidlist = []
-    titlelst = []
-    for assignment in assignmentlst:
-        cleanassignmentlist.append((assignment[0],assignment[1]))
-        cleanaidlist.append((assignment[0], assignment[1]))
-    finalcleansublst = []
-    for (aid, title) in cleanaidlist:
-        cur.execute("""SELECT submissions.uploadTime, students.name, students.email, submissions.link FROM students JOIN student_submissions ON (students.sid = student_submissions.sid) JOIN submissions on (submissions.subid = student_submissions.subid) JOIN assignments_submissions ON (submissions.subid = assignments_submissions.subid) WHERE assignments_submissions.aid = %s;""", (aid,))
-        submissioninfolst = cur.fetchall()
-        conn.commit()
-        cleansubmissionlist = []
-        for submission in submissioninfolst:
-            cleansubmissionlist.append((submission[0],submission[1],submission[2],submission[3]))
-        finalcleansublst.append((aid, title, cleansubmissionlist))
-    return render_template("admingameassignment.html", pid = pid, gid = gid, assignments = finalcleansublst)
+    return render_template("admingameassignment.html", pid = "pid", gid = "gid", assignments = ["assignment1", "assignment2"])
 
 @app.route("/admin/getinvitecodes/<pid>/<gid>")
 def getInviteCodes(pid, gid):

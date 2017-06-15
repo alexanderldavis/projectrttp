@@ -8,10 +8,15 @@
 {% block body %}
 
 <div class="bod">
-  <div class="topbar">
-    <h1>Welcome to RTTPortal!</h1>
-    <p>Use this website to learn assignment details and due dates, as well as keep up to date on daily game objectives.</p>
+  <div class="topbarbg">
+    <div class="topbar">
+      <h1>Welcome to RTTPortal!</h1>
+      <p>Use this website to learn assignment details and due dates, as well as keep up to date on daily game objectives.</p>
+    </div>
   </div>
+
+  <div class="downarrow glyphicon glyphicon-chevron-down"></div>
+
   <div class="splitpane container">
     <div class="row">
       <div class="infobox col-md-5">
@@ -21,12 +26,12 @@
         </p>
       </div>
       <div class="infobox col-md-5 col-md-offset-2">
-        <p>RTTP are based on moments of historical crises. Students are assigned character roles,
+        <p>RTTP games are based on moments of historical crises. Students are assigned character roles,
           which provide an outline to the stance they will be promoting throughout the simulation.<p>
       </div>
     </div>
   </div>
-<div>
+</div>
 
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -38,6 +43,21 @@
         ga('send', 'pageview');
 
         $( document ).ready(function() {
+
+          /*$(window).scroll(function() {
+            $(".downarrow").css("font-size", "4em");
+            $(".downarrow").css("color", "white");
+          });*/
+
+          function scrolled() {
+            $(".downarrow").css("color", "white");
+              $(this).off('scroll')[0].setTimeout(function(){
+                $(".downarrow").css("color", "");
+                  $(this).on('scroll',scrolled);
+              }, 500);
+          }
+          $(window).on('scroll',scrolled);
+
           $(".infobox").css("height", $(".splitpane").css("height"));
         });
     </script>

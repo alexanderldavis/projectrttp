@@ -30,9 +30,9 @@
         <span class="icon-bar"></span>
       </button>
       {% if sid == a %}
-      <a class="navbar-brand" href="http://www.rttportal.com">RTTPortal</a>
+      <a class="navbar-brand" href="/">RTTPortal</a>
       {% else %}
-      <a class="navbar-brand" href="http://www.rttportal.com/games/{{sid}}">RTTPortal</a>
+      <a class="navbar-brand" href="/{{sid}}">RTTPortal</a>
       {% endif %}
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
@@ -73,10 +73,7 @@
   <div class="row content">
     {% if curid == 0 %}
     <div class="col-sm-2 sidenav">
-      <h4>Information Center</h4>
-      <p><a href="#">About RTTP</a></p>
-      <p><a href="#">RTTP at Luther College</a></p>
-      <p><a href="#">Professor Portal</a></p>
+
     </div>
     {% else %}
       <div class="col-sm-2 sidenav">
@@ -110,7 +107,10 @@
 {% endblock %}
 
 <footer class="container-fluid text-center">
-  <p>&copy Luther College.</p>
+  <p>&copy Luther College.</p> <h4>Information Center</h4>
+  <p><a href="#">About RTTP</a></p>
+  <p><a href="#">RTTP at Luther College</a></p>
+  <p><a href="#">Professor Portal</a></p>
 </footer>
 
 </body>

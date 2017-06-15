@@ -9,7 +9,6 @@ html, body, .bod {
 
 body {
 	overflow: scroll;
-	padding-bottom: 3em;
 }
 
 #middle {
@@ -95,12 +94,11 @@ nav a:hover {
 .sidenav {
   padding-top: 20px;
   background-color: #f1f1f1;
-  height: 105%;
+  height: 100%;
 }
 
 footer {
-	position: absolute;
-	bottom: 0px;
+	display: inline-block;
 	width: 100%;
   background-color: #555;
   color: white;

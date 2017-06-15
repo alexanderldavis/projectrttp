@@ -1,19 +1,45 @@
+body, html {
+  height: auto;
+  overflow: show;
+}
+
+html {
+  overflow: scroll;
+}
+
 .bod {
-  background: url('/static/img/research.jpg');
-  background-size: cover;
+  background-color: rgb(34, 34, 34);
+  margin-top: -1px;
+  padding-bottom: 2em;
+  overflow: scroll;
 }
 
 .topbar {
   margin: 0px;
   margin-top: -1px;
-  padding: 4em;
-  background-color: #f1f1f1;
-  opacity: .8;
-  z-index: 1;
+  padding: 8em;
+  color: white;
+  text-shadow: 4px 4px 6px black;
+}
+
+.topbarbg {
+  background-image: url('/static/img/research.jpg');
+  background-size: cover;
+  background-position: bottom;
+
+}
+
+.downarrow {
+  padding: 2em;
+  display: block;
+  width: 100%;
+  text-align: center;
+  color: gray;
+  font-size: 2em;
+  transition: 1s;
 }
 
 .splitpane {
-  margin-top: 10%;
   /*
   width: 100%;
   text-align: center;*/
