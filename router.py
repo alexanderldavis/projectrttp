@@ -518,6 +518,7 @@ def gameadminassignments(pid, gid):
         finalcleansublst.append((aid, title, due, cleansubmissionlist))
     cur.execute("""SELECT title from game where gid = %s;""",(gid,))
     gameName = cur.fetchall()
+    print(finalcleansublst)
     gameName= gameName[0][0]
     return render_template("admingameassignment.html", gameName = gameName, pid = pid, gid = gid, assignments = finalcleansublst)
 
