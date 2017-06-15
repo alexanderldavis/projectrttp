@@ -237,7 +237,8 @@ def getCustomAssignments(sid, gid):
     conn.commit()
     if len(lst) == 0:
         return "Create account or log in"
-    cur.execute("""SELECT assignments.aid, assignments.title, assignments.description, assignments.due FROM assignments JOIN game_assignments ON (assignments.aid = game_assignments.aid) WHERE gid = %s order by assignments.due ASC;""", (gid,))
+    # cur.execute("""SELECT assignments.aid, assignments.title, assignments.description, assignments.due FROM assignments JOIN game_assignments ON (assignments.aid = game_assignments.aid) WHERE gid = %s order by assignments.due ASC;""", (gid,))
+    cur.execute("""SELECT assignments.aid, assignments.title, assignments.description, assignments.due, submissions.link FROM assignments JOIN game_assignments ON (assignments.aid = game_assignments.aid) JOIN assignments_submissions ON (assignments_submissions.aid = assignments.aid) JOIN submissions ON (assignments_submissions.subid = submissions.subid) WHERE gid = %s order by assignments.due ASC;""", (gid,))
     assignments = cur.fetchall()
     cur.execute("""SELECT character.imageurl, character.name from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
     picurls = cur.fetchall()
@@ -306,15 +307,28 @@ def submit_form(gid, sid):
 
 
 def addSubmissionFromStudent(url, sid, aid):
-    uploaddate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    cur.execute("""INSERT into submissions (subid, link, uploadTime) values ((SELECT floor(random()*(2034343003-43434+1))+10), %s, %s) returning subid;""",(url,uploaddate))
-    conn.commit()
-    subid = cur.fetchall()
-    subid = subid[0][0]
-    cur.execute("""INSERT into student_submissions (sid, subid) values (%s, %s);""", (sid, subid))
-    conn.commit()
-    cur.execute("""INSERT into assignments_submissions (aid, subid) values (%s, %s);""", (aid, subid))
-    conn.commit()
+    cur.execute("""SELECT assignments_submission.subid from student_submissions join assignments_submission where student_submissions.sid = %s and assignments_submission.aid = %s;""",(sid, aid))
+    lst = cur.fetchall()
+    subid = lst[0][0]
+    if len(lst) == 0:
+        uploaddate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        cur.execute("""INSERT into submissions (subid, link, uploadTime) values ((SELECT floor(random()*(2034343003-43434+1))+10), %s, %s) returning subid;""",(url,uploaddate))
+        conn.commit()
+        subid = cur.fetchall()
+        subid = subid[0][0]
+        cur.execute("""INSERT into student_submissions (sid, subid) values (%s, %s);""", (sid, subid))
+        conn.commit()
+        cur.execute("""INSERT into assignments_submissions (aid, subid) values (%s, %s);""", (aid, subid))
+        conn.commit()
+        print("Added new document")
+        return True
+    else:
+        uploaddate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        cur.execute("""UPDATE submissions SET link = %s, uploadTime = %s WHERE subid = %s;""", (url, uploaddate, sid))
+        conn.commit()
+        print("Upldated submision")
+        return True
+    return False
     #Add submissions:
     # uploaddate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     # cur.execute("""INSERT into submissions (subid, link, uploadTime) values ((SELECT floor(random()*(2034343003-43434+1))+10), %s, %s) returning subid;""",(avatar_url,uploaddate))
@@ -328,10 +342,6 @@ def addSubmissionFromStudent(url, sid, aid):
 #insert into submissions (subid, link, uploadTime) values (112234, 'link', '2004-10-19 10:23:54');
 #insert into student_submissions (sid, subid) values (27644, 112234);
 #insert into assignments_submissions (aid, subid) values (1134343, 112234);
-
-
-
-
 
 @app.route("/account/<sid>/<gid>")
 def getCustomAccount(sid):
