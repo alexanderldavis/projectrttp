@@ -307,7 +307,7 @@ def submit_form(gid, sid, aid):
 
 
 def addSubmissionFromStudent(url, sid, aid):
-    cur.execute("""SELECT assignments_submission.subid from student_submissions join assignments_submission on (student_submissions.subid = assignments_submission.subid) where student_submissions.sid = %s and assignments_submission.aid = %s;""",(sid, aid))
+    cur.execute("""SELECT assignments_submissions.subid from student_submissions join assignments_submissions on (student_submissions.subid = assignments_submissions.subid) where student_submissions.sid = %s and assignments_submissions.aid = %s;""",(sid, aid))
     lst = cur.fetchall()
     subid = lst[0][0]
     if len(lst) == 0:
