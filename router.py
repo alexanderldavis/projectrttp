@@ -301,6 +301,7 @@ def sign_s3():
 @app.route("/submit_form/<gid>/<sid>/<aid>/", methods = ["POST"])
 def submit_form(gid, sid, aid):
     avatar_url = str(request.form["file-url"])
+    print("IN HERE =================================")
     print(avatar_url)
     if addSubmissionFromStudent(avatar_url, sid, aid):
         return redirect("http://www.rttportal.com/assignments/"+sid+"/"+gid)
