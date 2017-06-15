@@ -303,7 +303,7 @@ def submit_form(gid, sid, aid):
     avatar_url = request.form["file-url"]
     print(avatar_url)
     addSubmissionFromStudent(avatar_url, sid, aid)
-    return redirect("http://www.rttportal.com/assignments/<"+sid+">/<"+gid+">")
+    return redirect("http://www.rttportal.com/assignments/"+sid+"/"+gid)
 
 
 def addSubmissionFromStudent(url, sid, aid):
