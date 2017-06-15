@@ -242,7 +242,10 @@ def getCustomAssignments(sid, gid):
     picurls = cur.fetchall()
     picurl = picurls[0][0]
     charname = picurls[0][1]
-    return render_template('assignments.html', gid = gid, sid = sid, curid = 6, picurl = picurl, assignments = assignments)
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    namelst = cur.fetchall()
+    conn.commit()
+    return render_template('assignments.html', gid = gid, sid = sid, curid = 6, username= namelst[0][0], picurl = picurl, assignments = assignments)
 
 @app.route("/account/<sid>/<gid>")
 def getCustomAccount(sid):
