@@ -9,6 +9,7 @@ import boto3
 import requests as req
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug import secure_filename
+import datetime
 
 # Connect the router to the SQL database IDed in the HEROKU variables
 urllib.parse.uses_netloc.append("postgres")
@@ -247,6 +248,82 @@ def getCustomAssignments(sid, gid):
     conn.commit()
     return render_template('assignments.html', gid = gid, sid = sid, curid = 6, username= namelst[0][0], picurl = picurl, assignments = assignments)
 
+@app.route("/upload/<sid>/<gid>/<aid>/<securecode>")
+def uploadAssignment(sid, gid, aid, securecode):
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    lst = cur.fetchall()
+    conn.commit()
+    if len(lst) == 0:
+        return "Create account or log in"
+    if int(securecode) != 5739475839475:
+        return "uploadAssignment authorization failed"
+    cur.execute("""SELECT character.imageurl, character.name from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
+    picurls = cur.fetchall()
+    picurl = picurls[0][0]
+    charname = picurls[0][1]
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    namelst = cur.fetchall()
+    conn.commit()
+    return render_template("myaccount.html", gid = gid, sid = sid, curid = 6, username= namelst[0][0], picurl = picurl, aid = aid)
+
+### UPLOADS!!!
+#DEPRECATED
+# @app.route("/myaccount/")
+# def myaccount():
+#     return render_template("myaccount.html")
+
+@app.route('/sign_s3/')
+def sign_s3():
+  S3_BUCKET = os.environ.get('S3_BUCKET')
+  file_name1 = request.args.get('file_name')
+  ext = file_name1.split(".")[1]
+  file_name = id_generator()
+  file_name+=ext
+  file_type = request.args.get('file_type')
+  print(file_name)
+  print(file_type)
+  s3 = boto3.client('s3')
+  if file_type == "application/pdf":
+      presigned_post = s3.generate_presigned_post(
+          Bucket = S3_BUCKET,
+          Key = file_name,
+          Fields = {"acl": "public-read", "Content-Type": file_type},
+          Conditions = [
+                 {"acl": "public-read"},
+                 {"Content-Type": file_type}
+           ],
+           ExpiresIn = 3600
+           )
+      return json.dumps({'data': presigned_post, 'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)})
+  return "Wrong!"
+
+@app.route("/submit_form/<sid>/<aid>/", methods = ["POST"])
+def submit_form(sid, aid):
+    avatar_url = request.form["file-url"]
+    print(avatar_url)
+    uploaddate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    #Add submissions:
+    cur.execute("""INSERT into submissions (subid, link, uploadTime) values ((SELECT floor(random()*(2034343003-43434+1))+10), %s, %s) returning subid;""",(avatar_url,uploaddate))
+    conn.commit()
+    subid = cur.fetchall()
+    subid = subid[0][0]
+    cur.execute("""INSERT into student_submissions (sid, subid) values (%s, %s);""", (sid, subid))
+    conn.commit()
+    cur.execute("""INSERT into assignments_submissions (aid, subid) values (%s, %s);""", (aid, subid))
+    conn.commit()
+    print("ASSIGNMENT SUBMISSION ADDED")
+    #insert into submissions (subid, link, uploadTime) values (112234, 'link', '2004-10-19 10:23:54');
+    #insert into student_submissions (sid, subid) values (27644, 112234);
+    #insert into assignments_submissions (aid, subid) values (1134343, 112234);
+    cur.execute("""SELECT character.imageurl, character.name from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
+    picurls = cur.fetchall()
+    picurl = picurls[0][0]
+    charname = picurls[0][1]
+    cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
+    namelst = cur.fetchall()
+    conn.commit()
+    return render_template("myaccount.html", gid = gid, sid = sid, curid = 6, username= namelst[0][0], picurl = picurl, aid = aid)
+
 @app.route("/account/<sid>/<gid>")
 def getCustomAccount(sid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
@@ -277,45 +354,6 @@ def accountUpdate(sid):
         cur.execute("""UPDATE students SET hashpswd = %s WHERE sid = %s;""", (hashpassword, sid))
         conn.commit()
     return redirect("http://www.rttportal.com/games/"+str(sid))
-
-### UPLOADS!!!
-
-@app.route("/myaccount/")
-def myaccount():
-    return render_template("myaccount.html")
-
-@app.route('/sign_s3/')
-def sign_s3():
-  S3_BUCKET = os.environ.get('S3_BUCKET')
-  file_name1 = request.args.get('file_name')
-  ext = file_name1.split(".")[1]
-  file_name = id_generator()
-  file_name+=ext
-  file_type = request.args.get('file_type')
-  print(file_name)
-  print(file_type)
-  s3 = boto3.client('s3')
-  if file_type == "application/pdf":
-      presigned_post = s3.generate_presigned_post(
-          Bucket = S3_BUCKET,
-          Key = file_name,
-          Fields = {"acl": "public-read", "Content-Type": file_type},
-          Conditions = [
-                 {"acl": "public-read"},
-                 {"Content-Type": file_type}
-           ],
-           ExpiresIn = 3600
-           )
-      return json.dumps({'data': presigned_post, 'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)})
-  return "Wrong!"
-
-@app.route("/submit_form/", methods = ["POST"])
-def submit_form():
-    avatar_url = request.form["file-url"]
-    print(avatar_url)
-
-    return str(avatar_url)
-
 
 ##### ADMIN #####
 @app.route("/admin")
@@ -492,7 +530,11 @@ def deleteGame(pid, gid, securecode):
         return "Professor does not exist. Register first."
     if int(securecode) != 848374949384743937:
         return "deleteGame authorization failed"
-    cur.execute("""DELETE from game_assignments where gid = %s ; DELETE from professor_game where gid = %s; DELETE from students_chargame where gid = %s;  DELETE from game where gid = %s;""", (gid, gid, gid, gid))
+    cur.execute("""DELETE from game_assignments where gid = %s returning aid; DELETE from professor_game where gid = %s; DELETE from students_chargame where gid = %s;  DELETE from game where gid = %s;""", (gid, gid, gid, gid))
+    assignments = cur.fetchall()
+    for (assignment,) in assignments:
+        cur.execute("""DELETE from assignments where aid = %s;""", (aid,))
+        #TODO: also delete the submissions that go with the game!
     conn.commit()
     print("GAME "+str(gid)+" DELETED BY PROFESSOR ("+str(pid)+")")
     return redirect("http://www.rttportal.com/admin/students/"+str(pid))
@@ -512,12 +554,19 @@ def addassignmentadmin(pid, gid):
     print("ADDED ASSIGNMENT TO RELATION GAME_ASSIGNMENTS")
     return redirect("http://www.rttportal.com/admin/game/"+pid+"/"+gid)
 
-
-
-#Add submissions:
-#insert into submissions (subid, link, uploadTime) values (112234, 'link', '2004-10-19 10:23:54');
-#insert into student_submissions (sid, subid) values (27644, 112234);
-#insert into assignments_submissions (aid, subid) values (1134343, 112234);
+@app.route("/admin/deleteAssignment/<pid>/<gid>/<aid>/<securecode>")
+def deleteAssignment(pid, gid, aid, securecode):
+    cur.execute("""SELECT * from professor where pid = %s;""", (pid,))
+    lst = cur.fetchall()
+    conn.commit()
+    if len(lst) == 0:
+        return "Professor does not exist. Register first."
+    if int(securecode) != 34554634636346357364:
+        return "deleteAssignment authorization failed"
+    cur.execute("""DELETE from game_assignments where gid = %s and aid =%s;""", (gid, aid))
+    conn.commit()
+    print("ASSIGNMENT "+str(aid)+" DELETED BY PROFESSOR ("+str(pid)+") FROM GAME "+str(gid))
+    return redirect("http://www.rttportal.com/admin/game/"+str(pid)+"/"+str(gid))
 
 @app.errorhandler(404)
 def page_not_found(e):

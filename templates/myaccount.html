@@ -6,7 +6,7 @@
     <input type="file" id="file_input"/>
     <p id="status">Please select a file</p>
 
-    <form method="POST" action="/submit_form/">
+    <form method="POST" action="/submit_form/{{sid}}/{{aid}}/">
       <input type="hidden" id="file-url" name="file-url" value="">
       <input type="submit" value="Submit!">
     </form>
