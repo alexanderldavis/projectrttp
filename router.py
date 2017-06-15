@@ -236,6 +236,9 @@ def getCustomAssignments(sid, gid):
     conn.commit()
     if len(lst) == 0:
         return "Create account or log in"
+    cur.execute("""""")    
+
+
     cur.execute("""SELECT character.imageurl, character.name from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
     picurls = cur.fetchall()
     picurl = picurls[0][0]

@@ -40,10 +40,10 @@
       {% else %}
       <ul class="nav navbar-nav">
         <li class={{ "active" if curid==1 else "" }}><a href="/dashboard/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+        <li class={{ "active" if curid==6 else "" }}><a href="/assignments/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-file"></span> Assignments</a></li>
         <li class={{ "active" if curid==2 else "" }}><a href="/newspaper/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-book"></span> Newspaper</a></li>
         <li class={{ "active" if curid==3 else "" }}><a href="/characterprofile/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-knight"></span> Character Profile</a></li>
         <li class={{ "active" if curid==5 else "" }}><a href="/chat/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-comment"></span> Chat</a></li>
-        <li class={{ "active" if curid==6 else "" }}><a href="/assignments/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-file"></span> Assignments</a></li>
       </ul>
       {% endif %}
       <ul class="nav navbar-nav navbar-right">
