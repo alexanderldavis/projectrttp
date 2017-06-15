@@ -63,29 +63,11 @@ def newProfessor(email, password):
     conn.commit()
     return "Professor account created!"
 
-@app.route("/plogin/<email>/<password>")
-def loginProfessor(email, password):
-        return "Logged in "+"bloops"
-
 
 @app.route("/sjoin/<sid>")
 def gameJoinStudent(sid):
     return redirect("/dashboard/"+str(sid))
 
-@app.route("/pjoin/<email>/<gameName>")
-def gameJoinProfessor(email, gameName):
-    cur.execute("""SELECT * from professor where email = %s;""", (email,))
-    lst = cur.fetchall()
-    if len(lst) == 0:
-        return "Professor does not exist. Register first."
-    cur.execute("""SELECT * from game where title = %s;""", (gameName,))
-    lst = cur.fetchall()
-    if len(lst) != 0:
-        return "A Game with this name already exists"
-    cur.execute("""INSERT INTO game (title) VALUES (%s);""",(gameName,))
-    cur.execute("""INSERT INTO professor_game (pid, gid) VALUES ((SELECT pid from professor where email = %s), (SELECT gid from game where title = %s));""", (email, gameName))
-    conn.commit()
-    return "Professor has created game"
 
 @app.route("/dashboard/<sid>")
 def getCustomDashboard(sid):
@@ -144,5 +126,187 @@ def submit_form():
     print(avatar_url)
 
     return str(avatar_url)
+
+##### ADMIN #####
+@app.route("/admin")
+def adminLogin():
+    return render_template("adminlogin.html")
+
+@app.route("/plogin")
+def loginProfessor():
+    email = request.args['email']
+    password = request.args['password']
+    cur.execute("""SELECT hashpswd from professor where email = %s;""", (email,))
+    lst = cur.fetchall()
+    conn.commit()
+    # Check password to hashed pass in table
+    if len(lst) == 0:
+        return "Professor account not created. Please create an account first."
+    if check_password_hash(lst[0][0], password):
+        cur.execute("""SELECT pid from professor where email = %s;""", (email,))
+        mylst = cur.fetchall()
+        conn.commit()
+        pid = mylst[0][0]
+        return redirect("http://www.rttportal.com/admin/dashboard/"+str(pid))
+    if not check_password_hash(lst[0][0], password):
+        return "Password is wrong. Shame on you."
+    return "Some error -- Contact Webmaster"
+
+
+@app.route("/admin/dashboard/<pid>")
+def admindash(pid):
+    cur.execute("""SELECT name from professor where pid = %s;""", (pid,))
+    name = cur.fetchall()
+    conn.commit()
+    name = name[0][0]
+    cur.execute("""SELECT gid from professor_game where pid = %s;""",(pid,))
+    gids = cur.fetchall()
+    conn.commit()
+    cleangidlist = []
+    for gid in gids:
+        cleangidlist.append(gid[0])
+    cleangamelst = []
+    for gid in cleangidlist:
+        cur.execute("""SELECT gid, title from game where gid = %s;""", (gid,))
+        title = cur.fetchall()
+        conn.commit()
+        cleangamelst.append((title[0][0], title[0][1]))
+    cur.execute("""SELECT count(students.sid) from students JOIN students_game ON (students.sid = students_game.sid) JOIN game ON (game.gid = students_game.gid) JOIN professor_game on (game.gid = professor_game.gid) where pid = %s;""", (pid,))
+    studentcount = cur.fetchall()
+    conn.commit()
+    studentcount = studentcount[0][0]
+    return render_template("adminindex.html", pid = pid, username = name, titlelist = cleangamelst, studentcount=studentcount)
+
+@app.route("/admin/addGame/<pid>")
+def adminaddgame(pid):
+    cur.execute("""SELECT email from professor where pid = %s;""", (pid,))
+    email = cur.fetchall()
+    conn.commit()
+    email = email[0][0]
+    return render_template("adminaddgame.html", pid = pid, email = email)
+
+@app.route("/admin/students/<pid>")
+def adminstudents(pid):
+    cur.execute("""SELECT gid from professor_game where pid = %s;""", (pid,))
+    gidlst = cur.fetchall()
+    conn.commit()
+    cleangidlst = []
+    for gid in gidlst:
+        cleangidlst.append(gid[0])
+    cleanstudentgidlist = []
+    for gid in cleangidlst:
+        cur.execute("""SELECT students.sid, students.name, students.email, character.name from students JOIN students_game on (students.sid = students_game.sid) JOIN student_character ON (students.sid = student_character.sid) JOIN character ON (character.cid = student_character.cid) where gid = %s;""",(gid,))
+        studentlist = cur.fetchall()
+        conn.commit()
+        cur.execute("""SELECT title from game where gid = %s;""", (gid,))
+        title = cur.fetchall()
+        conn.commit()
+        title = title[0][0]
+        cleanstudentgidlist.append((gid, title, studentlist))
+    print(cleanstudentgidlist)
+    return render_template("adminstudents.html", pid= pid, cleanstudentgidlist = cleanstudentgidlist)
+
+@app.route("/pjoin/<pid>")
+def gameJoinProfessor(pid):
+    gameName = request.args['gameName']
+    cur.execute("""SELECT * from professor where pid = %s;""", (pid,))
+    lst = cur.fetchall()
+    conn.commit()
+    if len(lst) == 0:
+        return "Professor does not exist. Register first."
+    cur.execute("""SELECT * from game where title = %s;""", (gameName,))
+    lst = cur.fetchall()
+    conn.commit()
+    if len(lst) != 0:
+        return "A Game with this name already exists"
+    cur.execute("""INSERT INTO game (title) VALUES (%s);""",(gameName,))
+    conn.commit()
+    cur.execute("""INSERT INTO professor_game (pid, gid) VALUES (%s, (SELECT gid from game where title = %s));""", (pid, gameName))
+    conn.commit()
+    print("PROFESSOR GAME CREATED AND LINKED TO PID")
+    return redirect("http://www.rttportal.com/admin/dashboard/"+str(pid))
+
+@app.route("/admin/game/<pid>/<gid>")
+def gameadminassignments(pid, gid):
+    cur.execute("""SELECT assignments.aid, assignments.title from assignments JOIN game_assignments on (assignments.aid = game_assignments.aid) where game_assignments.gid = %s;""", (gid,))
+    assignmentlst = cur.fetchall()
+    conn.commit()
+    cleanassignmentlist = []
+    cleanaidlist = []
+    titlelst = []
+    for assignment in assignmentlst:
+        cleanassignmentlist.append((assignment[0],assignment[1]))
+        cleanaidlist.append((assignment[0], assignment[1]))
+    finalcleansublst = []
+    for (aid, title) in cleanaidlist:
+        cur.execute("""SELECT submissions.uploadTime, students.name, students.email, submissions.link FROM students JOIN student_submissions ON (students.sid = student_submissions.sid) JOIN submissions on (submissions.subid = student_submissions.subid) JOIN assignments_submissions ON (submissions.subid = assignments_submissions.subid) WHERE assignments_submissions.aid = %s;""", (aid,))
+        submissioninfolst = cur.fetchall()
+        conn.commit()
+        cleansubmissionlist = []
+        for submission in submissioninfolst:
+            cleansubmissionlist.append((submission[0],submission[1],submission[2],submission[3]))
+        finalcleansublst.append((aid, title, cleansubmissionlist))
+    return render_template("admingameassignment.html", pid = pid, gid = gid, assignments = finalcleansublst)
+
+@app.route("/admin/getinvitecodes/<pid>/<gid>")
+def getInviteCodes(pid, gid):
+    cur.execute("""SELECT * from professor where pid = %s;""", (pid,))
+    lst = cur.fetchall()
+    conn.commit()
+    if len(lst) == 0:
+        return "Professor does not exist. Register first."
+    cur.execute("""SELECT game.title, gametype.title from game JOIN gametype ON (game.gtid = gametype.gtid) where game.gid = %s;""",(gid,))
+    titles = cur.fetchall()
+    title = titles[0][0]
+    gtname = titles[0][1]
+    cur.execute("""SELECT cid, name, descriptionURL, imageURL FROM character where gtid = (SELECT gtid from game where gid = %s);""", (gid,))
+    cinfos = cur.fetchall()
+    conn.commit()
+    cleanfinalcinfolst = []
+    for (cid, name, des, image) in cinfos:
+        cleanfinalcinfolst.append(((str(title)+"-"+str(cid)), cid, name, des, image))
+    return render_template("admininvitecodes.html", cinfo = cleanfinalcinfolst, title = title, pid = pid, gtname = gtname)
+
+@app.route("/admin/deleteGame/<pid>/<gid>/<securecode>")
+def deleteGame(pid, gid, securecode):
+    cur.execute("""SELECT * from professor where pid = %s;""", (pid,))
+    lst = cur.fetchall()
+    conn.commit()
+    if len(lst) == 0:
+        return "Professor does not exist. Register first."
+    if int(securecode) != 848374949384743937:
+        return "deleteGame authorization failed"
+    cur.execute("""DELETE from game_assignments where gid = %s; DELETE from professor_game where gid = %s; DELETE from students_chargame where gid = %s;  DELETE from game where gid = %s;""", (gid, gid, gid, gid))
+    conn.commit()
+    print("GAME "+str(gid)+" DELETED BY PROFESSOR ("+str(pid)+")")
+    return redirect("http://www.rttportal.com/admin/students/"+str(pid))
+
+@app.route("/paddassignment/<pid>/<gid>")
+def addassignmentadmin(pid, gid):
+    title = request.args['assignmentName']
+    description = request.args['title']
+    duedate = request.args['due']
+    cur.execute("""INSERT into assignments (aid, title, description, due) values ((SELECT floor(random()*(2034343003-43434+1))+10), %s, %s, %s) RETURNING aid;""",(title,description,duedate))
+    conn.commit()
+    print("ADDED ASSIGNMENT TO RELATION ASSIGNMENTS")
+    aid = cur.fetchall()
+    aid = aid[0][0]
+    cur.execute("""INSERT into game_assignments (gid, aid) values (%s, %s);""",(gid,aid))
+    conn.commit()
+    print("ADDED ASSIGNMENT TO RELATION GAME_ASSIGNMENTS")
+    return redirect("http://www.rttportal.com/admin/game/"+pid+"/"+gid)
+
+#Add submissions:
+#insert into submissions (subid, link, uploadTime) values (112234, 'link', '2004-10-19 10:23:54');
+#insert into student_submissions (sid, subid) values (27644, 112234);
+#insert into assignments_submissions (aid, subid) values (1134343, 112234);
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html')
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template('404.html')
 
 app.run(debug=True)
