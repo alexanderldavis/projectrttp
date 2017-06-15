@@ -298,7 +298,7 @@ def sign_s3():
   return "Wrong!"
 
 @app.route("/submit_form/", methods = ["POST"])
-def submit_form(sid, aid):
+def submit_form():
     avatar_url = request.form["file-url"]
     print(avatar_url)
     return str(avatar_url)
