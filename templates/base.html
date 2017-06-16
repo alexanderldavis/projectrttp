@@ -51,12 +51,11 @@
         <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
         {% else %}
         <div id="userbox">
-          <div id="usercircle" onmouseover="hoverUser()" onmouseleave="leaveUser()" style="background-image:url({{picurl}})">
-          <div id="usermenu" onmouseover="hoverUserMenu()" onmouseleave="leaveUserMenu()">
+          <div id="usercircle" style="background-image:url({{picurl}})">
+          <div id="usermenu" class="hideusermenu">
             <ul>
               <li>In-game Name</li>
               <li><a href="/account/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-user"></span> {{ username }}'s Account</a></li>
-              <!-- <li><a href="/#"><span class="glyphicon glyphicon-option-horizontal"></span> Options</a></li> -->
               <li><a href="/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
           </div>

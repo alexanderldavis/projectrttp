@@ -6,6 +6,12 @@
 
   <h1>Assignments</h1>
   <div class="container">
+
+    <div id="assignmentbox">
+      {% for (aid, title, description, due) in assignments %}
+      {% endfor %}
+    </div>
+
     <table class="table table-striped table-bordered table-hover table-condensed">
       <tr>
         <th>Due Date</th>
@@ -18,7 +24,7 @@
         <td>{{due}}</td>
         <td>{{title}}</td>
         <td>{{description}}</td>
-        <td><a href="http://www.rttportal.com/upload/{{sid}}/{{gid}}/{{aid}}/5739475839475">Upload Document</a></td>
+        <td><a href="/upload/{{sid}}/{{gid}}/{{aid}}/5739475839475">Upload Document</a></td>
       </tr>
       {% endfor %}
     </table>
