@@ -16,7 +16,7 @@
   <form id="formsearch" class="form-inline" action="/sjoin/{{sid}}" method="get">
     <span class="glyphicon glyphicon-asterisk"></span>
     <input class="form-control" type="text" name="inviteCode" placeholder="XXXXX-00000"><br />
-    <button id="submitbutton" class="btn btn-primary" type="submit"></button>
+    <button class="submitbutton btn btn-primary" type="submit"></button>
   </form>
   {% else %}
     <div class="gameshelf">
@@ -27,7 +27,7 @@
         <div class="gamelabel">Add a game<br /><span id="plussign" class="glyphicon glyphicon-plus"></span></div>
         <form id="gameform" class="invisible" action="/sjoin/{{sid}}" method="get">
           <input class="form-control" type="text" name="inviteCode" placeholder="XXXXX-00000"><br />
-          <button id="submitbutton" class="btn btn-primary" type="submit"></button>
+          <button class="submitbutton btn btn-primary" type="submit"></button>
         </form>
       </div>
     </div>

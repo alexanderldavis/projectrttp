@@ -105,7 +105,7 @@ footer {
   padding: 15px;
 }
 
-#formsearch {
+.userform {
 	line-height: 3.5em;
 }
 
@@ -130,11 +130,11 @@ footer {
 	transition: .5s;
 }
 
-#submitbutton:before{
+.submitbutton:before{
 	content: 'Submit';
 }
 
-#updatebutton:before{
+.updatebutton:before{
 	content: 'Update';
 }
 
@@ -144,7 +144,7 @@ footer {
 	height: 3.5em;
 }
 
-#submitbutton:hover:before, #updatebutton:hover:before {
+.submitbutton:hover:before, .updatebutton:hover:before {
 	font-family: 'Glyphicons Halflings';
   src: url('../fonts/glyphicons-halflings-regular.eot');
   src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
