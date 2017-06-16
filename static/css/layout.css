@@ -123,6 +123,10 @@ footer {
 	box-shadow: 0 4px 4px -4px gray;
 }
 
+button:focus {
+	outline:0 !important;
+}
+
 .btn {
 	border-radius: 0px;
 	height: 3.5em;

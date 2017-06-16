@@ -25,8 +25,7 @@ html {
 .topbarbg {
   background-image: url('/static/img/research.jpg');
   background-size: cover;
-  background-position: bottom;
-
+  background-position: center;
 }
 
 .downarrow {
