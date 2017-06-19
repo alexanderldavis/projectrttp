@@ -419,9 +419,19 @@ def admindash(pid):
         conn.commit()
         cleangamelst.append((title[0][0], title[0][1]))
     cur.execute("""SELECT count(students.sid) from students JOIN students_chargame ON (students.sid = students_chargame.sid) JOIN game ON (game.gid = students_chargame.gid) JOIN professor_game on (game.gid = professor_game.gid) where pid = %s;""", (pid,))
-    studentcount = cur.fetchall()
-    conn.commit()
-    studentcount = studentcount[0][0]
+    try:
+        studentcount = cur.fetchall()
+        conn.commit()
+        studentcount = studentcount[0][0]
+    except:
+        studentcount = 0
+    cur.execute("""SELECT count(assignments_submissions.aid) from submissions JOIN assignments_submissions on (submissions.subid = assignments_submissions.subid) JOIN game_assignments ON (game_assignments.aid = assignments_submissions.aid) JOIN professor_game ON (professor_game.gid = game_assignments.gid) where gid = %s;""", (gid,))
+    try:
+        studentcount = cur.fetchall()
+        conn.commit()
+        studentcount = studentcount[0][0]
+    except:
+        studentcount = 0
     return render_template("adminindex.html", pid = pid, username = name, titlelist = cleangamelst, studentcount=studentcount)
 
 @app.route("/admin/addGame/<pid>")
@@ -587,6 +597,31 @@ def deleteAssignment(pid, gid, aid, securecode):
     conn.commit()
     print("ASSIGNMENT "+str(aid)+" DELETED BY PROFESSOR ("+str(pid)+") FROM GAME "+str(gid))
     return redirect("http://www.rttportal.com/admin/game/"+str(pid)+"/"+str(gid))
+
+@app.route("/admin/assignments/<pid>")
+def adminAssignments(pid):
+    cur.execute("""SELECT * from professor where pid = %s;""", (pid,))
+    lst = cur.fetchall()
+    conn.commit()
+    if len(lst) == 0:
+        return "Professor does not exist. Register first."
+    cur.execute("""SELECT gid, title from game JOIN professor_game ON (professor_game.gid = game.gid) where pid = %s;""", (pid,))
+    gids = cur.fetchall()
+    conn.commit()
+    assignmentlist = []
+    for (gid, gatitle) in gids:
+        cur.execute("""SELECT assignments.aid, assignments.due, assignments.title from assignments JOIN game_assignments ON (assignments.aid = game_assignments.aid) JOIN professor_game ON (game_assignments.gid = professor_game.gid) WHERE game_assignments.gid = %s;""", (gid,))
+        aids = cur.fetchall()
+        conn.commit()
+        subassignmentlist = []
+        for (aid, due, astitle) in aids:
+            cur.execute("""SELECT count(assignments_submissions.subid) from assignments_submissions where aid = %s;""", (aid,))
+            count = cur.fetchall()
+            conn.commit()
+            subcount = count[0][0]
+            subassignmentlist.append(aid, due, astitle, subcount)
+        assignmentlist.append(gid, gametitle, subassignmentlist)
+    return render_template("adminassignments.html", assignmentlist = assignmentlist, pid = pid)
 
 @app.errorhandler(404)
 def page_not_found(e):
