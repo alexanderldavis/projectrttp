@@ -180,10 +180,15 @@ def getCustomDashboard(sid, gid):
     charinfo = cur.fetchall()
     picurl = picurls[0][0]
     charname = picurls[0][1]
+    print('So far so good', file=sys.stderr)
     cur.execute("""SELECT title from game where gid = %s;""", (gid,))
+    print('Post-execution', file=sys.stderr)
     gametitle = cur.fetchall()
+    print('Fetched', file=sys.stderr)
     conn.commit()
+    print('Committed', file=sys.stderr)
     gametitle = gametitle[0][0]
+    print('Gametitle secured', file=sys.stderr)
     return render_template('dashboard.html', gid = gid, sid = sid, curid = 1, username=name, gametitle=gametitle, picurl = picurl, charname = charname)
 
 @app.route("/newspaper/<sid>/<gid>")
