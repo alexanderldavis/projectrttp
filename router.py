@@ -425,7 +425,7 @@ def admindash(pid):
         studentcount = studentcount[0][0]
     except:
         studentcount = 0
-    cur.execute("""SELECT count(assignments_submissions.aid) from submissions JOIN assignments_submissions on (submissions.subid = assignments_submissions.subid) JOIN game_assignments ON (game_assignments.aid = assignments_submissions.aid) JOIN professor_game ON (professor_game.gid = game_assignments.gid) where gid = %s;""", (gid,))
+    cur.execute("""SELECT count(assignments_submissions.aid) from submissions JOIN assignments_submissions on (submissions.subid = assignments_submissions.subid) JOIN game_assignments ON (game_assignments.aid = assignments_submissions.aid) JOIN professor_game ON (professor_game.gid = game_assignments.gid) where game_assignments.gid = %s;""", (gid,))
     try:
         studentcount = cur.fetchall()
         conn.commit()
