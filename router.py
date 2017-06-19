@@ -1,5 +1,6 @@
 import psycopg2
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+# from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+import flask
 import os
 import urllib.parse
 import json
@@ -20,7 +21,7 @@ url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
 conn = psycopg2.connect(database=url.path[1:],user=url.username,password=url.password,host=url.hostname,port=url.port)
 cur = conn.cursor()
 
-app = Flask(__name__)
+app = flask.Flask(__name__)
 
 ## SECURITY V2 ##SV2##(2-B)
 app.secret_key = 'super secret string'  # TODO: !!Change this!!
