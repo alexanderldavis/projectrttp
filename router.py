@@ -83,35 +83,35 @@ def id_generator(size=20, chars=string.ascii_uppercase + string.digits):
 def index():
     return render_template('index.html', curid = 0)
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if flask.request.method == 'GET':
-        return render_template('login.html', curid = 0)
-    email = flask.request.form['email']
-    print("IN /LOGIN: THIS IS THE email RESULT:", str(email))
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     if flask.request.method == 'GET':
+#         return render_template('login.html', curid = 0)
+#     email = flask.request.form['email']
+#     print("IN /LOGIN: THIS IS THE email RESULT:", str(email))
+#
+#     cur.execute("""SELECT hashpswd, sid from students where email = %s;""", (email,))
+#     lst = cur.fetchall()
+#     if len(lst) != 0:
+#         print("IN /LOGIN: THIS IS lst RESULT:", str(lst))
+#         conn.commit()
+#         print("IN /LOGIN: THIS IS check_password_hash RESULT:", str(check_password_hash(lst[0][0], flask.request.form['pw'])))
+#         if check_password_hash(lst[0][0], flask.request.form['pw']):
+#             user = User()
+#             user.id = lst[0][1]
+#             flask_login.login_user(user)
+#             return flask.redirect(flask.url_for('protected'))
+#     return 'Bad login'
+#
+# @app.route('/protected')
+# @flask_login.login_required
+# def protected():
+#     return 'Logged in as: ' + flask_login.current_user.id
 
-    cur.execute("""SELECT hashpswd, sid from students where email = %s;""", (email,))
-    lst = cur.fetchall()
-    if len(lst) != 0:
-        print("IN /LOGIN: THIS IS lst RESULT:", str(lst))
-        conn.commit()
-        print("IN /LOGIN: THIS IS check_password_hash RESULT:", str(check_password_hash(lst[0][0], flask.request.form['pw'])))
-        if check_password_hash(lst[0][0], flask.request.form['pw']):
-            user = User()
-            user.id = lst[0][1]
-            flask_login.login_user(user)
-            return flask.redirect(flask.url_for('protected'))
-    return 'Bad login'
 
-@app.route('/protected')
-@flask_login.login_required
-def protected():
-    return 'Logged in as: ' + flask_login.current_user.id
-
-
-# @app.route("/login")
-# def mainLogin():
-#     return render_template('login.html', curid = 0)
+@app.route("/login")
+def mainLogin():
+    return render_template('login.html', curid = 0)
 
 @app.route("/screatefrontend")
 def mainSCreate():
