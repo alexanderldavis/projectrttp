@@ -620,7 +620,7 @@ def adminAssignments(pid):
             conn.commit()
             subcount = count[0][0]
             subassignmentlist.append((aid, due, astitle, subcount))
-        assignmentlist.append((gid, gametitle, subassignmentlist))
+        assignmentlist.append((gid, gatitle, subassignmentlist))
     return render_template("adminassignments.html", assignmentlist = assignmentlist, pid = pid)
 
 @app.errorhandler(404)
