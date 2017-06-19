@@ -40,14 +40,14 @@ def newStudent():
     name = "Firsty Lasty"
     email = "oodle@poodle.com"
     password = "secure password"
-    return redirect("/dashboard/"+"fakeSID")
+    return redirect("/games/"+"fakeSID")
 
 @app.route("/slogin")
 def loginStudent():
     name = "Firsty Lasty"
     email = "oodle@poodle.com"
     password = "secure password"
-    return redirect("/dashboard/"+"somethin")
+    return redirect("/games/"+"somethin")
 
 
 @app.route("/pcreate/<email>/<password>")
@@ -66,13 +66,13 @@ def newProfessor(email, password):
 
 @app.route("/sjoin/<sid>")
 def gameJoinStudent(sid):
-    return redirect("/dashboard/"+str(sid))
+    return redirect("/games/"+"fakeSID")
 
 
-@app.route("/dashboard/<sid>")
+@app.route("/games/<sid>")
 def getCustomDashboard(sid):
-    return render_template('dashboard.html', sid = "sid", curid = 1, username='username',
-    picurl = "http://mediadirectory.economist.com/wp-content/uploads/2015/09/John-Prideaux-headshot_picmonkeyed.jpg", gameinfo = [('Jacques Guy','France 1823'),('Dag Fishinboi','Minnesota 1993'),('Dumbo','Conflicted Little Guys: Disney through the ages')])
+    return render_template('gamechooser.html', sid = "sid", curid = 1, username='username',
+    picurl = "http://mediadirectory.economist.com/wp-content/uploads/2015/09/John-Prideaux-headshot_picmonkeyed.jpg", gameinfo = [('Jacques Guy','France 1823', 'asdf'),('Dag Fishinboi','Minnesota 1993', 'asdf'),('Dumbo','Conflicted Little Guys: Disney through the ages', 'asdf')])
 
 @app.route("/newspaper/<sid>")
 def getCustomNewspaper(sid):

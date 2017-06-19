@@ -14,9 +14,7 @@
       <p>Use this website to learn assignment details and due dates, as well as keep up to date on daily game objectives.</p>
     </div>
   </div>
-
   <div class="downarrow glyphicon glyphicon-chevron-down"></div>
-
   <div class="splitpane container">
     <div class="row">
       <div class="infobox col-md-5">
@@ -31,6 +29,7 @@
       </div>
     </div>
   </div>
+  <div class="downarrow glyphicon glyphicon-chevron-down"></div>
 </div>
 
     <script>
@@ -44,11 +43,7 @@
 
         $( document ).ready(function() {
 
-          /*$(window).scroll(function() {
-            $(".downarrow").css("font-size", "4em");
-            $(".downarrow").css("color", "white");
-          });*/
-
+          // Scrolling brightens down arrow
           function scrolled() {
             $(".downarrow").css("color", "white");
               $(this).off('scroll')[0].setTimeout(function(){
@@ -58,6 +53,7 @@
           }
           $(window).on('scroll',scrolled);
 
+          // All  .infoboxes resize to be the same height
           $(".infobox").css("height", $(".splitpane").css("height"));
         });
     </script>

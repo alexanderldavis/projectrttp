@@ -45,6 +45,10 @@
 	transition: .2s;
 }
 
+#gameform a:hover {
+	font-weight: inherit;
+}
+
 #gameform input {
 	text-align: center;
 	font-size: .9em;
