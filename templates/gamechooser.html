@@ -23,7 +23,7 @@
       <div class="gamebox"><div class="gamelabel">{{gametitle}}<hr />{{charname}}</div></div>
     </a>
     {% endfor %}
-    <div class="gamebox addgamebox center">
+    <div id="addgamebox" class="gamebox center">
       <div class="gamelabel">Add a game<br /><span id="plussign" class="glyphicon glyphicon-plus"></span></div>
       <form id="gameform" class="invisible" action="/sjoin/{{sid}}" method="get">
         <input class="form-control" type="text" name="inviteCode" placeholder="invite code"><br />

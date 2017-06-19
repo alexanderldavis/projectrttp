@@ -243,7 +243,7 @@ def getCustomGameChooser(sid):
             conn.commit()
             charname = charname[0][0]
             cleanGamelst.append((charname, gametitle, gid))
-    return render_template('gamechooser.html', sid = sid, curid = 0, gamechooser = 0, username=mylst[0][0], gameinfo = cleanGamelst, picurl = "https://cdn.pixabay.com/photo/2016/10/18/18/19/question-mark-1750942_960_720.png")
+    return render_template('gamechooser.html', sid=sid, curid=0, gamechooser=0, username=mylst[0][0], gameinfo=cleanGamelst, picurl="https://cdn0.iconfinder.com/data/icons/user-pictures/100/unknown_1-2-512.png")
 
 @app.route("/dashboard/<sid>/<gid>")
 def getCustomDashboard(sid, gid):
@@ -254,10 +254,13 @@ def getCustomDashboard(sid, gid):
         return "Create account or log in"
     name = lst[0][0]
     cur.execute("""SELECT character.imageurl, character.name from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
-    picurls = cur.fetchall()
-    picurl = picurls[0][0]
-    charname = picurls[0][1]
-    return render_template('dashboard.html', gid = gid, sid = sid, curid = 1, username=name, gameinfo = [], picurl = picurl, charname = charname)
+    charinfo = cur.fetchall()
+    picurl = charinfo[0][0]
+    charname = charinfo[0][1]
+    cur.execute("""SELECT title from game where gid = %s;""", (gid,))
+    gametitle = cur.fetchall()
+    gametitle = gametitle[0][0]
+    return render_template('dashboard.html', gid=gid, sid=sid, curid=1, username=name, gametitle=gametitle, picurl=picurl, charname=charname)
 
 @app.route("/newspaper/<sid>/<gid>")
 def getCustomNewspaper(sid, gid):
@@ -270,7 +273,7 @@ def getCustomNewspaper(sid, gid):
     picurls = cur.fetchall()
     picurl = picurls[0][0]
     charname = picurls[0][1]
-    return render_template('newspaper.html', gid = gid, sid = sid, curid = 2, username=lst[0][0], picurl = picurl)
+    return render_template('newspaper.html', gid = gid, sid = sid, curid = 2, username=lst[0][0], charname=charname, picurl = picurl)
 
 @app.route("/characterprofile/<sid>/<gid>")
 def getCustomCharacterProfile(sid, gid):
@@ -289,7 +292,7 @@ def getCustomCharacterProfile(sid, gid):
     picurls = cur.fetchall()
     picurl = picurls[0][0]
     charname = picurls[0][1]
-    return render_template('characterprofile.html', gid = gid, sid = sid, curid = 3, username=namelst[0][0], picurl = picurl)
+    return render_template('characterprofile.html', gid = gid, sid = sid, curid = 3, username=namelst[0][0], charname=charname, picurl = picurl)
 
 @app.route("/chat/<sid>/<gid>")
 def getCustomChat(sid, gid):
@@ -305,7 +308,7 @@ def getCustomChat(sid, gid):
     picurls = cur.fetchall()
     picurl = picurls[0][0]
     charname = picurls[0][1]
-    return render_template('chat.html', gid = gid, sid=sid, curid = 5, username= namelst[0][0], picurl = picurl)
+    return render_template('chat.html', gid = gid, sid=sid, curid = 5, username= namelst[0][0], charname=charname, picurl = picurl)
 
 @app.route("/assignments/<sid>/<gid>")
 def getCustomAssignments(sid, gid):
@@ -324,7 +327,7 @@ def getCustomAssignments(sid, gid):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     namelst = cur.fetchall()
     conn.commit()
-    return render_template('assignments.html', gid = gid, sid = sid, curid = 6, username= namelst[0][0], picurl = picurl, assignments = assignments)
+    return render_template('assignments.html', gid = gid, sid = sid, curid = 6, username= namelst[0][0], charname=charname, picurl = picurl, assignments = assignments)
 
 @app.route("/upload/<sid>/<gid>/<aid>/<securecode>")
 def uploadAssignment(sid, gid, aid, securecode):
@@ -342,7 +345,7 @@ def uploadAssignment(sid, gid, aid, securecode):
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     namelst = cur.fetchall()
     conn.commit()
-    return render_template("myaccount.html", gid = gid, sid = sid, curid = 6, username= namelst[0][0], picurl = picurl, aid = aid)
+    return render_template("myaccount.html", gid = gid, sid = sid, curid = 6, username= namelst[0][0], charname=charname, picurl = picurl, aid = aid)
 
 ### UPLOADS!!!
 #DEPRECATED

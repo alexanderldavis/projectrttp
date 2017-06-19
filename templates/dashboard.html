@@ -10,28 +10,9 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Welcome {{ username }}! Join or select a game!</h1>
-  {% if not gameinfo %}
-  <p>You are not currently enrolled in any games! Enter your invitation code below to join a game!</p>
-  <form id="formsearch" class="form-inline" action="/sjoin/{{sid}}" method="get">
-    <span class="glyphicon glyphicon-asterisk"></span>
-    <input class="form-control" type="text" name="inviteCode" placeholder="XXXXX-00000"><br />
-    <button class="submitbutton btn btn-primary" type="submit"></button>
-  </form>
-  {% else %}
-    <div class="gameshelf">
-      {% for (charname, gametitle) in gameinfo %}
-      <div class="gamebox"><div class="gamelabel">{{gametitle}}<hr />{{charname}}</div></div>
-      {% endfor %}
-      <div class="gamebox addgamebox center">
-        <div class="gamelabel">Add a game<br /><span id="plussign" class="glyphicon glyphicon-plus"></span></div>
-        <form id="gameform" class="invisible" action="/sjoin/{{sid}}" method="get">
-          <input class="form-control" type="text" name="inviteCode" placeholder="XXXXX-00000"><br />
-          <button class="submitbutton btn btn-primary" type="submit"></button>
-        </form>
-      </div>
-    </div>
-  {% endif %}
+  <h1>{{ gametitle }}</h1>
+  <h3>Welcome, {{ charname }}!</h3>
+
   <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
