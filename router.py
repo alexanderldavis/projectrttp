@@ -10,20 +10,71 @@ import requests as req
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug import secure_filename
 import datetime
+## SECURITY V2 ##SV2##(1-B)
+import flask_login
+## SECURITY V2 ##SV2##(1-E)
 
 # Connect the router to the SQL database IDed in the HEROKU variables
 urllib.parse.uses_netloc.append("postgres")
 url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
 conn = psycopg2.connect(database=url.path[1:],user=url.username,password=url.password,host=url.hostname,port=url.port)
 cur = conn.cursor()
-char_name = ""
 
 app = Flask(__name__)
+
+## SECURITY V2 ##SV2##(2-B)
+app.secret_key = 'super secret string'  # TODO: !!Change this!!
+
+login_manager = flask_login.LoginManager()
+
+login_manager.init_app(app)
+
+class User(flask_login.UserMixin):
+    pass
+
+@login_manager.user_loader
+def user_loader(sid):
+    print(sid)
+    cur.execute("""SELECT email from students where sid = %s;""", (sid,))
+    lst = cur.fetchall()
+    print("IN user_loader: THIS IS THE lst RESULT (before init return): ", str(lst))
+    if len(lst) == 0:
+        return
+
+    user = User()
+    email = lst[0][0]
+    print("IN user_loader: THIS IS THE sid RESULT: ", str(sid))
+    print("IN user_loader: THIS IS THE email RESULT: ", str(email))
+    user.id = sid
+    return user
+
+
+@login_manager.request_loader
+def request_loader(request):
+    email = request.form.get('email')
+    cur.execute("""SELECT sid from students where email = %s;""", (email,))
+    lst = cur.fetchall()
+    print("IN request_loader: THIS IS THE lst RESULT (before init return): ", str(lst))
+    if len(lst) == 0:
+        return
+
+    user = User()
+    sid = lst[0][0]
+    user.id = sid
+    print("IN request_loader: THIS IS THE sid RESULT: ", str(sid))
+    cur.execute("""SELECT hashpswd from students where email = %s;""", (email,))
+    lst = cur.fetchall()
+    conn.commit()
+    print("IN request_loader: THIS IS THE lst RESULT: ", str(lst), "AND THE hashpswd RESULT: ", str(lst[0][0]))
+    user.is_authenticated = check_password_hash(lst[0][0], request.form['pw'])
+    return user
+## SECURITY V2 ##SV2##(2-E)
 
 # Function used to generate password hash with the werkzeug.security package
 def hashed_password(password):
         return generate_password_hash(password)
 
+# Generates ids for file uploads
 def id_generator(size=20, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
@@ -31,9 +82,35 @@ def id_generator(size=20, chars=string.ascii_uppercase + string.digits):
 def index():
     return render_template('index.html', curid = 0)
 
-@app.route("/login")
-def mainLogin():
-    return render_template('login.html', curid = 0)
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if flask.request.method == 'GET':
+        return render_template('login.html', curid = 0)
+    email = flask.request.form['email']
+    print("IN /LOGIN: THIS IS THE email RESULT:", str(email))
+
+    cur.execute("""SELECT hashpswd, sid from students where email = %s;""", (email,))
+    lst = cur.fetchall()
+    if len(lst) != 0:
+        print("IN /LOGIN: THIS IS lst RESULT:", str(lst))
+        conn.commit()
+        print("IN /LOGIN: THIS IS check_password_hash RESULT:", str(check_password_hash(lst[0][0], flask.request.form['pw'])))
+        if check_password_hash(lst[0][0], flask.request.form['pw']):
+            user = User()
+            user.id = lst[0][1]
+            flask_login.login_user(user)
+            return flask.redirect(flask.url_for('protected'))
+    return 'Bad login'
+
+@app.route('/protected')
+@flask_login.login_required
+def protected():
+    return 'Logged in as: ' + flask_login.current_user.id
+
+
+# @app.route("/login")
+# def mainLogin():
+#     return render_template('login.html', curid = 0)
 
 @app.route("/screatefrontend")
 def mainSCreate():
