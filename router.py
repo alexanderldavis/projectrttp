@@ -122,11 +122,11 @@ def gameJoinStudent(sid):
     conn.commit()
     if len(lst) != 0:
         return "student already in game"
-    cur.execute("""SELECT * from students_chargame where sid = %s and cid = %s and gid = %s;""", (sid, characterID, gid))
+    cur.execute("""SELECT * from students_chargame where cid = %s and gid = %s;""", (characterID, gid))
     lst = cur.fetchall()
     conn.commit()
     if len(lst) != 0:
-        return "student character already in game"
+        return "character already in game"
     cur.execute("""SELECT * from character where cid = %s;""", (characterID,))
     lst = cur.fetchall()
     conn.commit()
