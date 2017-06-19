@@ -619,8 +619,8 @@ def adminAssignments(pid):
             count = cur.fetchall()
             conn.commit()
             subcount = count[0][0]
-            subassignmentlist.append(aid, due, astitle, subcount)
-        assignmentlist.append(gid, gametitle, subassignmentlist)
+            subassignmentlist.append((aid, due, astitle, subcount))
+        assignmentlist.append((gid, gametitle, subassignmentlist))
     return render_template("adminassignments.html", assignmentlist = assignmentlist, pid = pid)
 
 @app.errorhandler(404)
