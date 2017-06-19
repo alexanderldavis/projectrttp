@@ -54,7 +54,7 @@
           <div id="usercircle" style="background-image:url({{picurl}})">
           <div id="usermenu" class="hideusermenu">
             <ul>
-              <li>In-game Name</li>
+              <li>{{ charname if charname else "" }}</li>
               <li><a href="/account/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-user"></span> {{ username }}'s Account</a></li>
               <li><a href="/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
