@@ -166,7 +166,7 @@ def getCustomGameChooser(sid):
             conn.commit()
             charname = charname[0][0]
             cleanGamelst.append((charname, gametitle, gid))
-    return render_template('gamechooser.html', sid = sid, curid = 0, gamechooser = 0, username=mylst[0][0], charname=charname, gameinfo = cleanGamelst, picurl = "https://image.flaticon.com/icons/svg/37/37943.svg")
+    return render_template('gamechooser.html', sid=sid, curid=0, gamechooser=0, username=mylst[0][0], gameinfo=cleanGamelst, picurl="https://cdn0.iconfinder.com/data/icons/user-pictures/100/unknown_1-2-512.png")
 
 @app.route("/dashboard/<sid>/<gid>")
 def getCustomDashboard(sid, gid):
