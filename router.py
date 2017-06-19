@@ -177,10 +177,14 @@ def getCustomDashboard(sid, gid):
         return "Create account or log in"
     name = lst[0][0]
     cur.execute("""SELECT character.imageurl, character.name from character JOIN students_chargame ON (character.cid = students_chargame.cid) where students_chargame.gid = %s and students_chargame.sid = %s;""", (gid, sid))
-    picurls = cur.fetchall()
+    charinfo = cur.fetchall()
     picurl = picurls[0][0]
     charname = picurls[0][1]
-    return render_template('dashboard.html', gid = gid, sid = sid, curid = 1, username=name, gameinfo = [], picurl = picurl, charname = charname)
+    cur.execute("""SELECT title from game where gid = %s;""", (gid,))
+    gametitle = cur.fetchall()
+    conn.commit()
+    gametitle = gametitle[0][0]
+    return render_template('dashboard.html', gid = gid, sid = sid, curid = 1, username=name, gametitle=gametitle, picurl = picurl, charname = charname)
 
 @app.route("/newspaper/<sid>/<gid>")
 def getCustomNewspaper(sid, gid):
