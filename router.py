@@ -170,6 +170,7 @@ def getCustomGameChooser(sid):
 
 @app.route("/dashboard/<sid>/<gid>")
 def getCustomDashboard(sid, gid):
+    print('So far so good', file=sys.stderr)
     cur.execute("""SELECT name FROM students where sid = %s;""", (sid,))
     lst = cur.fetchall()
     conn.commit()
