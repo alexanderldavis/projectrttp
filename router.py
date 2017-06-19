@@ -1,5 +1,5 @@
 import psycopg2
-# from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 import flask
 import os
 import urllib.parse
