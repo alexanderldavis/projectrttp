@@ -100,7 +100,7 @@
                                     </thead>
                                     <tbody>
                                       {% for (aid, due, assignmentName, submissions) in subassignmentlist %}
-                                        <a href="http://www.rttportal.com/admin/game/{{pid}}/{{gid}}"><tr>
+                                        <a><tr data-href='http://www.rttportal.com/admin/game/{{pid}}/{{gid}}'>
                                         	<td>{{due}}</td>
                                         	<td>{{assignmentName}}</td>
                                           <td>{{submissions}}</td>
@@ -141,6 +141,12 @@
             responsive: true
         });
     });
+    jQuery(document).ready(function($) {
+        $(".clickable-row").click(function() {
+          window.location = $(this).data("href");
+        });
+    });
+
     </script>
 
 </body>
