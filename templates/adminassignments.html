@@ -81,7 +81,7 @@
 
             <!-- /.row -->
             <div class="row">
-                    {% for (gid, title, assignmentlist) in cleanstudentgidlist %}
+                    {% for (gid, title, subassignmentlist) in assignmentlist %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             {{title}}
@@ -99,7 +99,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                      {% for (aid, due, assignmentName, submissions) in assignmentlist %}
+                                      {% for (aid, due, assignmentName, submissions) in subassignmentlist %}
                                         <a href="http://www.rttportal.com/admin/game/{{pid}}/{{gid}}"><tr>
                                         	<td>{{due}}</td>
                                         	<td>{{assignmentName}}</td>
