@@ -427,12 +427,12 @@ def admindash(pid):
         studentcount = 0
     cur.execute("""SELECT count(assignments_submissions.aid) from submissions JOIN assignments_submissions on (submissions.subid = assignments_submissions.subid) JOIN game_assignments ON (game_assignments.aid = assignments_submissions.aid) JOIN professor_game ON (professor_game.gid = game_assignments.gid) where game_assignments.gid = %s;""", (gid,))
     try:
-        studentcount = cur.fetchall()
+        assignments_submissions = cur.fetchall()
         conn.commit()
-        studentcount = studentcount[0][0]
+        assignments_submissions = assignments_submissions[0][0]
     except:
-        studentcount = 0
-    return render_template("adminindex.html", pid = pid, username = name, titlelist = cleangamelst, studentcount=studentcount)
+        assignments_submissions = 0
+    return render_template("adminindex.html", pid = pid, username = name, titlelist = cleangamelst, studentcount=studentcount, assignmentcount = assignments_submissions)
 
 @app.route("/admin/addGame/<pid>")
 def adminaddgame(pid):
@@ -605,7 +605,7 @@ def adminAssignments(pid):
     conn.commit()
     if len(lst) == 0:
         return "Professor does not exist. Register first."
-    cur.execute("""SELECT gid, title from game JOIN professor_game ON (professor_game.gid = game.gid) where pid = %s;""", (pid,))
+    cur.execute("""SELECT game.gid, game.title from game JOIN professor_game ON (professor_game.gid = game.gid) where pid = %s;""", (pid,))
     gids = cur.fetchall()
     conn.commit()
     assignmentlist = []
