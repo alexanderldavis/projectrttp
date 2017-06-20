@@ -74,9 +74,9 @@ def getCustomDashboard(sid):
     return render_template('gamechooser.html', sid = "sid", curid = 1, username='username',
     picurl = "http://mediadirectory.economist.com/wp-content/uploads/2015/09/John-Prideaux-headshot_picmonkeyed.jpg", gameinfo = [('Jacques Guy','France 1823', 'asdf'),('Dag Fishinboi','Minnesota 1993', 'asdf'),('Dumbo','Conflicted Little Guys: Disney through the ages', 'asdf')])
 
-@app.route("/newspaper/<sid>")
-def getCustomNewspaper(sid):
-    return render_template('newspaper.html', sid = sid, curid = 2, username='username')
+@app.route("/newspaper/<sid>/<gid>")
+def getCustomNewspaper(sid, gid):
+    return render_template('newspaper.html', sid=sid, gid=gid, curid=2, username='username')
 
 @app.route("/characterprofile/<sid>")
 def getCustomCharacterProfile(sid):
@@ -92,6 +92,10 @@ def getCustomAssignments(sid, gid):
     return render_template('assignments.html', gid = "gid", sid = "sid", curid = 6, username= "username",
     picurl = "http://mediadirectory.economist.com/wp-content/uploads/2015/09/John-Prideaux-headshot_picmonkeyed.jpg",
     assignments = [["aid", "title", "description", "due"]])
+
+@app.route("/upload/<sid>/<gid>/<aid>/<securecode>")
+def uploadAssignment(sid, gid, aid, securecode):
+    return render_template("myaccount.html", gid = gid, sid = sid, curid = 6, username="username", charname="charname", picurl="http://mediadirectory.economist.com/wp-content/uploads/2015/09/John-Prideaux-headshot_picmonkeyed.jpg", aid="1234")
 
 
 @app.route("/account/<sid>")
@@ -155,7 +159,7 @@ def loginProfessor():
         mylst = cur.fetchall()
         conn.commit()
         pid = mylst[0][0]
-        return redirect("http://www.rttportal.com/admin/dashboard/"+str(pid))
+        return redirect("/admin/dashboard/"+str(pid))
     if not check_password_hash(lst[0][0], password):
         return "Password is wrong. Shame on you."
     return "Some error -- Contact Webmaster"
@@ -232,7 +236,7 @@ def gameJoinProfessor(pid):
     cur.execute("""INSERT INTO professor_game (pid, gid) VALUES (%s, (SELECT gid from game where title = %s));""", (pid, gameName))
     conn.commit()
     print("PROFESSOR GAME CREATED AND LINKED TO PID")
-    return redirect("http://www.rttportal.com/admin/dashboard/"+str(pid))
+    return redirect("/admin/dashboard/"+str(pid))
 
 @app.route("/admin/game/<pid>/<gid>")
 def gameadminassignments(pid, gid):
@@ -269,7 +273,7 @@ def deleteGame(pid, gid, securecode):
     cur.execute("""DELETE from game_assignments where gid = %s; DELETE from professor_game where gid = %s; DELETE from students_chargame where gid = %s;  DELETE from game where gid = %s;""", (gid, gid, gid, gid))
     conn.commit()
     print("GAME "+str(gid)+" DELETED BY PROFESSOR ("+str(pid)+")")
-    return redirect("http://www.rttportal.com/admin/students/"+str(pid))
+    return redirect("/admin/students/"+str(pid))
 
 @app.route("/paddassignment/<pid>/<gid>")
 def addassignmentadmin(pid, gid):
@@ -284,7 +288,7 @@ def addassignmentadmin(pid, gid):
     cur.execute("""INSERT into game_assignments (gid, aid) values (%s, %s);""",(gid,aid))
     conn.commit()
     print("ADDED ASSIGNMENT TO RELATION GAME_ASSIGNMENTS")
-    return redirect("http://www.rttportal.com/admin/game/"+pid+"/"+gid)
+    return redirect("/admin/game/"+pid+"/"+gid)
 
 #Add submissions:
 #insert into submissions (subid, link, uploadTime) values (112234, 'link', '2004-10-19 10:23:54');

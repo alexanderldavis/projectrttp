@@ -2,6 +2,10 @@
 
 {% block title %}RTTPortal{% endblock %}
 
+{% block page_specific_js %}
+  <script src="{{ url_for('static', filename='js/assignments.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 
   <h1>Assignments</h1>

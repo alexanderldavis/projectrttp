@@ -17,6 +17,10 @@ body {
 	text-align: center;
 }
 
+table, .table {
+	width: 50%;
+}
+
 h1 {
 	font-size: 2em;
 }
@@ -124,6 +128,14 @@ footer {
 	border-bottom: 1px solid rgb(150,150,150);
 	font-weight: 700;
 	box-shadow: 0 4px 4px -4px gray;
+}
+
+#file_input {
+	border-radius: 0px;
+	height: 3.5em;
+	transition: .5s;
+	background-color: blue;
+	color: red;
 }
 
 button:focus {

@@ -59,7 +59,7 @@ def newStudent():
         sidlst = cur.fetchall()
         conn.commit()
         sid = sidlst[0][0]
-        return redirect("http://www.rttportal.com/games/"+str(sid))
+        return redirect("/games/"+str(sid))
     return "User already exists! Log In instead!"
 
 @app.route("/slogin")
@@ -79,7 +79,7 @@ def loginStudent():
         cur.execute("""SELECT sid from students where email = %s;""", (email,))
         lst = cur.fetchall()
         conn.commit()
-        return redirect("http://www.rttportal.com/games/"+str(lst[0][0]))
+        return redirect("/games/"+str(lst[0][0]))
     if not check_password_hash(lst[0][0], password):
         return "Password is wrong. Shame on you."
     return "Student account does not exist yet"
@@ -138,7 +138,7 @@ def gameJoinStudent(sid):
     cur.execute("""INSERT INTO student_character (sid, cid) VALUES (%s, %s);""", (sid, characterID))
     conn.commit()
     print("STUDENT LINKED TO CHARACTER")
-    return redirect("http://www.rttportal.com/games/"+str(sid))
+    return redirect("/games/"+str(sid))
 
 @app.route("/games/<sid>")
 def getCustomGameChooser(sid):
@@ -306,7 +306,7 @@ def submit_form(gid, sid, aid):
     print("IN HERE =================================")
     print(avatar_url)
     addSubmissionFromStudent(avatar_url, sid, aid)
-    return redirect("http://www.rttportal.com/assignments/"+sid+"/"+gid)
+    return redirect("/assignments/"+sid+"/"+gid)
 
 
 def addSubmissionFromStudent(url, sid, aid):
@@ -375,7 +375,7 @@ def accountUpdate(sid):
         hashpassword = hashed_password(password)
         cur.execute("""UPDATE students SET hashpswd = %s WHERE sid = %s;""", (hashpassword, sid))
         conn.commit()
-    return redirect("http://www.rttportal.com/games/"+str(sid))
+    return redirect("/games/"+str(sid))
 
 ##### ADMIN #####
 @app.route("/admin")
@@ -397,7 +397,7 @@ def loginProfessor():
         mylst = cur.fetchall()
         conn.commit()
         pid = mylst[0][0]
-        return redirect("http://www.rttportal.com/admin/dashboard/"+str(pid))
+        return redirect("/admin/dashboard/"+str(pid))
     if not check_password_hash(lst[0][0], password):
         return "Password is wrong. Shame on you."
     return "Some error -- Contact Webmaster"
@@ -502,7 +502,7 @@ def gameJoinProfessor(pid):
     cur.execute("""INSERT INTO professor_game (pid, gid) VALUES (%s, (SELECT gid from game where title = %s));""", (pid, gameName))
     conn.commit()
     print("PROFESSOR GAME CREATED AND LINKED TO PID")
-    return redirect("http://www.rttportal.com/admin/dashboard/"+str(pid))
+    return redirect("/admin/dashboard/"+str(pid))
 
 @app.route("/admin/game/<pid>/<gid>")
 def gameadminassignments(pid, gid):
@@ -570,7 +570,7 @@ def deleteGame(pid, gid, securecode):
     #     #TODO: also delete the submissions that go with the game!
     conn.commit()
     print("GAME "+str(gid)+" DELETED BY PROFESSOR ("+str(pid)+")")
-    return redirect("http://www.rttportal.com/admin/students/"+str(pid))
+    return redirect("/admin/students/"+str(pid))
 
 @app.route("/paddassignment/<pid>/<gid>")
 def addassignmentadmin(pid, gid):
@@ -585,7 +585,7 @@ def addassignmentadmin(pid, gid):
     cur.execute("""INSERT into game_assignments (gid, aid) values (%s, %s);""",(gid,aid))
     conn.commit()
     print("ADDED ASSIGNMENT TO RELATION GAME_ASSIGNMENTS")
-    return redirect("http://www.rttportal.com/admin/game/"+pid+"/"+gid)
+    return redirect("/admin/game/"+pid+"/"+gid)
 
 @app.route("/admin/deleteAssignment/<pid>/<gid>/<aid>/<securecode>")
 def deleteAssignment(pid, gid, aid, securecode):
@@ -599,7 +599,7 @@ def deleteAssignment(pid, gid, aid, securecode):
     cur.execute("""DELETE from game_assignments where gid = %s and aid =%s;""", (gid, aid))
     conn.commit()
     print("ASSIGNMENT "+str(aid)+" DELETED BY PROFESSOR ("+str(pid)+") FROM GAME "+str(gid))
-    return redirect("http://www.rttportal.com/admin/game/"+str(pid)+"/"+str(gid))
+    return redirect("/admin/game/"+str(pid)+"/"+str(gid))
 
 @app.route("/admin/assignments/<pid>")
 def adminAssignments(pid):

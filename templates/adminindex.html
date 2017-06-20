@@ -34,7 +34,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="http://www.rttportal.com/admin/dashboard/{{pid}}">RTTPortal Admin</a>
+                <a class="navbar-brand" href="/admin/dashboard/{{pid}}">RTTPortal Admin</a>
             </div>
             <ul class="nav navbar-top-links navbar-right">
                 <li class="dropdown">
@@ -47,7 +47,7 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li> -->
                         <!-- <li class="divider"></li> -->
-                        <li><a href="http://www.rttportal.com/admin"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="/admin"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -185,14 +185,14 @@
                         <div class="panel-body">
                             <div class="list-group">
                                 {% for (gid, title) in titlelist %}
-                                <a href="http://www.rttportal.com/admin/game/{{pid}}/{{gid}}" class="list-group-item">
+                                <a href="/admin/game/{{pid}}/{{gid}}" class="list-group-item">
                                     {{title}}
                                     <span class="pull-right text-muted small"><em>Click to view/add assignments</em>
                                     </span>
                                 </a>
                                 {% endfor %}
                             </div>
-                            <a href="http://www.rttportal.com/admin/addGame/{{pid}}" class="btn btn-default btn-block">Add Class</a>
+                            <a href="/admin/addGame/{{pid}}" class="btn btn-default btn-block">Add Class</a>
                         </div>
                         <!-- /.panel-body -->
 

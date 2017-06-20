@@ -34,7 +34,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="http://www.rttportal.com/admin/dashboard/{{pid}}">RTTPortal Admin</a>
+                <a class="navbar-brand" href="/admin/dashboard/{{pid}}">RTTPortal Admin</a>
             </div>
             <ul class="nav navbar-top-links navbar-right">
                 <li class="dropdown">
@@ -42,7 +42,7 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="http://www.rttportal.com/admin"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="/admin"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -110,8 +110,8 @@
                             <!-- /.table-responsive -->
                         </div>
                         <!-- /.panel-body -->
-                      <a href="http://www.rttportal.com/admin/getinvitecodes/{{pid}}/{{gid}}"><p style="text-align: center;">Request Invite Codes</p></a>
-                      <a href="http://www.rttportal.com/admin/deleteGame/{{pid}}/{{gid}}/848374949384743937" onclick="return confirm('Are you sure you want to delete this game? This cannot be undone.')"><p style="text-align: center; color: red;">Delete Game</p></a>
+                      <a href="/admin/getinvitecodes/{{pid}}/{{gid}}"><p style="text-align: center;">Request Invite Codes</p></a>
+                      <a href="/admin/deleteGame/{{pid}}/{{gid}}/848374949384743937" onclick="return confirm('Are you sure you want to delete this game? This cannot be undone.')"><p style="text-align: center; color: red;">Delete Game</p></a>
                     </div>
                     {% endfor %}
                     <!-- /.panel -->
