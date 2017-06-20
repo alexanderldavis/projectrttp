@@ -80,6 +80,7 @@ nav a:hover {
 }
 
 #usercircle {
+	background-color: lightgray;
 	height: 80px;
 	width: 80px;
 	background-size: cover;
@@ -177,13 +178,13 @@ a:hover {
 }
 
 .newsshelf {
-	padding: 2em;
+	padding: 1em;
 }
 
 .newspaperbox {
 	overflow: hidden;
 	display: inline-block;
-	margin: 1em;
+	margin: .5em;
 	width: 9em;
 	height: 13em;
 	text-align: center;
@@ -217,10 +218,57 @@ a:hover {
 	height: 4em;
 	width: 100%;
 	background-color: rgba(0,0,0,.7);
+	overflow: hidden;
 	transition: .2s;
 }
 
 .fullarticle {
+	background: white;
+	height: 30em;
+	width: 90%;
+}
+
+.assignmentshelf {
+	padding: 1em;
+}
+
+.assignmentbox {
+	overflow: hidden;
+	display: inline-block;
+	margin: .5em;
+	width: 9em;
+	height: 13em;
+	text-align: center;
+	box-shadow: 1px 1px 4px black;
+	background-image: url("http://media.istockphoto.com/photos/scholarship-application-form-on-desk-picture-id618529040");
+	background-size: 20em;
+	background-position: left;
+	transition: .6s;
+}
+
+.assignmentbox:hover {
+	background-size: 30em;
+	background-position: center;
+}
+
+.assignmentbox a {
+	color: #ffab91;
+	text-shadow: 2px 0 8px black;
+}
+
+.alabel {
+	color: white;
+	position: relative;
+	padding: .5em;
+	bottom: 0px;
+	height: 7em;
+	width: 100%;
+	background-color: rgba(0,0,0,.7);
+	transition: .2s;
+	overflow: hidden;
+}
+
+.fullassignment {
 	background: white;
 	height: 30em;
 	width: 90%;

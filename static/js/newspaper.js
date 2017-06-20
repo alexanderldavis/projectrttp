@@ -27,12 +27,8 @@ $( document ).ready(function() {
       });
       $(this).data("expanded", false);
       $(this).removeClass("fullarticle");
-      $(this).css('height', '');
-      $(this).css('width', '');
       $(".nplabel").removeClass("invisible");
-      $(".nplabel").css({
-        'height' : '4em',
-      });
+      $(".nplabel").css('height', '');
     } else {
       // Expanding clicked newspperbox, hiding others
       $('.newspaperbox').each(function(i, obj) {
@@ -41,9 +37,7 @@ $( document ).ready(function() {
       $(this).removeClass("invisible");
       $(this).data("expanded", true);
       $(this).addClass("fullarticle");
-      $(".nplabel").css({
-        'height' : '100%',
-      });
+      $(".nplabel").css('height', '100%');
       $(this).find(".nplabel").addClass("invisible");
     }
   });

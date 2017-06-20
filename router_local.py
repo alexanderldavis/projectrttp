@@ -68,11 +68,15 @@ def newProfessor(email, password):
 def gameJoinStudent(sid):
     return redirect("/games/"+"fakeSID")
 
-
-@app.route("/games/<sid>")
-def getCustomDashboard(sid):
+@app.route("/games/<sid>/<gid>")
+def getCustomGameChooser(sid,gid):
     return render_template('gamechooser.html', sid = "sid", curid = 1, username='username',
     picurl = "http://mediadirectory.economist.com/wp-content/uploads/2015/09/John-Prideaux-headshot_picmonkeyed.jpg", gameinfo = [('Jacques Guy','France 1823', 'asdf'),('Dag Fishinboi','Minnesota 1993', 'asdf'),('Dumbo','Conflicted Little Guys: Disney through the ages', 'asdf')])
+
+@app.route("/dashboard/<sid>/<gid>")
+def getCustomDashboard(sid, gid):
+    return render_template('dashboard.html', sid = "sid", curid = 1, username='username', charname='charname',
+    picurl = "http://mediadirectory.economist.com/wp-content/uploads/2015/09/John-Prideaux-headshot_picmonkeyed.jpg", gametitle="Dogman in the city: a tragedy 1874")
 
 @app.route("/newspaper/<sid>/<gid>")
 def getCustomNewspaper(sid, gid):
@@ -91,7 +95,10 @@ def getCustomChat(sid):
 def getCustomAssignments(sid, gid):
     return render_template('assignments.html', gid = "gid", sid = "sid", curid = 6, username= "username",
     picurl = "http://mediadirectory.economist.com/wp-content/uploads/2015/09/John-Prideaux-headshot_picmonkeyed.jpg",
-    assignments = [["aid", "title", "description", "due"]])
+    assignments = [["123456", "Fish brochure", "Using your skills her der der der der der", "12/5/67"],
+    ["123456", "Crusty writeup", "Express very cool knowledge her der der der der der", "5/35/56"],
+    ["123456", "Dog brochure", "Using your dog friends her der der der der der", "4/23/65"],
+    ["123456", "Apple poster", "Taste numerous large apples, just fo fun her der der der der der", "12/7/67"]])
 
 @app.route("/upload/<sid>/<gid>/<aid>/<securecode>")
 def uploadAssignment(sid, gid, aid, securecode):
