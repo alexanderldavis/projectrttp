@@ -23,11 +23,12 @@ cur.execute("""DROP TABLE IF EXISTS students CASCADE;
                DROP TABLE IF EXISTS submissions CASCADE;
                DROP TABLE IF EXISTS gametype CASCADE;
                DROP TABLE IF EXISTS assignments_submissions CASCADE;
-               DROP TABLE IF EXISTS students_chargame CASCADE;""")
+               DROP TABLE IF EXISTS students_chargame CASCADE;
+               DROP TABLE IF EXISTS users CASCADE;""")
 print("TABLES DELETED")
 
 ## CREATE NEW TABLES
-cur.execute("""CREATE TABLE students (sid int unique, name varchar(300), email varchar(200) unique, hashpswd varchar(200));""")
+cur.execute("""CREATE TABLE students (sid int unique, name varchar(300), email varchar(200) unique, hashpswd varchar(200), validated boolean);""")
 cur.execute("""CREATE TABLE professor (pid int unique, name varchar(300), email varchar(200) unique, hashpswd varchar(200));""")
 cur.execute("""CREATE TABLE gametype (gtid int unique, title varchar(200));""")
 cur.execute("""CREATE TABLE game (gid int unique, title varchar(200) unique, gtid int, FOREIGN KEY (gtid) references gametype(gtid));""")
@@ -42,7 +43,7 @@ cur.execute("""CREATE TABLE submissions (subid int unique, link varchar(300), up
 cur.execute("""CREATE table game_assignments (gid int, aid int, FOREIGN KEY (gid) references game(gid), FOREIGN KEY (aid) references assignments(aid) ON DELETE CASCADE);""")
 cur.execute("""CREATE TABLE student_submissions (sid int, subid int, FOREIGN KEY (sid) references students(sid), FOREIGN KEY (subid) references submissions(subid));""")
 cur.execute("""CREATE TABLE assignments_submissions (aid int, subid int, FOREIGN KEY (aid) references assignments(aid), FOREIGN KEY (subid) references submissions(subid));""")
-
+cur.execute("""CREATE TABLE users (uid int unique, email varchar(200) unique, student boolean);""")
 
 
 # NEW ROLLOUT v3 alpha
