@@ -19,13 +19,13 @@
   {% endif %}
   <div class="gameshelf">
     {% for (charname, gametitle, gid) in gameinfo %}
-    <a href="/dashboard/{{sid}}/{{gid}}">
+    <a href="/dashboard/{{gid}}">
       <div class="gamebox"><div class="gamelabel">{{gametitle}}<hr />{{charname}}</div></div>
     </a>
     {% endfor %}
     <div id="addgamebox" class="gamebox center">
       <div class="gamelabel">Add a game<br /><span id="plussign" class="glyphicon glyphicon-plus"></span></div>
-      <form id="gameform" class="invisible" action="/sjoin/{{sid}}" method="get">
+      <form id="gameform" class="invisible" action="sjoin" method="get">
         <input class="form-control" type="text" name="inviteCode" placeholder="invite code"><br />
         <button class="submitbutton btn btn-primary" type="submit"></button>
       </form>
