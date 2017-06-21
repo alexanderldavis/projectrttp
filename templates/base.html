@@ -32,18 +32,18 @@
       {% if sid == a %}
       <a class="navbar-brand" href="/">RTTPortal</a>
       {% else %}
-      <a class="navbar-brand" href="/gamechooser/{{sid}}/{{gid}}">RTTPortal</a>
+      <a class="navbar-brand" href="/gamechooser/{{gid}}">RTTPortal</a>
       {% endif %}
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       {% if curid == 0 %}
       {% else %}
       <ul class="nav navbar-nav">
-        <li class={{ "active" if curid==1 else "" }}><a href="/dashboard/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
-        <li class={{ "active" if curid==6 else "" }}><a href="/assignments/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-file"></span> Assignments</a></li>
-        <li class={{ "active" if curid==2 else "" }}><a href="/newspaper/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-book"></span> Newspaper Shelf</a></li>
-        <li class={{ "active" if curid==3 else "" }}><a href="/characterprofile/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-knight"></span> Character Profile</a></li>
-        <li class={{ "active" if curid==5 else "" }}><a href="/chat/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-comment"></span> Chat</a></li>
+        <li class={{ "active" if curid==1 else "" }}><a href="/dashboard/{{gid}}"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+        <li class={{ "active" if curid==6 else "" }}><a href="/assignments/{{gid}}"><span class="glyphicon glyphicon-file"></span> Assignments</a></li>
+        <li class={{ "active" if curid==2 else "" }}><a href="/newspaper/{{gid}}"><span class="glyphicon glyphicon-book"></span> Newspaper Shelf</a></li>
+        <li class={{ "active" if curid==3 else "" }}><a href="/characterprofile/{{gid}}"><span class="glyphicon glyphicon-knight"></span> Character Profile</a></li>
+        <li class={{ "active" if curid==5 else "" }}><a href="/chat/{{gid}}"><span class="glyphicon glyphicon-comment"></span> Chat</a></li>
       </ul>
       {% endif %}
       <ul class="nav navbar-nav navbar-right">
@@ -56,7 +56,7 @@
             <ul>
               <li>{{ "You are " + charname if charname else "" }}</li>
               <li><a href="/account/{{sid}}/{{gid}}"><span class="glyphicon glyphicon-user"></span> {{ username }}'s Account</a></li>
-              <li><a href="/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+              <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
           </div>
         </div>

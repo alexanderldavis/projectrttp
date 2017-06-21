@@ -34,7 +34,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/admin/dashboard/{{pid}}">RTTPortal Admin</a>
+                <a class="navbar-brand" href="/admin/dashboard">RTTPortal Admin</a>
             </div>
             <ul class="nav navbar-top-links navbar-right">
                 <li class="dropdown">
@@ -42,7 +42,7 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="/admin"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="/admin/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -56,13 +56,13 @@
                     <ul class="nav" id="side-menu">
 
                         <li>
-                            <a href="/admin/dashboard/{{pid}}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="/admin/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="/admin/students/{{pid}}"><i class="fa fa-table fa-fw"></i> Students</a>
+                            <a href="/admin/students"><i class="fa fa-table fa-fw"></i> Students</a>
                         </li>
                         <li>
-                            <a href="/admin/assignments/{{pid}}"><i class="fa fa-file fa-fw"></i> Assignments</a>
+                            <a href="/admin/assignments"><i class="fa fa-file fa-fw"></i> Assignments</a>
                         </li>
                     </ul>
                 </div>
@@ -99,7 +99,7 @@
                                     </thead>
                                     <tbody>
                                       {% for (aid, due, assignmentName, submissions) in subassignmentlist %}
-                                        <a><tr data-href='/admin/game/{{pid}}/{{gid}}'>
+                                        <a><tr>
                                         	<td>{{due}}</td>
                                         	<td>{{assignmentName}}</td>
                                           <td>{{submissions}}</td>
@@ -111,7 +111,7 @@
                             <!-- /.table-responsive -->
                         </div>
                         <!-- /.panel-body -->
-                      <a href="/admin/addassignment/{{pid}}/{{gid}}"><p style="text-align: center;">Add Assignment</p></a>
+                      <a href="/admin/addassignment/{{gid}}"><p style="text-align: center;">Add Assignment</p></a>
                     </div>
                     {% endfor %}
                     <!-- /.panel -->
