@@ -36,17 +36,17 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 # @app.route("/send_mail") #https://stackoverflow.com/questions/20477749/flask-mail-attributeerror-function-object-has-no-attribute-send
-def mail_confirmation(name, email, sid):   #TODO: CHANGE THESE URLS BACK TO RTTPORTAL!!!!!
+def mail_confirmation(name, email, sid):
    msg = Message('Verify your account with RTTPortal.com', sender = 'RTTP at Luther College', recipients = [str(email)])
    msg.html = """<h1><b>Hello """+str(name)+"""! Welcome to RTTPortal!</b></h1>\n
-                <h3>To finish setting up your account, click <a href= 'https://mysecurelogin.herokuapp.com/validate/"""+str(sid)+"""'>here</a> to validate your email!</h3>
+                <h3>To finish setting up your account, click <a href= 'https://www.rttportal.com/validate/"""+str(sid)+"""'>here</a> to validate your email!</h3>
 
-                <h6>If you did not request an account with us, simply click <a href='https://mysecurelogin.herokuapp.com/errvalidate/"""+str(sid)+"""'>here</a>.</h6>
+                <h6>If you did not request an account with us, simply click <a href='https://www.rttportal.com/errvalidate/"""+str(sid)+"""'>here</a>.</h6>
 
                 <h3>Have a great day!</h3>
                 <h3>RTTPortal.com</h3>
                 """
-   msg.txt = "Message not displaying correctly? Click here to validate your account with rttportal.com: https://mysecurelogin.herokuapp.com/validate/"+str(sid)
+   msg.txt = "Message not displaying correctly? Click here to validate your account with rttportal.com: https://www.rttportal.com/validate/"+str(sid)
    mail.send(msg)
    return "Sent"
 
@@ -430,7 +430,7 @@ def submit_form(gid, aid):
     print("IN HERE =================================")
     print(avatar_url)
     addSubmissionFromStudent(avatar_url, sid, aid)
-    return flask.redirect("https://mysecurelogin.herokuapp.com/assignments/"+gid) #TODO: CHANGE THIS LINK~~!
+    return flask.redirect("https://www.rttportal.com/assignments/"+gid)
 
 def addSubmissionFromStudent(url, sid, aid):
     cur.execute("""SELECT assignments_submissions.subid from student_submissions join assignments_submissions on (student_submissions.subid = assignments_submissions.subid) where student_submissions.sid = %s and assignments_submissions.aid = %s;""",(sid, aid))
@@ -642,7 +642,7 @@ def deleteAssignment(gid, aid, securecode):
     cur.execute("""DELETE from game_assignments where gid = %s and aid =%s;""", (gid, aid))
     conn.commit()
     print("ASSIGNMENT "+str(aid)+" DELETED BY PROFESSOR ("+str(pid)+") FROM GAME "+str(gid))
-    return flask.redirect("https://mysecurelogin.herokuapp.com/admin/game/"+str(gid)) #TODO: Change URL
+    return flask.redirect("https://www.rttportal.com/admin/game/"+str(gid)) 
 
 @app.route("/admin/game/<gid>")
 @flask_login.login_required
