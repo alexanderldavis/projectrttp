@@ -195,7 +195,7 @@ a:hover {
 	transition: .6s;
 }
 
-.invisible {
+.invisible, .assignmentbox .invisible {
 	background-color: rgba(0,0,0,0);
 	opacity: 0;
 	height: 0;
@@ -248,7 +248,7 @@ a:hover {
 
 .assignmentbox:hover {
 	background-size: 30em;
-	background-position: center;
+	background-position: bottom;
 }
 
 .assignmentbox a {

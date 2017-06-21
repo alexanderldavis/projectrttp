@@ -12,20 +12,17 @@
   we need a way to differentiate between submitted and not-yet-submitted assignments
 
   <div class="assignmentshelf">
-
-    <div id="assignmentbox">
-      {% for (aid, title, description, due) in assignments %}
-      <div class="assignmentbox">
-        <div class="alabel">
-          {{ title }}<hr />due: {{ due }}
-          <br /><br />
-          <a href="/upload/{{sid}}/{{gid}}/{{aid}}/5739475839475"><span class='glyphicon glyphicon-upload'></span> Upload</a>
-          <br /><br />
-          click to view
-        </div>
+    {% for (aid, title, description, due) in assignments %}
+    <div class="assignmentbox">
+      <div class="alabel">
+        {{ title }}<hr />due: {{ due }}
+        <br /><br />
+        <a href="/upload/{{sid}}/{{gid}}/{{aid}}/5739475839475"><span class='glyphicon glyphicon-upload'></span> Upload</a>
+        <br /><br />
+        click to view
       </div>
-      {% endfor %}
     </div>
+    {% endfor %}
   </div>
 
 {% endblock %}

@@ -68,28 +68,28 @@ def newProfessor(email, password):
 def gameJoinStudent(sid):
     return redirect("/games/"+"fakeSID")
 
-@app.route("/games/<sid>/<gid>")
-def getCustomGameChooser(sid,gid):
+@app.route("/games/<sid>")
+def getCustomGameChooser(sid):
     return render_template('gamechooser.html', sid = "sid", curid = 1, username='username',
     picurl = "http://mediadirectory.economist.com/wp-content/uploads/2015/09/John-Prideaux-headshot_picmonkeyed.jpg", gameinfo = [('Jacques Guy','France 1823', 'asdf'),('Dag Fishinboi','Minnesota 1993', 'asdf'),('Dumbo','Conflicted Little Guys: Disney through the ages', 'asdf')])
 
 @app.route("/dashboard/<sid>/<gid>")
 def getCustomDashboard(sid, gid):
     return render_template('dashboard.html', sid = "sid", curid = 1, username='username', charname='charname',
-    picurl = "http://mediadirectory.economist.com/wp-content/uploads/2015/09/John-Prideaux-headshot_picmonkeyed.jpg", gametitle="Dogman in the city: a tragedy 1874")
+    picurl="http://mediadirectory.economist.com/wp-content/uploads/2015/09/John-Prideaux-headshot_picmonkeyed.jpg", gametitle="Dogman in the city: a tragedy 1874")
 
 @app.route("/newspaper/<sid>/<gid>")
 def getCustomNewspaper(sid, gid):
-    return render_template('newspaper.html', sid=sid, gid=gid, curid=2, username='username')
+    return render_template('newspaper.html', sid="sid", gid="gid", curid=2, username='username')
 
-@app.route("/characterprofile/<sid>")
-def getCustomCharacterProfile(sid):
-    return render_template('characterprofile.html', sid = 'sid', curid = 3, username='username')
+@app.route("/characterprofile/<sid>/<gid>")
+def getCustomCharacterProfile(sid,gid):
+    return render_template('characterprofile.html', sid="sid", gid="gid", curid=3, username='username')
 # @app.route("/chat/<sid>")
 
-@app.route("/chat/<sid>")
-def getCustomChat(sid):
-    return render_template('chat.html', sid=sid, curid = 5, username= 'username')
+@app.route("/chat/<sid>/<gid>")
+def getCustomChat(sid,gid):
+    return render_template('chat.html', sid="sid", gid="gid", curid = 5, username= 'username')
 
 @app.route("/assignments/<sid>/<gid>")
 def getCustomAssignments(sid, gid):
@@ -102,12 +102,12 @@ def getCustomAssignments(sid, gid):
 
 @app.route("/upload/<sid>/<gid>/<aid>/<securecode>")
 def uploadAssignment(sid, gid, aid, securecode):
-    return render_template("myaccount.html", gid = gid, sid = sid, curid = 6, username="username", charname="charname", picurl="http://mediadirectory.economist.com/wp-content/uploads/2015/09/John-Prideaux-headshot_picmonkeyed.jpg", aid="1234")
+    return render_template("myaccount.html", gid = "gid", sid = "sid", curid = 6, username="username", charname="charname", picurl="http://mediadirectory.economist.com/wp-content/uploads/2015/09/John-Prideaux-headshot_picmonkeyed.jpg", aid="1234")
 
 
 @app.route("/account/<sid>")
 def getCustomAccount(sid):
-    return render_template('account.html', sid=sid, curid = 6, username = "username")
+    return render_template('account.html', sid="sid", curid = 6, username = "username")
 
 ### UPLOADS!!!
 @app.route("/myaccount/")

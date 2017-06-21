@@ -22,20 +22,24 @@ $( document ).ready(function() {
   $(".assignmentbox").click(function() {
     if ($(this).data("expanded")) {
       // Contracting
-      $('.assignmentbox').each(function(i, obj) {
+      $('.assignmentbox').each(function() {
         $(this).removeClass("invisible");
+        $(this).css('height', '');
       });
       $(this).data("expanded", false);
       $(this).removeClass("fullassignment");
       $(".alabel").removeClass("invisible");
       $(".alabel").css('height', '');
     } else {
-      // Expanding clicked assignmentbox, hiding others
-      $('.assignmentbox').each(function(i, obj) {
-        $(this).addClass("invisible");
-        console.log($(this).css('height'));
+      // Expanding clicked assignmentbox, hiding other
+      let curBox = this;
+      $('.assignmentbox').each(function() {
+        if (this !== curBox) {
+          $(this).addClass("invisible");
+          $(this).css('height', '0');
+        }
+        console.log(this);
       });
-      $(this).removeClass("invisible");
       $(this).data("expanded", true);
       $(this).addClass("fullassignment");
       $(".alabel").css('height', '100%');

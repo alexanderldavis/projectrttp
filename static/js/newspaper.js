@@ -22,7 +22,7 @@ $( document ).ready(function() {
   $(".newspaperbox").click(function() {
     if ($(this).data("expanded")) {
       // Contracting
-      $('.newspaperbox').each(function(i, obj) {
+      $('.newspaperbox').each(function() {
         $(this).removeClass("invisible");
       });
       $(this).data("expanded", false);
@@ -31,7 +31,7 @@ $( document ).ready(function() {
       $(".nplabel").css('height', '');
     } else {
       // Expanding clicked newspperbox, hiding others
-      $('.newspaperbox').each(function(i, obj) {
+      $('.newspaperbox').each(function() {
         $(this).addClass("invisible");
       });
       $(this).removeClass("invisible");
