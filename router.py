@@ -642,7 +642,7 @@ def deleteAssignment(gid, aid, securecode):
     cur.execute("""DELETE from game_assignments where gid = %s and aid =%s;""", (gid, aid))
     conn.commit()
     print("ASSIGNMENT "+str(aid)+" DELETED BY PROFESSOR ("+str(pid)+") FROM GAME "+str(gid))
-    return flask.redirect("https://www.rttportal.com/admin/game/"+str(gid)) 
+    return flask.redirect("https://www.rttportal.com/admin/game/"+str(gid))
 
 @app.route("/admin/game/<gid>")
 @flask_login.login_required
@@ -804,13 +804,13 @@ def admin_logout():
 def unauthorized_handler():
     return 'You are no longer logged in. Please sign in again.'
 
-# @app.errorhandler(404)
-# def page_not_found(e):
-#     return flask.render_template('404.html')
-#
-# @app.errorhandler(500)
-# def page_not_found(e):
-#     return flask.render_template('404.html')
+@app.errorhandler(404)
+def page_not_found(e):
+    return flask.render_template('404.html')
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return flask.render_template('404.html')
 
 
 if __name__ == '__main__':
